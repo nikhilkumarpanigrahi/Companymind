@@ -7,6 +7,8 @@
     "dev": "vite",
     "dev:server": "nodemon server.cjs",
     "start:server": "node server.cjs",
+    "clean:dataset": "node scripts/clean-dataset.cjs",
+    "load:documents": "node scripts/bulk-load-documents.cjs",
     "build": "tsc -b && vite build",
     "preview": "vite preview"
   },
