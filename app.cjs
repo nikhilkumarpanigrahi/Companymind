@@ -1,11 +1,11 @@
 const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
-const documentRoutes = require('./routes/documentRoutes');
-const searchRoutes = require('./routes/searchRoutes');
-const { notFoundMiddleware } = require('./middleware/notFound');
-const { errorMiddleware } = require('./middleware/errorMiddleware');
-const { responseTimeLogger } = require('./middleware/responseTimeLogger');
+const documentRoutes = require('./routes/documentRoutes.cjs');
+const searchRoutes = require('./routes/searchRoutes.cjs');
+const { notFoundMiddleware } = require('./middleware/notFound.cjs');
+const { errorMiddleware } = require('./middleware/errorMiddleware.cjs');
+const { responseTimeLogger } = require('./middleware/responseTimeLogger.cjs');
 
 const app = express();
 

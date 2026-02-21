@@ -3,13 +3,13 @@ const {
   createDocumentHandler,
   searchDocumentsHandler,
   getDocumentsHandler
-} = require('../controllers/documentController');
-const { validateRequest } = require('../middleware/validateRequest');
+} = require('../controllers/documentController.cjs');
+const { validateRequest } = require('../middleware/validateRequest.cjs');
 const {
   createDocumentSchema,
   searchDocumentSchema,
   listDocumentsQuerySchema
-} = require('../validators/documentValidators');
+} = require('../validators/documentValidators.cjs');
 
 const router = express.Router();
 

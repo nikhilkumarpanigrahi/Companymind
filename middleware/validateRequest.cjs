@@ -1,4 +1,4 @@
-const { AppError } = require('../utils/AppError');
+const { AppError } = require('../utils/AppError.cjs');
 
 const validateRequest = (schema, source = 'body') => {
   return (req, res, next) => {

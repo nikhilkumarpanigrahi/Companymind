@@ -1,10 +1,10 @@
-const { generateEmbedding } = require('../services/embeddingService');
+const { generateEmbedding } = require('../services/embeddingService.cjs');
 const {
   createDocument,
   listDocuments,
   vectorSearchDocuments
-} = require('../services/documentService');
-const { asyncHandler } = require('../utils/asyncHandler');
+} = require('../services/documentService.cjs');
+const { asyncHandler } = require('../utils/asyncHandler.cjs');
 
 const createDocumentHandler = asyncHandler(async (req, res) => {
   const { title, content } = req.body;

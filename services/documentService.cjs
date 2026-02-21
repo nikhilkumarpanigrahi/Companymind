@@ -1,5 +1,5 @@
-const { Document } = require('../models/Document');
-const { env } = require('../config/env');
+const { Document } = require('../models/Document.cjs');
+const { env } = require('../config/env.cjs');
 
 const createDocument = async ({ title, content, embedding }) => {
   return Document.create({ title, content, embedding });

@@ -1,4 +1,4 @@
-const { AppError } = require('../utils/AppError');
+const { AppError } = require('../utils/AppError.cjs');
 
 const errorMiddleware = (error, req, res, next) => {
   const statusCode = error instanceof AppError ? error.statusCode : 500;

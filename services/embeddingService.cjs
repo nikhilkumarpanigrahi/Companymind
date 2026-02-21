@@ -1,8 +1,8 @@
 const axios = require('axios');
 const http = require('http');
 const https = require('https');
-const { env } = require('../config/env');
-const { AppError } = require('../utils/AppError');
+const { env } = require('../config/env.cjs');
+const { AppError } = require('../utils/AppError.cjs');
 
 const axiosClient = axios.create({
   timeout: 15000,

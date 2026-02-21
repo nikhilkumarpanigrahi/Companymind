@@ -2,6 +2,8 @@
 
 Production-ready React frontend built with Vite + Tailwind.
 
+Includes a root-level Node.js + Express backend for semantic search (MongoDB Atlas + vector search).
+
 ## Features
 
 - Google-style centered search bar
@@ -45,7 +47,13 @@ cp .env.example .env
 npm run dev
 ```
 
-5. Build for production:
+5. Start backend server (separate terminal):
+
+```bash
+npm run dev:server
+```
+
+6. Build for production:
 
 ```bash
 npm run build
@@ -55,6 +63,12 @@ npm run build
 
 - `VITE_API_BASE_URL` (default: `http://localhost:8080`)
 - `VITE_DEFAULT_PAGE_SIZE` (default: `10`)
+- `PORT` (default: `8080`)
+- `MONGODB_URI`
+- `MONGODB_DB_NAME` (optional)
+- `EMBEDDING_API_URL`
+- `EMBEDDING_API_KEY` (optional)
+- `VECTOR_INDEX_NAME` (default: `documents_embedding_index`)
 
 ## API Contract
 
@@ -92,3 +106,7 @@ npm run build
   "content": "Document content"
 }
 ```
+
+### List documents
+
+- Endpoint: `GET /documents?limit=100`

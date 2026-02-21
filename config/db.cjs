@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { env } = require('./env');
+const { env } = require('./env.cjs');
 
 const connectToDatabase = async () => {
   mongoose.set('strictQuery', true);

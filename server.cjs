@@ -1,6 +1,6 @@
-const app = require('./app');
-const { connectToDatabase } = require('./config/db');
-const { env } = require('./config/env');
+const app = require('./app.cjs');
+const { connectToDatabase } = require('./config/db.cjs');
+const { env } = require('./config/env.cjs');
 
 const startServer = async () => {
   await connectToDatabase();
