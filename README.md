@@ -171,4 +171,4 @@ Open [http://localhost:5173](http://localhost:5173) and start searching!
 
 ## License
 
-MIT
+Apache-2.0 license
