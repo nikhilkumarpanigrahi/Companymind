@@ -43,6 +43,15 @@ const NAV_ITEMS: NavItem[] = [
     ),
   },
   {
+    path: '/benchmarks',
+    label: 'Benchmarks',
+    icon: (
+      <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M18 20V10M12 20V4M6 20v-6" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  {
     path: '/how-it-works',
     label: 'How It Works',
     icon: (

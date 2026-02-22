@@ -7,6 +7,7 @@ import Pagination from '../components/Pagination';
 import ResponseMeta from '../components/ResponseMeta';
 import ResultCard from '../components/ResultCard';
 import SearchBar from '../components/SearchBar';
+import SearchPipelineAnimation from '../components/SearchPipelineAnimation';
 import { useDebounce } from '../hooks/useDebounce';
 import type { ConversationMessage, RAGResponse, RAGSource, SearchResultItem } from '../types';
 
@@ -229,6 +230,15 @@ function SearchPage() {
           <ResponseMeta tookMs={responseTimeMs} total={total} query={debouncedQuery} />
         )}
       </div>
+
+      {/* Pipeline animation — visible during search / ask and after results arrive */}
+      {debouncedQuery.trim() && (
+        <SearchPipelineAnimation
+          mode={mode}
+          isActive={mode === 'search' ? isLoading : (isAskLoading || isStreaming)}
+          isDone={mode === 'search' ? (!isLoading && results.length > 0) : (!!ragResponse && !isStreaming && !isAskLoading)}
+        />
+      )}
 
       {/* Results Area */}
       <div className="mt-6 w-full max-w-3xl">

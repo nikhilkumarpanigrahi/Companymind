@@ -1,5 +1,5 @@
 import { apiClient } from './client';
-import type { AddDocumentPayload, AnalyticsData, ConversationMessage, DocumentItem, RAGResponse, SearchResponse, SearchResultItem, StatsData } from '../types';
+import type { AddDocumentPayload, AnalyticsData, BenchmarkResponse, ConversationMessage, DocumentItem, RAGResponse, SearchResponse, SearchResultItem, StatsData } from '../types';
 
 type RawSearchResponse = {
   data?: SearchResultItem[];
@@ -134,4 +134,9 @@ export const fetchStats = async (): Promise<StatsData> => {
 export const fetchAnalytics = async (): Promise<AnalyticsData> => {
   const { data } = await apiClient.get<{ success: boolean; data: AnalyticsData }>('/ask/analytics');
   return data.data;
+};
+
+export const runBenchmark = async (query: string, limit = 10): Promise<BenchmarkResponse> => {
+  const { data } = await apiClient.post<BenchmarkResponse>('/benchmark', { query, limit }, { timeout: 30000 });
+  return data;
 };

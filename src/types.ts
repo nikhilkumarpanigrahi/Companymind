@@ -92,3 +92,49 @@ export type AnalyticsData = {
   popularQueries: { query: string; count: number }[];
   recentQueries: QueryLogEntry[];
 };
+
+/* ── Benchmark types ───────────────────────────────────── */
+
+export type BenchmarkResultItem = {
+  id: string;
+  title: string;
+  snippet: string;
+  score: number;
+};
+
+export type BenchmarkMethodResult = {
+  method: string;
+  description: string;
+  mongoFeature: string;
+  results: BenchmarkResultItem[];
+  count: number;
+  latencyMs: number;
+  embeddingLatencyMs?: number;
+};
+
+export type BenchmarkMethodSummary = {
+  key: string;
+  method: string;
+  latencyMs: number;
+  resultCount: number;
+  avgScore: number;
+};
+
+export type BenchmarkOverlapCell = {
+  count: number;
+  pct: number;
+};
+
+export type BenchmarkSummary = {
+  query: string;
+  limit: number;
+  totalEmbeddingMs: number;
+  methods: BenchmarkMethodSummary[];
+  overlap: Record<string, Record<string, BenchmarkOverlapCell>>;
+};
+
+export type BenchmarkResponse = {
+  success: boolean;
+  summary: BenchmarkSummary;
+  methods: Record<string, BenchmarkMethodResult>;
+};
