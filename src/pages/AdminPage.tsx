@@ -1,13 +1,45 @@
-import { useState } from 'react';
-import { addDocument } from '../api/documents';
+import { useEffect, useState } from 'react';
+import { addDocument, fetchStats } from '../api/documents';
 import ErrorToast from '../components/ErrorToast';
+
+const CATEGORIES = [
+  'database', 'software engineering', 'AI research', 'technology', 'devops',
+  'backend', 'frontend', 'NLP', 'data science', 'security', 'cloud computing',
+  'machine learning', 'networking', 'mobile development', 'web development',
+  'blockchain', 'IoT', 'programming languages', 'algorithms', 'operating systems',
+];
 
 function AdminPage() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [category, setCategory] = useState('');
+  const [tagInput, setTagInput] = useState('');
+  const [tags, setTags] = useState<string[]>([]);
   const [isSaving, setIsSaving] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [docCount, setDocCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetchStats().then(s => setDocCount(s.totalDocuments)).catch(() => {});
+  }, [isSuccess]);
+
+  const handleAddTag = () => {
+    const trimmed = tagInput.trim().toLowerCase();
+    if (trimmed && !tags.includes(trimmed) && tags.length < 10) {
+      setTags([...tags, trimmed]);
+      setTagInput('');
+    }
+  };
+
+  const handleTagKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault();
+      handleAddTag();
+    }
+  };
+
+  const removeTag = (tag: string) => setTags(tags.filter(t => t !== tag));
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -20,9 +52,17 @@ function AdminPage() {
 
     try {
       setIsSaving(true);
-      await addDocument({ title: title.trim(), content: content.trim() });
+      await addDocument({
+        title: title.trim(),
+        content: content.trim(),
+        ...(category && { category }),
+        ...(tags.length > 0 && { tags }),
+      });
       setTitle('');
       setContent('');
+      setCategory('');
+      setTags([]);
+      setTagInput('');
       setIsSuccess(true);
     } catch {
       setError('Could not add document. Please try again.');
@@ -41,32 +81,89 @@ function AdminPage() {
           Knowledge Base Management
         </div>
         <h1 className="mb-2 text-3xl font-extrabold tracking-tight text-white">Add Document</h1>
-        <p className="text-sm text-slate-400">Add a new document to your knowledge base. It will be auto-embedded for semantic search &amp; RAG.</p>
+        <p className="text-sm text-slate-400">
+          Add a new document to your knowledge base. It will be auto-embedded for semantic search &amp; RAG.
+          {docCount !== null && <span className="text-indigo-400 ml-1">({docCount} documents indexed)</span>}
+        </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="glass rounded-2xl p-6">
-        <label className="mb-2 block text-sm font-medium text-slate-300" htmlFor="title">
-          Title
-        </label>
-        <input
-          id="title"
-          value={title}
-          onChange={(event) => setTitle(event.target.value)}
-          className="mb-5 w-full rounded-xl border border-white/10 bg-white/[0.05] px-4 py-3 text-white placeholder-slate-500 outline-none transition focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/25"
-          placeholder="e.g. Introduction to Vector Databases"
-        />
+      <form onSubmit={handleSubmit} className="glass rounded-2xl p-6 space-y-5">
+        {/* Title */}
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-300" htmlFor="title">Title</label>
+          <input
+            id="title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="w-full rounded-xl border border-white/10 bg-white/[0.05] px-4 py-3 text-white placeholder-slate-500 outline-none transition focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/25"
+            placeholder="e.g. Introduction to Vector Databases"
+          />
+        </div>
 
-        <label className="mb-2 block text-sm font-medium text-slate-300" htmlFor="content">
-          Content
-        </label>
-        <textarea
-          id="content"
-          value={content}
-          onChange={(event) => setContent(event.target.value)}
-          className="mb-5 min-h-52 w-full rounded-xl border border-white/10 bg-white/[0.05] px-4 py-3 text-white placeholder-slate-500 outline-none transition focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/25"
-          placeholder="Paste the document text here..."
-        />
+        {/* Category */}
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-300" htmlFor="category">Category</label>
+          <select
+            id="category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="w-full rounded-xl border border-white/10 bg-white/[0.05] px-4 py-3 text-white outline-none transition focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/25 [&>option]:bg-slate-800"
+          >
+            <option value="">Select a category...</option>
+            {CATEGORIES.map((cat) => (
+              <option key={cat} value={cat}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</option>
+            ))}
+          </select>
+        </div>
 
+        {/* Tags */}
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-300">Tags</label>
+          <div className="flex flex-wrap gap-2 mb-2">
+            {tags.map((tag) => (
+              <span
+                key={tag}
+                className="inline-flex items-center gap-1 rounded-lg border border-indigo-500/20 bg-indigo-500/10 px-2.5 py-1 text-xs text-indigo-300"
+              >
+                {tag}
+                <button type="button" onClick={() => removeTag(tag)} className="ml-0.5 text-indigo-400 hover:text-white">
+                  &times;
+                </button>
+              </span>
+            ))}
+          </div>
+          <div className="flex gap-2">
+            <input
+              value={tagInput}
+              onChange={(e) => setTagInput(e.target.value)}
+              onKeyDown={handleTagKeyDown}
+              className="flex-1 rounded-xl border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-white placeholder-slate-500 outline-none transition focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/25"
+              placeholder="Type a tag and press Enter (max 10)"
+            />
+            <button
+              type="button"
+              onClick={handleAddTag}
+              className="rounded-xl border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-slate-400 hover:bg-white/[0.08] hover:text-white transition-all"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-300" htmlFor="content">Content</label>
+          <textarea
+            id="content"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            className="min-h-52 w-full rounded-xl border border-white/10 bg-white/[0.05] px-4 py-3 text-white placeholder-slate-500 outline-none transition focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/25"
+            placeholder="Paste the document text here..."
+          />
+          <p className="mt-1 text-right text-[10px] text-slate-600">{content.length} / 10,000 chars</p>
+        </div>
+
+        {/* Submit */}
         <div className="flex items-center gap-4">
           <button
             type="submit"

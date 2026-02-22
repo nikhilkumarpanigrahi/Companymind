@@ -10,7 +10,16 @@ const createDocumentSchema = z.object({
     .string({ required_error: 'content is required' })
     .trim()
     .min(1, 'content is required')
-    .max(10000, 'content cannot exceed 10000 characters')
+    .max(10000, 'content cannot exceed 10000 characters'),
+  category: z
+    .string()
+    .trim()
+    .max(100)
+    .optional(),
+  tags: z
+    .array(z.string().trim().max(50))
+    .max(20)
+    .optional()
 });
 
 const searchDocumentSchema = z.object({
@@ -60,6 +69,24 @@ const askQuestionSchema = z.object({
     .max(2000, 'question cannot exceed 2000 characters'),
 });
 
+const askQuestionStreamSchema = z.object({
+  question: z
+    .string({ required_error: 'question is required' })
+    .trim()
+    .min(1, 'question is required')
+    .max(2000, 'question cannot exceed 2000 characters'),
+  conversationHistory: z
+    .array(
+      z.object({
+        role: z.enum(['user', 'assistant']),
+        content: z.string().max(5000),
+      })
+    )
+    .max(20)
+    .optional()
+    .default([]),
+});
+
 const listDocumentsQuerySchema = z.object({
   limit: z
     .string()
@@ -76,5 +103,6 @@ module.exports = {
   searchDocumentSchema,
   searchDocumentsQuerySchema,
   askQuestionSchema,
+  askQuestionStreamSchema,
   listDocumentsQuerySchema
 };

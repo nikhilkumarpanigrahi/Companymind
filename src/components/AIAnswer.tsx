@@ -1,42 +1,52 @@
+import { useState } from 'react';
 import type { RAGResponse } from '../types';
 
 type AIAnswerProps = {
   data: RAGResponse;
+  compact?: boolean;
 };
 
 function simpleMarkdown(text: string): string {
-  // Convert markdown to HTML (basic)
   let html = text
-    // Headers
     .replace(/^### (.+)$/gm, '<h3>$1</h3>')
     .replace(/^## (.+)$/gm, '<h2>$1</h2>')
     .replace(/^# (.+)$/gm, '<h1>$1</h1>')
-    // Bold
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    // Italic
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    // Inline code
     .replace(/`([^`]+)`/g, '<code>$1</code>')
-    // Blockquote
     .replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>')
-    // Unordered list
     .replace(/^[-*] (.+)$/gm, '<li>$1</li>')
-    // Source citations
     .replace(/\[Source: (.+?)\]/g, '<span class="inline-flex items-center gap-1 rounded-md bg-indigo-500/10 px-2 py-0.5 text-xs font-medium text-indigo-300 border border-indigo-500/20">📄 $1</span>')
-    // Line breaks
     .replace(/\n\n/g, '</p><p>')
     .replace(/\n/g, '<br/>');
 
-  // Wrap loose li elements in ul
   html = html.replace(/(<li>.*?<\/li>)+/g, '<ul>$&</ul>');
-
   return `<p>${html}</p>`;
 }
 
-function AIAnswer({ data }: AIAnswerProps) {
+function AIAnswer({ data, compact }: AIAnswerProps) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(data.answer);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch { /* fallback: do nothing */ }
+  };
+
+  if (compact) {
+    return (
+      <div className="glass-light rounded-xl p-4">
+        <div className="ai-answer text-xs leading-relaxed text-slate-400 line-clamp-3"
+          dangerouslySetInnerHTML={{ __html: simpleMarkdown(data.answer) }}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="animate-fadeInUp">
-      {/* AI Answer Card */}
       <div className="glass rounded-2xl p-6 shadow-glow">
         <div className="mb-4 flex items-center gap-3">
           <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-indigo-500">
@@ -66,6 +76,31 @@ function AIAnswer({ data }: AIAnswerProps) {
           className="ai-answer text-sm leading-relaxed text-slate-300"
           dangerouslySetInnerHTML={{ __html: simpleMarkdown(data.answer) }}
         />
+
+        {/* Copy & action buttons */}
+        <div className="mt-4 flex items-center gap-2 border-t border-white/5 pt-3">
+          <button
+            onClick={handleCopy}
+            className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs text-slate-400 transition-all hover:bg-white/[0.08] hover:text-white"
+          >
+            {copied ? (
+              <>
+                <svg className="h-3.5 w-3.5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                Copied!
+              </>
+            ) : (
+              <>
+                <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" />
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                </svg>
+                Copy answer
+              </>
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Sources */}

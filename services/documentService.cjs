@@ -1,8 +1,11 @@
 const { Document } = require('../models/Document.cjs');
 const { env } = require('../config/env.cjs');
 
-const createDocument = async ({ title, content, embedding }) => {
-  return Document.create({ title, content, embedding });
+const createDocument = async ({ title, content, embedding, category, tags }) => {
+  const docData = { title, content, embedding };
+  if (category) docData.category = category;
+  if (tags && tags.length > 0) docData.tags = tags;
+  return Document.create(docData);
 };
 
 const listDocuments = async (limit = 100) => {

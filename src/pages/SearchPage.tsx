@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { askQuestion, searchDocuments } from '../api/documents';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { askQuestionStream, searchDocuments } from '../api/documents';
 import AIAnswer from '../components/AIAnswer';
 import ErrorToast from '../components/ErrorToast';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -8,7 +8,7 @@ import ResponseMeta from '../components/ResponseMeta';
 import ResultCard from '../components/ResultCard';
 import SearchBar from '../components/SearchBar';
 import { useDebounce } from '../hooks/useDebounce';
-import type { RAGResponse, SearchResultItem } from '../types';
+import type { ConversationMessage, RAGResponse, RAGSource, SearchResultItem } from '../types';
 
 const DEFAULT_PAGE_SIZE = Number(import.meta.env.VITE_DEFAULT_PAGE_SIZE || 10);
 
@@ -26,6 +26,9 @@ function SearchPage() {
   const [mode, setMode] = useState<'search' | 'ask'>('search');
   const [results, setResults] = useState<SearchResultItem[]>([]);
   const [ragResponse, setRagResponse] = useState<RAGResponse | null>(null);
+  const [streamingAnswer, setStreamingAnswer] = useState('');
+  const [streamingSources, setStreamingSources] = useState<RAGSource[]>([]);
+  const [isStreaming, setIsStreaming] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isAskLoading, setIsAskLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -33,35 +36,30 @@ function SearchPage() {
   const [total, setTotal] = useState(0);
   const [responseTimeMs, setResponseTimeMs] = useState<number | null>(null);
 
+  // Conversation memory
+  const [conversationHistory, setConversationHistory] = useState<ConversationMessage[]>([]);
+  const [pastExchanges, setPastExchanges] = useState<{ question: string; response: RAGResponse }[]>([]);
+
+  const abortRef = useRef<(() => void) | null>(null);
   const debouncedQuery = useDebounce(query, 450);
 
-  useEffect(() => {
-    setPage(1);
-  }, [debouncedQuery]);
+  useEffect(() => { setPage(1); }, [debouncedQuery]);
 
   // Semantic search effect
   useEffect(() => {
     if (mode !== 'search') return;
-
     const trimmedQuery = debouncedQuery.trim();
     if (!trimmedQuery) {
-      setResults([]);
-      setTotal(0);
-      setResponseTimeMs(null);
-      setIsLoading(false);
+      setResults([]); setTotal(0); setResponseTimeMs(null); setIsLoading(false);
       return;
     }
-
     let isCancelled = false;
-
     const runSearch = async () => {
       setIsLoading(true);
       const start = performance.now();
-
       try {
         const response = await searchDocuments(trimmedQuery, page, DEFAULT_PAGE_SIZE);
         if (isCancelled) return;
-
         setResults(response.results);
         setTotal(response.total);
         setResponseTimeMs(response.tookMs ?? performance.now() - start);
@@ -72,37 +70,77 @@ function SearchPage() {
         if (!isCancelled) setIsLoading(false);
       }
     };
-
     void runSearch();
     return () => { isCancelled = true; };
   }, [debouncedQuery, page, mode]);
 
-  // Ask AI handler
-  const handleAsk = useCallback(async () => {
+  // Ask AI handler — with streaming + conversation history
+  const handleAsk = useCallback(() => {
     const trimmed = query.trim();
-    if (!trimmed || isAskLoading) return;
+    if (!trimmed || isAskLoading || isStreaming) return;
+
+    // Cancel previous stream
+    if (abortRef.current) abortRef.current();
 
     setIsAskLoading(true);
+    setIsStreaming(true);
+    setStreamingAnswer('');
+    setStreamingSources([]);
     setRagResponse(null);
     setError(null);
 
-    try {
-      const response = await askQuestion(trimmed);
-      setRagResponse(response);
-    } catch {
-      setError('AI failed to answer. Make sure GROQ_API_KEY is set in your .env file.');
-    } finally {
-      setIsAskLoading(false);
-    }
-  }, [query, isAskLoading]);
+    const cancel = askQuestionStream(trimmed, conversationHistory, {
+      onToken: (token) => {
+        setStreamingAnswer((prev) => prev + token);
+      },
+      onSources: (sources) => {
+        setStreamingSources(sources);
+        setIsAskLoading(false); // stop shimmer, show streaming text
+      },
+      onDone: (meta, fullAnswer) => {
+        const finalResponse: RAGResponse = {
+          success: true,
+          answer: fullAnswer,
+          sources: streamingSources.length > 0 ? streamingSources : [],
+          meta,
+        };
+        setRagResponse(finalResponse);
+        setStreamingAnswer('');
+        setIsStreaming(false);
+        setIsAskLoading(false);
+
+        // Update conversation memory
+        setConversationHistory((prev) => [
+          ...prev,
+          { role: 'user', content: trimmed },
+          { role: 'assistant', content: fullAnswer },
+        ]);
+        setPastExchanges((prev) => [...prev, { question: trimmed, response: finalResponse }]);
+      },
+      onError: (errMsg) => {
+        setError(errMsg);
+        setIsStreaming(false);
+        setIsAskLoading(false);
+      },
+    });
+
+    abortRef.current = cancel;
+  }, [query, isAskLoading, isStreaming, conversationHistory, streamingSources]);
 
   const handleModeChange = (newMode: 'search' | 'ask') => {
     setMode(newMode);
     setRagResponse(null);
+    setStreamingAnswer('');
+    setIsStreaming(false);
   };
 
-  const handleExampleClick = (example: string) => {
-    setQuery(example);
+  const handleExampleClick = (example: string) => { setQuery(example); };
+
+  const handleClearConversation = () => {
+    setConversationHistory([]);
+    setPastExchanges([]);
+    setRagResponse(null);
+    setStreamingAnswer('');
   };
 
   const isEmpty = useMemo(
@@ -110,7 +148,7 @@ function SearchPage() {
     [mode, debouncedQuery, isLoading, results.length]
   );
 
-  const showHero = !query.trim() && !ragResponse;
+  const showHero = !query.trim() && !ragResponse && !isStreaming && pastExchanges.length === 0;
 
   return (
     <section className="flex min-h-[72vh] flex-col items-center">
@@ -145,12 +183,30 @@ function SearchPage() {
         <SearchBar
           value={query}
           onChange={setQuery}
-          onClear={() => { setQuery(''); setRagResponse(null); }}
+          onClear={() => { setQuery(''); setRagResponse(null); setStreamingAnswer(''); }}
           mode={mode}
           onModeChange={handleModeChange}
           onAsk={handleAsk}
           isLoading={isAskLoading}
         />
+
+        {/* Conversation memory indicator */}
+        {mode === 'ask' && conversationHistory.length > 0 && (
+          <div className="mx-auto mt-3 flex max-w-2xl items-center justify-between rounded-lg border border-purple-500/20 bg-purple-500/5 px-4 py-2">
+            <span className="flex items-center gap-2 text-xs text-purple-300">
+              <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+              </svg>
+              {Math.floor(conversationHistory.length / 2)} previous exchange{conversationHistory.length > 2 ? 's' : ''} in memory — AI can follow up
+            </span>
+            <button
+              onClick={handleClearConversation}
+              className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
+            >
+              Clear history
+            </button>
+          </div>
+        )}
 
         {/* Example queries */}
         {showHero && (
@@ -202,9 +258,19 @@ function SearchPage() {
           />
         )}
 
-        {/* Ask AI results */}
-        {mode === 'ask' && isAskLoading && (
-          <div className="mt-8">
+        {/* Past conversation exchanges */}
+        {mode === 'ask' && pastExchanges.map((exchange, i) => (
+          <div key={i} className="mb-4 opacity-60">
+            <div className="mb-2 flex items-center gap-2">
+              <span className="rounded-lg bg-white/5 px-3 py-1.5 text-xs text-slate-400">{exchange.question}</span>
+            </div>
+            <AIAnswer data={exchange.response} compact />
+          </div>
+        ))}
+
+        {/* Ask AI — streaming shimmer */}
+        {mode === 'ask' && isAskLoading && !streamingAnswer && (
+          <div className="mt-4">
             <div className="glass rounded-2xl p-6 pulse-glow">
               <div className="flex items-center gap-3 mb-4">
                 <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-indigo-500 animate-pulse">
@@ -214,7 +280,7 @@ function SearchPage() {
                 </div>
                 <div>
                   <h3 className="text-sm font-semibold text-white">CompanyMind AI</h3>
-                  <p className="text-xs text-slate-500">Analyzing documents...</p>
+                  <p className="text-xs text-slate-500">Analyzing documents & generating response...</p>
                 </div>
               </div>
               <div className="space-y-3">
@@ -226,7 +292,54 @@ function SearchPage() {
           </div>
         )}
 
-        {mode === 'ask' && ragResponse && !isAskLoading && (
+        {/* Streaming answer (live tokens) */}
+        {mode === 'ask' && isStreaming && streamingAnswer && (
+          <div className="mt-4">
+            <div className="glass rounded-2xl p-6 shadow-glow">
+              <div className="mb-4 flex items-center gap-3">
+                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-indigo-500">
+                  <svg className="h-4 w-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M12 2a8 8 0 0 1 8 8c0 3.5-2 5.5-4 7l-1 4H9l-1-4c-2-1.5-4-3.5-4-7a8 8 0 0 1 8-8z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-white">CompanyMind AI</h3>
+                  <p className="text-xs text-emerald-400 flex items-center gap-1">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    Generating response...
+                  </p>
+                </div>
+              </div>
+              <div className="ai-answer text-sm leading-relaxed text-slate-300 whitespace-pre-wrap">
+                {streamingAnswer}
+                <span className="inline-block w-2 h-4 ml-0.5 bg-indigo-400 animate-pulse" />
+              </div>
+            </div>
+
+            {/* Show sources while streaming */}
+            {streamingSources.length > 0 && (
+              <div className="mt-3">
+                <h4 className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <path d="M14 2v6h6" />
+                  </svg>
+                  Sources
+                </h4>
+                <div className="grid gap-2 sm:grid-cols-3">
+                  {streamingSources.map((s, i) => (
+                    <div key={i} className="glass-light rounded-xl p-2 text-[11px] text-slate-400 truncate">
+                      <span className="text-indigo-300 font-medium">{i+1}.</span> {s.title}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Final AI answer */}
+        {mode === 'ask' && ragResponse && !isStreaming && !isAskLoading && (
           <div className="mt-4">
             <AIAnswer data={ragResponse} />
           </div>

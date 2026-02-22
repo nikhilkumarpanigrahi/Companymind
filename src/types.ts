@@ -35,6 +35,13 @@ export type RAGResponse = {
 export type AddDocumentPayload = {
   title: string;
   content: string;
+  category?: string;
+  tags?: string[];
+};
+
+export type ConversationMessage = {
+  role: 'user' | 'assistant';
+  content: string;
 };
 
 export type DocumentItem = {
@@ -68,4 +75,20 @@ export type StatsData = {
   categories: CategoryStat[];
   topTags: TagStat[];
   recentDocuments: RecentDoc[];
+};
+
+export type QueryLogEntry = {
+  query: string;
+  type: string;
+  timestamp: string;
+  tookMs: number;
+};
+
+export type AnalyticsData = {
+  totalQueries: number;
+  askCount: number;
+  searchCount: number;
+  avgResponseTime: number;
+  popularQueries: { query: string; count: number }[];
+  recentQueries: QueryLogEntry[];
 };

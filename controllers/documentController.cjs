@@ -6,12 +6,17 @@ const {
   vectorSearchDocuments
 } = require('../services/documentService.cjs');
 const { asyncHandler } = require('../utils/asyncHandler.cjs');
+const { logQuery } = require('./ragController.cjs');
 
 const createDocumentHandler = asyncHandler(async (req, res) => {
-  const { title, content } = req.body;
+  const { title, content, category, tags } = req.body;
   const embedding = await generateEmbedding(content);
 
-  const document = await createDocument({ title, content, embedding });
+  const docData = { title, content, embedding };
+  if (category) docData.category = category;
+  if (tags && tags.length > 0) docData.tags = tags;
+
+  const document = await createDocument(docData);
 
   return res.status(201).json({
     success: true,
@@ -19,6 +24,8 @@ const createDocumentHandler = asyncHandler(async (req, res) => {
       id: document._id,
       title: document.title,
       content: document.content,
+      category: document.category,
+      tags: document.tags,
       createdAt: document.createdAt
     }
   });
@@ -37,26 +44,37 @@ const searchDocumentsHandler = asyncHandler(async (req, res) => {
 });
 
 const searchDocumentsQueryHandler = asyncHandler(async (req, res) => {
-  const { q, page, pageSize } = req.query;
+  const { q, page = 1, pageSize = 10 } = req.query;
+  const pageNum = Number(page);
+  const pageSizeNum = Number(pageSize);
   const startedAt = process.hrtime.bigint();
-  const embedding = await generateEmbedding(q);
-  const results = await vectorSearchDocuments({ embedding, limit: pageSize });
 
-  const mappedResults = results.map((item) => ({
+  // Fetch a generous set of results to enable real pagination
+  const maxResults = Math.max(pageSizeNum * 5, 50);
+  const embedding = await generateEmbedding(q);
+  const results = await vectorSearchDocuments({ embedding, limit: maxResults });
+
+  const allMapped = results.map((item) => ({
     id: item._id?.toString(),
     title: item.title || 'Untitled',
     snippet: (item.content || '').slice(0, 220),
     relevanceScore: typeof item.score === 'number' ? item.score : 0
   }));
 
+  const total = allMapped.length;
+  const start = (pageNum - 1) * pageSizeNum;
+  const pageResults = allMapped.slice(start, start + pageSizeNum);
+
   const finishedAt = process.hrtime.bigint();
   const tookMs = Number(finishedAt - startedAt) / 1_000_000;
 
+  logQuery('search', q, Number(tookMs.toFixed(2)));
+
   return res.status(200).json({
-    results: mappedResults,
-    total: mappedResults.length,
-    page,
-    pageSize,
+    results: pageResults,
+    total,
+    page: pageNum,
+    pageSize: pageSizeNum,
     tookMs: Number(tookMs.toFixed(2))
   });
 });

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { fetchStats } from '../api/documents';
+import { fetchStats, fetchAnalytics } from '../api/documents';
 import ErrorToast from '../components/ErrorToast';
-import type { StatsData } from '../types';
+import type { StatsData, AnalyticsData } from '../types';
 
 const CATEGORY_COLORS: Record<string, string> = {
   database: 'from-blue-400 to-blue-500',
@@ -22,13 +22,16 @@ function getColor(cat: string) {
 
 function DashboardPage() {
   const [stats, setStats] = useState<StatsData | null>(null);
+  const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchStats()
-      .then(setStats)
-      .catch(() => setError('Failed to load stats'))
+    Promise.all([
+      fetchStats().catch(() => { setError('Failed to load stats'); return null; }),
+      fetchAnalytics().catch(() => null),
+    ])
+      .then(([s, a]) => { setStats(s); setAnalytics(a); })
       .finally(() => setLoading(false));
   }, []);
 
@@ -194,6 +197,112 @@ function DashboardPage() {
           </div>
         </div>
       </div>
+
+      {/* Usage Analytics */}
+      {analytics && analytics.totalQueries > 0 && (
+        <div className="grid gap-6 lg:grid-cols-5">
+          {/* Analytics KPIs + Popular Queries */}
+          <div className="lg:col-span-3 space-y-6">
+            {/* Mini KPIs */}
+            <div className="grid gap-4 sm:grid-cols-3">
+              <div className="glass rounded-2xl p-5">
+                <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-rose-500/15">
+                  <svg className="h-4 w-4 text-rose-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
+                </div>
+                <p className="text-xl font-bold text-white">{analytics.totalQueries}</p>
+                <p className="text-[10px] text-slate-500">Total Queries</p>
+              </div>
+              <div className="glass rounded-2xl p-5">
+                <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-sky-500/15">
+                  <svg className="h-4 w-4 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" /></svg>
+                </div>
+                <p className="text-xl font-bold text-white">{analytics.searchCount}</p>
+                <p className="text-[10px] text-slate-500">Searches</p>
+              </div>
+              <div className="glass rounded-2xl p-5">
+                <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-violet-500/15">
+                  <svg className="h-4 w-4 text-violet-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2a8 8 0 0 1 8 8c0 3.5-2 5.5-4 7l-1 4H9l-1-4c-2-1.5-4-3.5-4-7a8 8 0 0 1 8-8z" /><circle cx="12" cy="10" r="2" /></svg>
+                </div>
+                <p className="text-xl font-bold text-white">{analytics.askCount}</p>
+                <p className="text-[10px] text-slate-500">AI Questions</p>
+              </div>
+            </div>
+
+            {/* Popular Queries */}
+            <div className="glass rounded-2xl p-6">
+              <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                <svg className="h-4 w-4 text-rose-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg>
+                Popular Queries
+              </h2>
+              <div className="space-y-2">
+                {analytics.popularQueries.map((pq, i) => (
+                  <div key={i} className="flex items-center gap-3 glass-light rounded-xl p-3 hover:bg-white/[0.04] transition-all">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-white/[0.06] text-[10px] font-bold text-slate-400">
+                      {i + 1}
+                    </span>
+                    <span className="flex-1 truncate text-sm text-slate-300">{pq.query}</span>
+                    <span className="text-xs font-mono text-slate-500">{pq.count}×</span>
+                  </div>
+                ))}
+                {analytics.popularQueries.length === 0 && (
+                  <p className="text-xs text-slate-600 text-center py-4">No queries yet</p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Recent Queries + Avg Response Time */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Avg Response Time Card */}
+            <div className="glass rounded-2xl p-6">
+              <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                <svg className="h-4 w-4 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>
+                Avg Response Time
+              </h2>
+              <p className="text-3xl font-bold text-white">{analytics.avgResponseTime}<span className="text-sm font-normal text-slate-500 ml-1">ms</span></p>
+              <div className="mt-3 h-1.5 w-full rounded-full bg-white/5 overflow-hidden">
+                <div
+                  className={`h-full rounded-full transition-all duration-700 ${
+                    analytics.avgResponseTime < 500 ? 'bg-gradient-to-r from-emerald-400 to-emerald-500' :
+                    analytics.avgResponseTime < 1500 ? 'bg-gradient-to-r from-amber-400 to-amber-500' :
+                    'bg-gradient-to-r from-red-400 to-red-500'
+                  }`}
+                  style={{ width: `${Math.min((analytics.avgResponseTime / 3000) * 100, 100)}%` }}
+                />
+              </div>
+              <p className="mt-1 text-[10px] text-slate-600">
+                {analytics.avgResponseTime < 500 ? 'Excellent' : analytics.avgResponseTime < 1500 ? 'Good' : 'Slow'} performance
+              </p>
+            </div>
+
+            {/* Recent Queries */}
+            <div className="glass rounded-2xl p-6">
+              <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                <svg className="h-4 w-4 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 8v4l3 3" /><circle cx="12" cy="12" r="10" /></svg>
+                Recent Activity
+              </h2>
+              <div className="space-y-2 max-h-64 overflow-y-auto custom-scrollbar">
+                {analytics.recentQueries.map((rq, i) => (
+                  <div key={i} className="flex items-start gap-2 glass-light rounded-xl p-2.5 hover:bg-white/[0.04] transition-all">
+                    <span className={`mt-1 h-2 w-2 shrink-0 rounded-full ${rq.type === 'ask' ? 'bg-violet-400' : 'bg-sky-400'}`} />
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-xs text-slate-300">{rq.query}</p>
+                      <div className="flex items-center gap-2 mt-0.5">
+                        <span className={`text-[9px] font-medium uppercase ${rq.type === 'ask' ? 'text-violet-400/70' : 'text-sky-400/70'}`}>{rq.type}</span>
+                        <span className="text-[9px] text-slate-600">{rq.tookMs}ms</span>
+                        <span className="text-[9px] text-slate-600">{new Date(rq.timestamp).toLocaleTimeString()}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                {analytics.recentQueries.length === 0 && (
+                  <p className="text-xs text-slate-600 text-center py-4">No recent activity</p>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* System Info */}
       <div className="glass rounded-2xl p-6">

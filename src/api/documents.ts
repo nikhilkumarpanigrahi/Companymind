@@ -1,5 +1,5 @@
 import { apiClient } from './client';
-import type { AddDocumentPayload, DocumentItem, RAGResponse, SearchResponse, SearchResultItem, StatsData } from '../types';
+import type { AddDocumentPayload, AnalyticsData, ConversationMessage, DocumentItem, RAGResponse, SearchResponse, SearchResultItem, StatsData } from '../types';
 
 type RawSearchResponse = {
   data?: SearchResultItem[];
@@ -51,6 +51,70 @@ export const askQuestion = async (question: string): Promise<RAGResponse> => {
   return data;
 };
 
+/**
+ * Stream an AI answer via SSE.
+ * Calls POST /ask/stream with question + conversation history.
+ * onToken is called for each token chunk; onDone when complete.
+ */
+export const askQuestionStream = (
+  question: string,
+  conversationHistory: ConversationMessage[],
+  callbacks: {
+    onToken: (token: string) => void;
+    onSources: (sources: RAGResponse['sources']) => void;
+    onDone: (meta: RAGResponse['meta'], fullAnswer: string) => void;
+    onError: (error: string) => void;
+  }
+): (() => void) => {
+  const controller = new AbortController();
+  const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+
+  (async () => {
+    try {
+      const response = await fetch(`${API_BASE}/ask/stream`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question, conversationHistory }),
+        signal: controller.signal,
+      });
+
+      if (!response.ok || !response.body) {
+        callbacks.onError('Failed to connect to AI stream');
+        return;
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed.startsWith('data: ')) continue;
+          try {
+            const parsed = JSON.parse(trimmed.slice(6));
+            if (parsed.type === 'token') callbacks.onToken(parsed.content);
+            else if (parsed.type === 'sources') callbacks.onSources(parsed.sources);
+            else if (parsed.type === 'done') callbacks.onDone(parsed.meta, parsed.fullAnswer);
+          } catch { /* skip */ }
+        }
+      }
+    } catch (err: unknown) {
+      if ((err as Error).name !== 'AbortError') {
+        callbacks.onError('AI stream failed. Check your connection.');
+      }
+    }
+  })();
+
+  return () => controller.abort();
+};
+
 export const addDocument = async (payload: AddDocumentPayload): Promise<void> => {
   await apiClient.post('/documents', payload);
 };
@@ -64,5 +128,10 @@ export const fetchDocuments = async (limit = 100): Promise<DocumentItem[]> => {
 
 export const fetchStats = async (): Promise<StatsData> => {
   const { data } = await apiClient.get<{ success: boolean; data: StatsData }>('/documents/stats');
+  return data.data;
+};
+
+export const fetchAnalytics = async (): Promise<AnalyticsData> => {
+  const { data } = await apiClient.get<{ success: boolean; data: AnalyticsData }>('/ask/analytics');
   return data.data;
 };

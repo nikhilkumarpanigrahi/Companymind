@@ -18,16 +18,25 @@ You answer questions using ONLY the provided context documents. Follow these rul
 3. Be concise, clear, and professional. Use bullet points and headers when helpful.
 4. When referencing information, mention which source document it came from using [Source: title].
 5. Format your response in clean Markdown.
-6. If the question is a greeting or casual chat, respond naturally but briefly.`;
+6. If the question is a greeting or casual chat, respond naturally but briefly.
+7. If there is conversation history, use it to understand follow-up questions in context.`;
 
-const buildContextPrompt = (question, documents) => {
+const buildContextPrompt = (question, documents, conversationHistory = []) => {
   const contextParts = documents.map((doc, i) => {
     const content = doc.content || '';
     const truncated = content.length > 1500 ? content.slice(0, 1500) + '...' : content;
     return `--- Source ${i + 1}: "${doc.title}" (relevance: ${(doc.score || 0).toFixed(3)}) ---\n${truncated}`;
   });
 
-  return `CONTEXT DOCUMENTS:\n${contextParts.join('\n\n')}\n\n---\n\nUSER QUESTION: ${question}\n\nProvide a comprehensive answer based on the context above. Cite sources using [Source: title].`;
+  let historyText = '';
+  if (conversationHistory.length > 0) {
+    const recentHistory = conversationHistory.slice(-6); // last 3 Q&A pairs
+    historyText = '\nCONVERSATION HISTORY:\n' + recentHistory.map(m =>
+      `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.content.slice(0, 500)}`
+    ).join('\n') + '\n';
+  }
+
+  return `CONTEXT DOCUMENTS:\n${contextParts.join('\n\n')}\n${historyText}\n---\n\nUSER QUESTION: ${question}\n\nProvide a comprehensive answer based on the context above. Cite sources using [Source: title].`;
 };
 
 const generateRAGAnswer = async (question, documents) => {
@@ -78,4 +87,76 @@ const generateRAGAnswer = async (question, documents) => {
   }
 };
 
-module.exports = { generateRAGAnswer };
+/**
+ * Stream RAG answer via SSE.  Calls Groq with stream: true
+ * and pipes chunks to the Express response.
+ */
+const streamRAGAnswer = async (question, documents, res, conversationHistory = []) => {
+  const apiKey = env.GROQ_API_KEY;
+  if (!apiKey) {
+    throw new AppError('GROQ_API_KEY is not configured. Add it to your .env file.', 500);
+  }
+
+  const userPrompt = buildContextPrompt(question, documents, conversationHistory);
+
+  const response = await groqClient.post(
+    '/chat/completions',
+    {
+      model: 'llama-3.3-70b-versatile',
+      messages: [
+        { role: 'system', content: SYSTEM_PROMPT },
+        { role: 'user', content: userPrompt },
+      ],
+      temperature: 0.3,
+      max_tokens: 1024,
+      top_p: 0.9,
+      stream: true,
+    },
+    {
+      headers: { Authorization: `Bearer ${apiKey}` },
+      responseType: 'stream',
+    }
+  );
+
+  let fullAnswer = '';
+  let model = 'llama-3.3-70b-versatile';
+
+  return new Promise((resolve, reject) => {
+    let buffer = '';
+
+    response.data.on('data', (chunk) => {
+      buffer += chunk.toString();
+      const lines = buffer.split('\n');
+      buffer = lines.pop() || ''; // keep incomplete line in buffer
+
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed || !trimmed.startsWith('data: ')) continue;
+        const payload = trimmed.slice(6);
+        if (payload === '[DONE]') continue;
+
+        try {
+          const parsed = JSON.parse(payload);
+          const delta = parsed.choices?.[0]?.delta;
+          if (delta?.content) {
+            fullAnswer += delta.content;
+            res.write(`data: ${JSON.stringify({ type: 'token', content: delta.content })}\n\n`);
+          }
+          if (parsed.model) model = parsed.model;
+        } catch {
+          // skip malformed chunks
+        }
+      }
+    });
+
+    response.data.on('end', () => {
+      resolve({ answer: fullAnswer, model, tokensUsed: 0 });
+    });
+
+    response.data.on('error', (err) => {
+      reject(new AppError(err.message || 'Streaming failed', 502));
+    });
+  });
+};
+
+module.exports = { generateRAGAnswer, streamRAGAnswer };
