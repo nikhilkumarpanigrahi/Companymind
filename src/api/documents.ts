@@ -1,5 +1,5 @@
 import { apiClient } from './client';
-import type { AddDocumentPayload, SearchResponse, SearchResultItem } from '../types';
+import type { AddDocumentPayload, RAGResponse, SearchResponse, SearchResultItem } from '../types';
 
 type RawSearchResponse = {
   data?: SearchResultItem[];
@@ -44,6 +44,11 @@ export const searchDocuments = async (
     pageSize: toSafeNumber(data.pageSize, pageSize),
     tookMs: toSafeNumber(data.tookMs),
   };
+};
+
+export const askQuestion = async (question: string): Promise<RAGResponse> => {
+  const { data } = await apiClient.post<RAGResponse>('/ask', { question }, { timeout: 30000 });
+  return data;
 };
 
 export const addDocument = async (payload: AddDocumentPayload): Promise<void> => {

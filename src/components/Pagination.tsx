@@ -20,19 +20,19 @@ function Pagination({ page, pageSize, total, onPageChange }: PaginationProps) {
         type="button"
         onClick={() => onPageChange(page - 1)}
         disabled={prevDisabled}
-        className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+        className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-300 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-30"
       >
         Previous
       </button>
-      <p className="text-sm text-slate-600">
-        Page <span className="font-semibold text-slate-900">{page}</span> of{' '}
-        <span className="font-semibold text-slate-900">{totalPages}</span>
+      <p className="text-sm text-slate-500">
+        Page <span className="font-semibold text-slate-300">{page}</span> of{' '}
+        <span className="font-semibold text-slate-300">{totalPages}</span>
       </p>
       <button
         type="button"
         onClick={() => onPageChange(page + 1)}
         disabled={nextDisabled}
-        className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+        className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-300 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-30"
       >
         Next
       </button>

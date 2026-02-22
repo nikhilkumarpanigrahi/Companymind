@@ -22,7 +22,8 @@ const env = {
   MONGODB_DB_NAME: process.env.MONGODB_DB_NAME || undefined,
   EMBEDDING_API_URL: process.env.EMBEDDING_API_URL,
   EMBEDDING_API_KEY: process.env.EMBEDDING_API_KEY || '',
-  VECTOR_INDEX_NAME: process.env.VECTOR_INDEX_NAME || 'documents_embedding_index'
+  VECTOR_INDEX_NAME: process.env.VECTOR_INDEX_NAME || 'documents_embedding_index',
+  GROQ_API_KEY: process.env.GROQ_API_KEY || ''
 };
 
 module.exports = { env };

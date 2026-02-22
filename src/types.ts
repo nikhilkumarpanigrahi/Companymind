@@ -13,6 +13,25 @@ export type SearchResponse = {
   tookMs?: number;
 };
 
+export type RAGSource = {
+  id?: string;
+  title: string;
+  snippet: string;
+  relevanceScore: number;
+};
+
+export type RAGResponse = {
+  success: boolean;
+  answer: string;
+  sources: RAGSource[];
+  meta: {
+    model: string;
+    tokensUsed: number;
+    sourcesUsed: number;
+    tookMs: number;
+  };
+};
+
 export type AddDocumentPayload = {
   title: string;
   content: string;

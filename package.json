@@ -10,7 +10,8 @@
     "clean:dataset": "node scripts/clean-dataset.cjs",
     "load:documents": "node scripts/bulk-load-documents.cjs",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "db:seed": "node seeds/seedDatabase.cjs"
   },
   "dependencies": {
     "axios": "^1.11.0",

@@ -1,0 +1,1040 @@
+[
+  {
+    "title": "Introduction to Machine Learning",
+    "content": "Machine learning is a subset of artificial intelligence that enables systems to learn and improve from experience without being explicitly programmed. It focuses on developing computer programs that can access data and use it to learn for themselves. The process of learning begins with observations or data, such as examples, direct experience, or instruction, in order to look for patterns in data and make better decisions in the future.",
+    "category": "technology",
+    "tags": ["AI", "machine learning", "data science"]
+  },
+  {
+    "title": "MongoDB Atlas Vector Search Overview",
+    "content": "MongoDB Atlas Vector Search enables semantic similarity search on high-dimensional vector embeddings. It uses advanced indexing techniques to efficiently search through millions of vectors, making it ideal for AI-powered applications. Vector search supports various similarity metrics including cosine similarity, dot product, and euclidean distance. This technology is fundamental for building modern semantic search engines, recommendation systems, and RAG applications.",
+    "category": "database",
+    "tags": ["MongoDB", "vector search", "semantic search", "database"]
+  },
+  {
+    "title": "Natural Language Processing Fundamentals",
+    "content": "Natural Language Processing (NLP) is a branch of artificial intelligence that helps computers understand, interpret and manipulate human language. NLP draws from many disciplines, including computer science and computational linguistics, in its pursuit to fill the gap between human communication and computer understanding. Modern NLP uses deep learning models like transformers to achieve state-of-the-art results in tasks such as translation, summarization, and question answering.",
+    "category": "technology",
+    "tags": ["NLP", "AI", "linguistics", "deep learning"]
+  },
+  {
+    "title": "Building Scalable Web Applications",
+    "content": "Scalability is crucial for modern web applications. It involves designing systems that can handle increased load by adding resources. Key principles include horizontal scaling, load balancing, caching strategies, and database optimization. Using cloud services like AWS, Azure, or GCP provides elastic scaling capabilities. Microservices architecture and containerization with Docker and Kubernetes enable better resource utilization and deployment flexibility.",
+    "category": "software engineering",
+    "tags": ["scalability", "web development", "cloud", "architecture"]
+  },
+  {
+    "title": "Data Science Project Lifecycle",
+    "content": "A typical data science project follows several phases: problem definition, data collection, data cleaning and preprocessing, exploratory data analysis, feature engineering, model selection and training, model evaluation, and deployment. Each phase requires different skills and tools. Understanding the business problem is crucial before diving into technical solutions. Communication of results to stakeholders is equally important as the technical work.",
+    "category": "data science",
+    "tags": ["data science", "ML lifecycle", "analytics"]
+  },
+  {
+    "title": "RESTful API Design Best Practices",
+    "content": "RESTful APIs should follow certain conventions for consistency and usability. Use nouns for resource names, HTTP methods for actions (GET, POST, PUT, DELETE), proper status codes, and versioning. Implement pagination for large datasets, provide filtering and sorting options, and use HATEOAS for discoverability. Security measures include authentication, authorization, rate limiting, and input validation. Good documentation is essential for API adoption.",
+    "category": "software engineering",
+    "tags": ["API", "REST", "web services", "backend"]
+  },
+  {
+    "title": "Introduction to Deep Learning",
+    "content": "Deep learning is a subset of machine learning based on artificial neural networks with multiple layers. These networks can learn hierarchical representations of data, making them powerful for complex pattern recognition tasks. Deep learning has revolutionized computer vision, speech recognition, and natural language processing. Popular frameworks include TensorFlow, PyTorch, and Keras. GPU acceleration is typically required for training large models.",
+    "category": "technology",
+    "tags": ["deep learning", "neural networks", "AI", "tensorflow"]
+  },
+  {
+    "title": "Database Indexing Strategies",
+    "content": "Database indexes improve query performance by creating data structures that allow fast lookups. Common types include B-tree indexes for general purposes, hash indexes for equality searches, and bitmap indexes for low-cardinality data. Vector indexes enable similarity search on embeddings. Index selection depends on query patterns, data distribution, and update frequency. Over-indexing can slow down write operations, so balance is important.",
+    "category": "database",
+    "tags": ["database", "indexing", "performance", "optimization"]
+  },
+  {
+    "title": "Agile Software Development Methodology",
+    "content": "Agile is an iterative approach to software development that emphasizes flexibility, collaboration, and customer feedback. It breaks projects into small increments called sprints, typically lasting 1-4 weeks. Key practices include daily stand-ups, sprint planning, retrospectives, and continuous integration. Agile frameworks like Scrum and Kanban help teams organize their work. The methodology promotes adaptive planning and early delivery.",
+    "category": "software engineering",
+    "tags": ["agile", "scrum", "project management", "methodology"]
+  },
+  {
+    "title": "Cloud Computing Fundamentals",
+    "content": "Cloud computing delivers computing services over the internet, including servers, storage, databases, networking, and software. The three main service models are IaaS (Infrastructure as a Service), PaaS (Platform as a Service), and SaaS (Software as a Service). Benefits include cost savings, scalability, reliability, and global reach. Major providers include AWS, Microsoft Azure, and Google Cloud Platform. Understanding cloud concepts is essential for modern software development.",
+    "category": "technology",
+    "tags": ["cloud", "AWS", "Azure", "infrastructure"]
+  },
+  {
+    "title": "Cybersecurity Best Practices for Developers",
+    "content": "Developers must follow security best practices to protect applications from vulnerabilities. This includes input validation, output encoding, parameterized queries to prevent SQL injection, and implementing proper authentication and authorization. OWASP Top 10 provides a standard awareness document for web application security risks. Regular security audits, penetration testing, and keeping dependencies updated are essential for maintaining a secure application.",
+    "category": "security",
+    "tags": ["cybersecurity", "OWASP", "security", "web development"]
+  },
+  {
+    "title": "Docker Container Technology",
+    "content": "Docker is a platform for developing, shipping, and running applications in containers. Containers package an application with all its dependencies, ensuring consistent behavior across different environments. Docker uses a layered file system and images defined by Dockerfiles. Container orchestration with Docker Compose enables multi-container applications. Docker Hub provides a registry for sharing container images. Containers are lighter than virtual machines and start up much faster.",
+    "category": "devops",
+    "tags": ["Docker", "containers", "devops", "virtualization"]
+  },
+  {
+    "title": "Kubernetes Orchestration Platform",
+    "content": "Kubernetes (K8s) is an open-source container orchestration platform that automates deployment, scaling, and management of containerized applications. Key concepts include pods, services, deployments, and namespaces. Kubernetes provides self-healing, horizontal scaling, and rolling updates. It supports declarative configuration and works with any container runtime. Cloud-managed Kubernetes services like EKS, AKS, and GKE simplify cluster management.",
+    "category": "devops",
+    "tags": ["Kubernetes", "K8s", "orchestration", "containers"]
+  },
+  {
+    "title": "Graph Databases and Neo4j",
+    "content": "Graph databases store data as nodes, relationships, and properties, making them ideal for highly connected data. Neo4j is the most popular graph database, using Cypher query language. Graph databases excel at traversing relationships, making them perfect for social networks, recommendation engines, fraud detection, and knowledge graphs. They offer constant-time traversals regardless of data size, unlike relational databases that require expensive joins.",
+    "category": "database",
+    "tags": ["graph database", "Neo4j", "Cypher", "NoSQL"]
+  },
+  {
+    "title": "Microservices Architecture Patterns",
+    "content": "Microservices architecture decomposes applications into small, independently deployable services. Each service runs its own process, communicates via APIs, and can be developed by a small team. Key patterns include API Gateway, Service Discovery, Circuit Breaker, Event Sourcing, and CQRS. Benefits include independent scaling, technology diversity, and fault isolation. Challenges include distributed system complexity, data consistency, and operational overhead.",
+    "category": "software engineering",
+    "tags": ["microservices", "architecture", "distributed systems", "patterns"]
+  },
+  {
+    "title": "Python for Data Analysis",
+    "content": "Python is the leading language for data analysis, with libraries like Pandas, NumPy, and Matplotlib. Pandas provides DataFrames for tabular data manipulation, NumPy handles numerical computing with multi-dimensional arrays, and Matplotlib creates static visualizations. Seaborn builds on Matplotlib for statistical graphics. Jupyter notebooks provide interactive computing environments. Python's ecosystem makes it ideal for exploratory data analysis and rapid prototyping.",
+    "category": "data science",
+    "tags": ["Python", "Pandas", "data analysis", "NumPy"]
+  },
+  {
+    "title": "Git Version Control System",
+    "content": "Git is a distributed version control system that tracks changes in source code. It enables multiple developers to work on the same project simultaneously through branching and merging. Key concepts include commits, branches, merging, rebasing, and remote repositories. Git workflows like GitFlow, GitHub Flow, and Trunk-Based Development help teams collaborate effectively. Understanding Git is essential for all software developers.",
+    "category": "devops",
+    "tags": ["Git", "version control", "collaboration", "workflow"]
+  },
+  {
+    "title": "React.js Frontend Framework",
+    "content": "React is a JavaScript library for building user interfaces, developed by Meta. It uses a component-based architecture where UI is composed of reusable components. React's virtual DOM provides efficient rendering, and hooks like useState, useEffect, and useContext simplify state management. The ecosystem includes React Router for navigation, Redux for global state, and Next.js for server-side rendering. React's declarative approach makes it intuitive for building interactive UIs.",
+    "category": "frontend",
+    "tags": ["React", "JavaScript", "UI", "frontend"]
+  },
+  {
+    "title": "Node.js Server-Side JavaScript",
+    "content": "Node.js is a JavaScript runtime built on Chrome's V8 engine that enables server-side JavaScript development. It uses an event-driven, non-blocking I/O model that makes it lightweight and efficient for data-intensive real-time applications. Express.js is the most popular web framework for Node.js. The npm ecosystem provides hundreds of thousands of packages. Node.js excels at building RESTful APIs, real-time applications with WebSockets, and microservices.",
+    "category": "backend",
+    "tags": ["Node.js", "JavaScript", "Express", "backend"]
+  },
+  {
+    "title": "SQL Query Optimization Techniques",
+    "content": "SQL query optimization improves database performance by reducing execution time and resource usage. Key techniques include proper indexing, avoiding SELECT *, using EXPLAIN to analyze query plans, joining tables efficiently, and using subqueries vs CTEs appropriately. Denormalization can improve read performance at the cost of write complexity. Query caching, connection pooling, and prepared statements also enhance performance. Understanding execution plans is crucial for optimization.",
+    "category": "database",
+    "tags": ["SQL", "optimization", "query tuning", "database performance"]
+  },
+  {
+    "title": "Transformer Architecture in AI",
+    "content": "The Transformer architecture, introduced in 'Attention Is All You Need' (2017), revolutionized natural language processing. It uses self-attention mechanisms to process input sequences in parallel, unlike RNNs which process sequentially. Key components include multi-head attention, positional encoding, and feed-forward networks. Transformers are the foundation of models like BERT, GPT, and T5. They have been adapted for computer vision (ViT), protein folding (AlphaFold), and more.",
+    "category": "AI research",
+    "tags": ["transformers", "attention", "BERT", "GPT", "AI"]
+  },
+  {
+    "title": "CI/CD Pipeline Implementation",
+    "content": "Continuous Integration and Continuous Deployment (CI/CD) automates the build, test, and deployment process. CI ensures code changes are frequently integrated and tested, while CD automates deployment to production. Popular tools include Jenkins, GitHub Actions, GitLab CI, and CircleCI. A typical pipeline includes stages for linting, unit tests, integration tests, building artifacts, and deploying to staging and production environments.",
+    "category": "devops",
+    "tags": ["CI/CD", "automation", "Jenkins", "GitHub Actions"]
+  },
+  {
+    "title": "MongoDB Aggregation Framework",
+    "content": "MongoDB's aggregation framework processes data records and returns computed results. It uses a pipeline of stages like $match, $group, $sort, $project, $lookup, and $unwind. The framework supports complex transformations including grouping, filtering, reshaping, and joining documents. $vectorSearch is a special stage for semantic similarity search using vector embeddings. Aggregation pipelines can be optimized using indexes and the $explain operator.",
+    "category": "database",
+    "tags": ["MongoDB", "aggregation", "pipeline", "data processing"]
+  },
+  {
+    "title": "TypeScript for Large-Scale Applications",
+    "content": "TypeScript is a superset of JavaScript that adds static typing. It catches type errors at compile time, improving code quality and developer productivity. Key features include interfaces, generics, enums, union types, and type guards. TypeScript integrates well with React, Node.js, and most JavaScript frameworks. The type system enables better IDE support with autocompletion and refactoring tools. It's especially valuable for large codebases with multiple developers.",
+    "category": "programming languages",
+    "tags": ["TypeScript", "JavaScript", "static typing", "type safety"]
+  },
+  {
+    "title": "Redis In-Memory Data Store",
+    "content": "Redis is an open-source, in-memory data structure store used as a database, cache, and message broker. It supports various data structures including strings, hashes, lists, sets, sorted sets, bitmaps, and streams. Redis provides sub-millisecond latency for read and write operations. Common use cases include caching, session storage, real-time analytics, leaderboards, and pub/sub messaging. Redis Cluster enables horizontal scaling.",
+    "category": "database",
+    "tags": ["Redis", "caching", "in-memory", "NoSQL"]
+  },
+  {
+    "title": "Ethical AI and Responsible Machine Learning",
+    "content": "Ethical AI ensures that artificial intelligence systems are developed and deployed responsibly. Key concerns include bias in training data, model interpretability, privacy protection, and fairness across different demographic groups. Techniques like explainable AI (XAI), fairness metrics, differential privacy, and model cards help address these issues. Organizations should establish AI ethics boards and follow guidelines like those from IEEE and the EU AI Act.",
+    "category": "AI research",
+    "tags": ["ethics", "AI", "bias", "fairness", "responsible AI"]
+  },
+  {
+    "title": "AWS Lambda and Serverless Computing",
+    "content": "AWS Lambda is a serverless compute service that runs code in response to events without provisioning or managing servers. It supports multiple runtimes including Node.js, Python, Java, and Go. Lambda scales automatically, charging only for compute time consumed. Common use cases include API backends, data processing, scheduled tasks, and event-driven architectures. Cold starts can be mitigated with provisioned concurrency.",
+    "category": "cloud",
+    "tags": ["AWS", "Lambda", "serverless", "cloud computing"]
+  },
+  {
+    "title": "Data Engineering with Apache Spark",
+    "content": "Apache Spark is a unified analytics engine for large-scale data processing. It provides APIs in Java, Scala, Python, and R for batch and streaming data. Spark's in-memory computing is up to 100x faster than Hadoop MapReduce. Key components include Spark SQL for structured data, Spark Streaming for real-time processing, MLlib for machine learning, and GraphX for graph processing. Spark runs on Hadoop, Kubernetes, or standalone clusters.",
+    "category": "data engineering",
+    "tags": ["Spark", "big data", "ETL", "data processing"]
+  },
+  {
+    "title": "OAuth 2.0 Authentication Protocol",
+    "content": "OAuth 2.0 is an authorization framework that enables applications to obtain limited access to user accounts. It works by delegating user authentication to the service hosting the user account. Key grant types include Authorization Code, Client Credentials, Resource Owner Password, and Implicit. JWT (JSON Web Tokens) are commonly used as access tokens. OpenID Connect extends OAuth 2.0 for identity verification. Implementing OAuth securely requires proper token storage and validation.",
+    "category": "security",
+    "tags": ["OAuth", "authentication", "JWT", "authorization"]
+  },
+  {
+    "title": "Elasticsearch Full-Text Search Engine",
+    "content": "Elasticsearch is a distributed search and analytics engine built on Apache Lucene. It provides near real-time search capabilities for full-text, structured, and analytics use cases. Key features include inverted indexing, relevance scoring with TF-IDF and BM25, faceted search, and aggregations. Elasticsearch uses a RESTful API with JSON documents. The ELK stack (Elasticsearch, Logstash, Kibana) is widely used for log management and observability.",
+    "category": "search",
+    "tags": ["Elasticsearch", "search", "Lucene", "text search"]
+  },
+  {
+    "title": "Machine Learning Model Deployment",
+    "content": "Deploying machine learning models to production involves several considerations: model serialization (pickle, ONNX, TensorFlow SavedModel), serving infrastructure (Flask, FastAPI, TensorFlow Serving), containerization (Docker), and orchestration (Kubernetes). Model monitoring tracks performance metrics, data drift, and concept drift. A/B testing compares model versions. MLOps practices apply DevOps principles to ML workflows, including versioning data and models.",
+    "category": "MLOps",
+    "tags": ["deployment", "ML", "MLOps", "production"]
+  },
+  {
+    "title": "Functional Programming Concepts",
+    "content": "Functional programming is a paradigm where programs are constructed by applying and composing functions. Key concepts include pure functions (no side effects), immutability, higher-order functions, closures, and recursion. Languages like Haskell, Erlang, and Clojure are purely functional, while JavaScript, Python, and Scala support functional styles. Benefits include easier testing, better concurrency handling, and more predictable code behavior.",
+    "category": "programming languages",
+    "tags": ["functional programming", "immutability", "pure functions"]
+  },
+  {
+    "title": "Blockchain Technology Fundamentals",
+    "content": "Blockchain is a distributed ledger technology that records transactions across a network of computers. Each block contains a cryptographic hash of the previous block, a timestamp, and transaction data. Consensus mechanisms like Proof of Work and Proof of Stake validate new blocks. Beyond cryptocurrencies, blockchain enables smart contracts, supply chain tracking, digital identity, and decentralized finance (DeFi). Ethereum introduced programmable smart contracts.",
+    "category": "technology",
+    "tags": ["blockchain", "cryptocurrency", "DeFi", "smart contracts"]
+  },
+  {
+    "title": "Testing Strategies for Software Quality",
+    "content": "Software testing ensures application quality through various levels: unit tests (individual components), integration tests (component interactions), end-to-end tests (full workflows), and performance tests (load and stress). Test-Driven Development (TDD) writes tests before code. Tools include Jest for JavaScript, PyTest for Python, and Selenium for browser testing. Code coverage metrics measure test completeness. Continuous testing integrates testing into CI/CD pipelines.",
+    "category": "software engineering",
+    "tags": ["testing", "TDD", "quality assurance", "CI/CD"]
+  },
+  {
+    "title": "Apache Kafka Event Streaming",
+    "content": "Apache Kafka is a distributed event streaming platform for high-throughput, fault-tolerant data pipelines. It uses topics, partitions, and consumer groups for message organization. Producers publish messages to topics, and consumers subscribe to them. Kafka guarantees message ordering within partitions and supports exactly-once semantics. Use cases include real-time analytics, event sourcing, log aggregation, and stream processing with Kafka Streams or ksqlDB.",
+    "category": "data engineering",
+    "tags": ["Kafka", "streaming", "event-driven", "messaging"]
+  },
+  {
+    "title": "Computer Vision with Convolutional Neural Networks",
+    "content": "Convolutional Neural Networks (CNNs) are specialized deep learning models for processing grid-like data such as images. Key layers include convolutional layers (feature extraction), pooling layers (dimensionality reduction), and fully connected layers (classification). Architectures like ResNet, VGG, and EfficientNet achieve state-of-the-art results in image classification, object detection, and segmentation. Transfer learning allows reusing pre-trained models for new tasks with limited data.",
+    "category": "AI research",
+    "tags": ["CNN", "computer vision", "image recognition", "deep learning"]
+  },
+  {
+    "title": "PostgreSQL Advanced Features",
+    "content": "PostgreSQL is a powerful open-source relational database with advanced features. It supports JSONB for semi-structured data, full-text search, window functions, CTEs, and user-defined types. PgVector extension enables vector similarity search. PostgreSQL's MVCC provides excellent concurrency without read locks. Extensions like PostGIS add spatial capabilities. It supports both horizontal (Citus) and vertical scaling, making it suitable for diverse workloads from OLTP to analytics.",
+    "category": "database",
+    "tags": ["PostgreSQL", "SQL", "RDBMS", "database"]
+  },
+  {
+    "title": "Infrastructure as Code with Terraform",
+    "content": "Terraform is an Infrastructure as Code (IaC) tool by HashiCorp that enables declarative infrastructure provisioning across multiple cloud providers. It uses HCL (HashiCorp Configuration Language) to define resources. Key concepts include state management, modules, providers, and workspaces. Terraform plan shows proposed changes before applying them. Remote state backends like S3 enable team collaboration. It supports AWS, Azure, GCP, and hundreds of other providers.",
+    "category": "devops",
+    "tags": ["Terraform", "IaC", "infrastructure", "automation"]
+  },
+  {
+    "title": "Prompt Engineering for Large Language Models",
+    "content": "Prompt engineering is the practice of designing effective prompts to get desired outputs from large language models. Techniques include zero-shot, few-shot, and chain-of-thought prompting. System prompts set the model's behavior and persona. Prompt templates with variables enable reusable patterns. Advanced techniques include retrieval-augmented generation (RAG), which combines LLMs with external knowledge bases. Understanding token limits, temperature, and top-p parameters is essential for optimal results.",
+    "category": "AI research",
+    "tags": ["prompt engineering", "LLM", "RAG", "GPT"]
+  },
+  {
+    "title": "Web Accessibility Standards (WCAG)",
+    "content": "Web Content Accessibility Guidelines (WCAG) ensure websites are usable by people with disabilities. The four principles are Perceivable, Operable, Understandable, and Robust (POUR). Level AA compliance is typically required. Key practices include proper heading structure, alt text for images, keyboard navigation, color contrast ratios (4.5:1 minimum), ARIA labels, and form accessibility. Automated tools like Axe and Lighthouse help identify accessibility issues.",
+    "category": "frontend",
+    "tags": ["accessibility", "WCAG", "a11y", "web standards"]
+  },
+  {
+    "title": "Time Series Databases and InfluxDB",
+    "content": "Time series databases are optimized for storing and querying time-stamped data. InfluxDB is a popular open-source time series database that uses a columnar storage engine for fast aggregations. It's ideal for IoT sensor data, application metrics, financial data, and log management. InfluxQL and Flux query languages support time-based operations like windowing, moving averages, and downsampling. Time series indexes enable efficient range queries.",
+    "category": "database",
+    "tags": ["time series", "InfluxDB", "IoT", "monitoring"]
+  },
+  {
+    "title": "Design Patterns in Object-Oriented Programming",
+    "content": "Design patterns are reusable solutions to common software design problems. Creational patterns (Singleton, Factory, Builder) handle object creation. Structural patterns (Adapter, Decorator, Proxy) deal with object composition. Behavioral patterns (Observer, Strategy, Command) manage object interaction. The Gang of Four cataloged 23 classic patterns. Modern adaptations include dependency injection, repository pattern, and the middleware pattern commonly used in Express.js and similar frameworks.",
+    "category": "software engineering",
+    "tags": ["design patterns", "OOP", "architecture", "best practices"]
+  },
+  {
+    "title": "Quantum Computing Basics",
+    "content": "Quantum computing uses quantum mechanical phenomena like superposition and entanglement to perform computations. Qubits can exist in multiple states simultaneously, enabling parallel processing of certain problems. Quantum algorithms like Shor's (factoring) and Grover's (search) offer speedups over classical algorithms. Current quantum computers from IBM, Google, and Rigetti are in the NISQ (Noisy Intermediate-Scale Quantum) era with limited qubits and high error rates.",
+    "category": "technology",
+    "tags": ["quantum computing", "qubits", "algorithms"]
+  },
+  {
+    "title": "GraphQL API Development",
+    "content": "GraphQL is a query language for APIs developed by Facebook that allows clients to request exactly the data they need. Unlike REST, a single GraphQL endpoint serves all requests. Clients define the shape of the response with queries, mutations handle data changes, and subscriptions enable real-time updates. Schema definition with types provides a strong contract between client and server. Tools like Apollo, Relay, and Hasura simplify GraphQL development.",
+    "category": "software engineering",
+    "tags": ["GraphQL", "API", "Apollo", "web services"]
+  },
+  {
+    "title": "Sentiment Analysis and Opinion Mining",
+    "content": "Sentiment analysis determines the emotional tone of text, classifying it as positive, negative, or neutral. Approaches include rule-based (lexicon), traditional ML (Naive Bayes, SVM), and deep learning (BERT, RoBERTa). Applications include brand monitoring, product reviews, social media analysis, and customer feedback. Aspect-based sentiment analysis identifies sentiment toward specific features. Fine-tuning pre-trained language models on domain-specific data typically yields the best results.",
+    "category": "NLP",
+    "tags": ["sentiment analysis", "NLP", "text classification", "BERT"]
+  },
+  {
+    "title": "Content Delivery Networks (CDN)",
+    "content": "A CDN is a distributed network of servers that delivers web content from locations closest to users. CDNs cache static assets like images, CSS, and JavaScript at edge locations worldwide. Benefits include reduced latency, decreased server load, and DDoS protection. Popular CDN providers include Cloudflare, AWS CloudFront, and Akamai. CDNs support features like SSL/TLS termination, WebSocket proxying, and edge computing for dynamic content optimization.",
+    "category": "infrastructure",
+    "tags": ["CDN", "performance", "caching", "networking"]
+  },
+  {
+    "title": "Pandas DataFrame Operations Guide",
+    "content": "Pandas DataFrames are the primary data structure for tabular data in Python. Key operations include filtering with boolean indexing, groupby for aggregations, merge/join for combining datasets, pivot tables for reshaping, and apply for custom transformations. Method chaining improves readability. Performance tips include using vectorized operations, categorical types for repeated strings, and chunked reading for large files. Pandas integrates seamlessly with NumPy, Matplotlib, and scikit-learn.",
+    "category": "data science",
+    "tags": ["Pandas", "Python", "data manipulation", "DataFrame"]
+  },
+  {
+    "title": "Rust Programming Language Overview",
+    "content": "Rust is a systems programming language focused on safety, speed, and concurrency. Its ownership system prevents memory errors at compile time without a garbage collector. Key features include zero-cost abstractions, pattern matching, trait-based generics, and fearless concurrency. Rust is used for systems programming, WebAssembly, embedded systems, and command-line tools. The Cargo build system and crates.io package registry provide excellent tooling.",
+    "category": "programming languages",
+    "tags": ["Rust", "systems programming", "memory safety", "concurrency"]
+  },
+  {
+    "title": "Monitoring and Observability with Prometheus",
+    "content": "Prometheus is an open-source monitoring system with a multi-dimensional data model and PromQL query language. It scrapes metrics from instrumented targets at configurable intervals. Metric types include counters, gauges, histograms, and summaries. Alertmanager handles notification routing and deduplication. Grafana integrates for visualization dashboards. The Prometheus ecosystem includes exporters for databases, message queues, and custom applications. It's the standard for Kubernetes monitoring.",
+    "category": "devops",
+    "tags": ["Prometheus", "monitoring", "Grafana", "observability"]
+  },
+  {
+    "title": "Retrieval-Augmented Generation (RAG) Systems",
+    "content": "RAG combines retrieval systems with large language models to generate more accurate, grounded responses. The process involves embedding documents into vectors, storing them in a vector database, retrieving relevant documents based on query similarity, and using them as context for the LLM. This approach reduces hallucinations and enables knowledge updates without model retraining. RAG architectures use vector databases like MongoDB Atlas Vector Search, Pinecone, or Weaviate for retrieval.",
+    "category": "AI research",
+    "tags": ["RAG", "LLM", "vector search", "generative AI"]
+  },
+  {
+    "title": "CSS Grid and Flexbox Layout Systems",
+    "content": "CSS Grid and Flexbox are modern layout systems for responsive web design. Flexbox is one-dimensional, ideal for rows or columns, with properties like justify-content, align-items, and flex-wrap. CSS Grid is two-dimensional, supporting complex layouts with grid-template-columns, grid-template-rows, and grid-area. Both systems eliminate the need for float-based layouts. Container queries and subgrid are newer additions that enhance layout capabilities.",
+    "category": "frontend",
+    "tags": ["CSS", "Grid", "Flexbox", "responsive design"]
+  },
+  {
+    "title": "Data Warehouse Design Principles",
+    "content": "Data warehouses store historical data optimized for analytics and reporting. Key design approaches include star schema and snowflake schema. Fact tables store measurable events like transactions, while dimension tables store descriptive attributes like customer details. ETL (Extract, Transform, Load) processes populate the warehouse. Modern cloud data warehouses like Snowflake, BigQuery, and Redshift support semi-structured data, materialized views, and time travel queries.",
+    "category": "data engineering",
+    "tags": ["data warehouse", "ETL", "star schema", "analytics"]
+  },
+  {
+    "title": "Mobile App Development with React Native",
+    "content": "React Native is a framework for building native mobile applications using React and JavaScript. It renders native iOS and Android components, providing near-native performance. Features include hot reloading, code sharing across platforms, and access to native APIs through bridges. Expo simplifies development with pre-built components and services. React Native is used by companies like Facebook, Instagram, and Shopify for their mobile apps.",
+    "category": "mobile",
+    "tags": ["React Native", "mobile", "cross-platform", "JavaScript"]
+  },
+  {
+    "title": "Networking Fundamentals: TCP/IP and DNS",
+    "content": "The TCP/IP model defines how data is transmitted across networks. The four layers are Application (HTTP, DNS), Transport (TCP, UDP), Internet (IP), and Network Access (Ethernet). TCP provides reliable, ordered delivery while UDP offers faster, connectionless communication. DNS translates domain names to IP addresses using a hierarchical system of nameservers. Understanding networking is essential for debugging connectivity issues and designing distributed systems.",
+    "category": "infrastructure",
+    "tags": ["networking", "TCP/IP", "DNS", "protocols"]
+  },
+  {
+    "title": "Feature Engineering for Machine Learning",
+    "content": "Feature engineering transforms raw data into informative features that improve model performance. Techniques include one-hot encoding for categorical variables, standardization and normalization for numerical features, polynomial features for non-linear relationships, and text vectorization (TF-IDF, word embeddings). Feature selection methods like mutual information, correlation analysis, and recursive feature elimination reduce dimensionality. Domain knowledge is crucial for creating meaningful features.",
+    "category": "data science",
+    "tags": ["feature engineering", "ML", "data preprocessing", "feature selection"]
+  },
+  {
+    "title": "WebSocket Real-Time Communication",
+    "content": "WebSocket is a protocol providing full-duplex communication channels over a single TCP connection. Unlike HTTP request-response, WebSocket allows both server and client to send messages independently. The protocol upgrades from HTTP using a handshake. Use cases include chat applications, live notifications, real-time dashboards, collaborative editing, and online gaming. Libraries like Socket.io abstract WebSocket with fallbacks and additional features like rooms and acknowledgments.",
+    "category": "backend",
+    "tags": ["WebSocket", "real-time", "Socket.io", "protocols"]
+  },
+  {
+    "title": "Generative Adversarial Networks (GANs)",
+    "content": "GANs consist of two neural networks: a generator that creates synthetic data and a discriminator that evaluates authenticity. They compete in a minimax game, with the generator improving at producing realistic outputs. Applications include image generation, style transfer, data augmentation, super-resolution, and deepfake creation. Variants like DCGAN, StyleGAN, and CycleGAN address different use cases. Training GANs requires careful hyperparameter tuning to prevent mode collapse.",
+    "category": "AI research",
+    "tags": ["GAN", "generative AI", "image generation", "deep learning"]
+  },
+  {
+    "title": "Linux System Administration Essentials",
+    "content": "Linux system administration involves managing servers, users, packages, services, and security. Key skills include file system navigation, process management, network configuration, shell scripting (Bash), and systemd service management. Package managers like apt and yum handle software installation. SSH enables secure remote access. Log management with journalctl and syslog helps troubleshoot issues. Understanding permissions, cron jobs, and firewall rules is essential for server management.",
+    "category": "infrastructure",
+    "tags": ["Linux", "sysadmin", "Bash", "server management"]
+  },
+  {
+    "title": "Semantic Search vs Keyword Search",
+    "content": "Traditional keyword search matches exact terms in documents, while semantic search understands the meaning and intent behind queries. Semantic search uses vector embeddings to represent text in high-dimensional space, where similar meanings are close together. This enables finding relevant documents even when exact keywords don't match. Hybrid search combines both approaches for optimal results. Vector databases like MongoDB Atlas index these embeddings for efficient similarity search at scale.",
+    "category": "search",
+    "tags": ["semantic search", "keyword search", "embeddings", "NLP"]
+  },
+  {
+    "title": "Data Privacy and GDPR Compliance",
+    "content": "GDPR (General Data Protection Regulation) governs data privacy in the EU. Key principles include purpose limitation, data minimization, accuracy, storage limitation, and accountability. Data subjects have rights including access, rectification, erasure (right to be forgotten), and data portability. Organizations must implement privacy by design, conduct data protection impact assessments, and maintain records of processing activities. Non-compliance can result in fines up to 4% of annual global turnover.",
+    "category": "security",
+    "tags": ["GDPR", "privacy", "data protection", "compliance"]
+  },
+  {
+    "title": "Sentence Embeddings and Sentence-BERT",
+    "content": "Sentence embeddings represent entire sentences as fixed-length vectors in a high-dimensional space. Sentence-BERT (SBERT) modifies the BERT architecture with siamese and triplet networks for efficient sentence comparison. Models like all-MiniLM-L6-v2 produce 384-dimensional embeddings optimized for semantic similarity tasks. Applications include semantic search, clustering, paraphrase detection, and information retrieval. The SentenceTransformers library provides easy access to pre-trained models for generating embeddings.",
+    "category": "NLP",
+    "tags": ["embeddings", "SBERT", "sentence transformers", "similarity"]
+  },
+  {
+    "title": "Event-Driven Architecture",
+    "content": "Event-driven architecture (EDA) is a software design pattern where the flow of the program is determined by events. Components communicate through events, enabling loose coupling and scalability. Key patterns include event sourcing (storing state changes as events), CQRS (separating reads from writes), and pub/sub messaging. Event brokers like Kafka, RabbitMQ, and AWS EventBridge facilitate event routing. EDA is ideal for microservices, real-time systems, and complex business workflows.",
+    "category": "software engineering",
+    "tags": ["event-driven", "architecture", "CQRS", "event sourcing"]
+  },
+  {
+    "title": "A/B Testing and Experimentation",
+    "content": "A/B testing compares two versions of a webpage, feature, or product to determine which performs better. Statistical significance ensures results are not due to chance. Key metrics include conversion rate, click-through rate, and engagement time. Sample size calculators determine the required number of users. Multi-armed bandit algorithms optimize traffic allocation during experiments. Tools like Google Optimize, Optimizely, and LaunchDarkly facilitate experimentation platforms.",
+    "category": "data science",
+    "tags": ["A/B testing", "experimentation", "statistics", "optimization"]
+  },
+  {
+    "title": "gRPC Remote Procedure Calls",
+    "content": "gRPC is a high-performance RPC framework developed by Google using Protocol Buffers for serialization. It supports unary, server streaming, client streaming, and bidirectional streaming. gRPC is faster than REST for inter-service communication due to binary serialization and HTTP/2 multiplexing. Code generation from .proto files ensures type safety across languages. It's widely used in microservices architectures, especially with Kubernetes. gRPC-web enables browser client support.",
+    "category": "backend",
+    "tags": ["gRPC", "Protocol Buffers", "RPC", "microservices"]
+  },
+  {
+    "title": "Vector Databases and Similarity Search",
+    "content": "Vector databases are specialized systems for storing, indexing, and querying high-dimensional vectors. They enable similarity search by finding the nearest neighbors in vector space. Indexing algorithms include HNSW (Hierarchical Navigable Small World), IVF (Inverted File Index), and product quantization. MongoDB Atlas Vector Search, Pinecone, Weaviate, Milvus, and Qdrant are popular choices. Key considerations include index build time, query latency, recall accuracy, and scalability.",
+    "category": "database",
+    "tags": ["vector database", "similarity search", "HNSW", "embeddings"]
+  },
+  {
+    "title": "Tailwind CSS Utility-First Framework",
+    "content": "Tailwind CSS is a utility-first CSS framework that provides low-level utility classes for building custom designs. Unlike component-based frameworks like Bootstrap, Tailwind lets you compose styles directly in HTML. Key features include responsive design utilities, dark mode support, and a JIT (Just-In-Time) compiler for on-demand CSS generation. Custom configurations in tailwind.config.js extend default themes. Tailwind pairs well with component frameworks like React and Vue.",
+    "category": "frontend",
+    "tags": ["Tailwind CSS", "CSS", "utility-first", "styling"]
+  },
+  {
+    "title": "Apache Airflow Workflow Orchestration",
+    "content": "Apache Airflow is a platform for authoring, scheduling, and monitoring workflows as directed acyclic graphs (DAGs). Written in Python, DAGs define task dependencies and execution order. Operators include BashOperator, PythonOperator, and provider-specific operators for AWS, GCP, and databases. Airflow's web UI provides monitoring, logging, and manual triggering. It's widely used for ETL pipelines, ML training workflows, and batch data processing. XCom enables inter-task data sharing.",
+    "category": "data engineering",
+    "tags": ["Airflow", "workflow", "ETL", "orchestration"]
+  },
+  {
+    "title": "Reinforcement Learning Fundamentals",
+    "content": "Reinforcement learning (RL) trains agents to make decisions by maximizing cumulative rewards through trial and error. Key concepts include states, actions, rewards, policies, and value functions. Algorithms include Q-learning, SARSA, policy gradient, and actor-critic methods. Deep RL combines neural networks with RL, achieving superhuman performance in games (AlphaGo, Atari). Applications include robotics, autonomous driving, recommendation systems, and resource optimization.",
+    "category": "AI research",
+    "tags": ["reinforcement learning", "RL", "Q-learning", "AI"]
+  },
+  {
+    "title": "Caching Strategies for Web Applications",
+    "content": "Caching stores frequently accessed data closer to the consumer to reduce latency and load. Strategies include client-side caching (browser cache), CDN caching, application-level caching (Redis, Memcached), and database query caching. Cache invalidation strategies include time-based expiration (TTL), event-based invalidation, and write-through/write-behind patterns. Cache-aside (lazy loading) is the most common pattern. Properly implemented caching can reduce database load by 80-90%.",
+    "category": "software engineering",
+    "tags": ["caching", "Redis", "performance", "optimization"]
+  },
+  {
+    "title": "Go Programming Language Features",
+    "content": "Go (Golang) is a statically typed, compiled language designed at Google for simplicity and efficiency. Key features include goroutines for lightweight concurrency, channels for communication, interfaces for polymorphism, and a fast compiler. Go's standard library includes HTTP server, JSON handling, and testing frameworks. It excels at building command-line tools, web services, and cloud-native applications. Docker, Kubernetes, and Terraform are written in Go.",
+    "category": "programming languages",
+    "tags": ["Go", "Golang", "concurrency", "goroutines"]
+  },
+  {
+    "title": "Text Preprocessing for NLP",
+    "content": "Text preprocessing prepares raw text for NLP models. Steps include tokenization (splitting text into tokens), lowercasing, removing stop words and punctuation, stemming (reducing words to root form), and lemmatization (reducing to dictionary form). Advanced preprocessing includes handling HTML/XML, expanding contractions, removing URLs, and Unicode normalization. For transformer models, subword tokenization (BPE, WordPiece) is used instead of traditional preprocessing.",
+    "category": "NLP",
+    "tags": ["text preprocessing", "tokenization", "NLP", "text cleaning"]
+  },
+  {
+    "title": "Amazon DynamoDB NoSQL Database",
+    "content": "Amazon DynamoDB is a fully managed NoSQL database that provides single-digit millisecond performance at any scale. It supports key-value and document data models with automatic scaling. Access patterns are defined by partition keys and sort keys. Global secondary indexes enable additional query patterns. DynamoDB Streams capture table changes for event processing. DAX (DynamoDB Accelerator) provides in-memory caching for microsecond read latency.",
+    "category": "database",
+    "tags": ["DynamoDB", "NoSQL", "AWS", "serverless database"]
+  },
+  {
+    "title": "Responsive Web Design Principles",
+    "content": "Responsive web design ensures websites work across all device sizes. Key techniques include fluid grids, flexible images, and CSS media queries. Mobile-first design starts with small screens and progressively enhances for larger devices. Viewport meta tag controls scaling on mobile. Modern CSS features like CSS Grid, Flexbox, clamp(), and container queries simplify responsive layouts. Performance considerations include lazy loading images and responsive image formats (srcset, picture element).",
+    "category": "frontend",
+    "tags": ["responsive design", "CSS", "mobile-first", "web design"]
+  },
+  {
+    "title": "Data Lake Architecture",
+    "content": "A data lake stores raw data in its native format, supporting structured, semi-structured, and unstructured data. Unlike data warehouses, data lakes don't require schema definition upfront (schema-on-read). Technologies include HDFS, AWS S3, and Azure Data Lake Storage. The medallion architecture (bronze, silver, gold) organizes data by quality level. Apache Delta Lake, Apache Hudi, and Apache Iceberg add ACID transactions to data lakes, creating the lakehouse concept.",
+    "category": "data engineering",
+    "tags": ["data lake", "big data", "lakehouse", "data architecture"]
+  },
+  {
+    "title": "Spring Boot Java Framework",
+    "content": "Spring Boot simplifies Java application development with auto-configuration, embedded servers, and opinionated defaults. It supports building REST APIs, microservices, and enterprise applications. Key features include dependency injection, Spring Data for database access, Spring Security for authentication, and Spring Cloud for distributed systems. Spring Boot Actuator provides production-ready monitoring endpoints. The framework supports reactive programming with Spring WebFlux.",
+    "category": "backend",
+    "tags": ["Spring Boot", "Java", "microservices", "backend"]
+  },
+  {
+    "title": "Natural Language Understanding with BERT",
+    "content": "BERT (Bidirectional Encoder Representations from Transformers) is a pre-trained language model by Google. Unlike previous models, BERT understands context from both directions simultaneously. It's pre-trained on masked language modeling and next sentence prediction tasks. Fine-tuning BERT for specific tasks like sentiment analysis, named entity recognition, and question answering achieves state-of-the-art results. Variants include RoBERTa, DistilBERT, and ALBERT, offering different trade-offs between performance and efficiency.",
+    "category": "NLP",
+    "tags": ["BERT", "NLU", "language model", "transformers"]
+  },
+  {
+    "title": "Distributed Systems Consensus Algorithms",
+    "content": "Consensus algorithms ensure agreement among distributed system nodes. Paxos and Raft provide fault-tolerant consensus for leader election and log replication. Byzantine Fault Tolerance (BFT) handles malicious nodes. CAP theorem states that distributed systems can guarantee only two of three: Consistency, Availability, and Partition tolerance. Eventually consistent systems (like DynamoDB) prioritize availability, while strongly consistent systems (like Spanner) prioritize consistency.",
+    "category": "software engineering",
+    "tags": ["distributed systems", "consensus", "Raft", "CAP theorem"]
+  },
+  {
+    "title": "Knowledge Graphs and Semantic Web",
+    "content": "Knowledge graphs represent information as entities and relationships, enabling complex queries and reasoning. Technologies include RDF (Resource Description Framework), OWL (Web Ontology Language), and SPARQL query language. Google's Knowledge Graph powers search result panels. Knowledge graph embedding methods (TransE, RotatE) represent entities as vectors for link prediction. Applications include question answering, recommendation systems, drug discovery, and fraud detection.",
+    "category": "AI research",
+    "tags": ["knowledge graphs", "semantic web", "RDF", "ontology"]
+  },
+  {
+    "title": "Performance Testing with JMeter",
+    "content": "Apache JMeter is an open-source tool for load testing and performance measurement. It simulates multiple users sending concurrent requests to test server capacity. Test plans include thread groups, samplers (HTTP, FTP, JDBC), listeners for results visualization, and assertions for validation. JMeter supports distributed testing across multiple machines. Key metrics include response time, throughput, error rate, and percentile latency. Results help identify bottlenecks before production deployment.",
+    "category": "testing",
+    "tags": ["JMeter", "performance testing", "load testing", "benchmarking"]
+  },
+  {
+    "title": "TensorFlow Machine Learning Framework",
+    "content": "TensorFlow is an open-source machine learning framework by Google for building and deploying ML models. It supports neural networks with the Keras API, providing layers, optimizers, and training loops. TensorFlow Lite enables mobile deployment, TensorFlow.js runs in browsers, and TensorFlow Serving handles production inference. TensorBoard provides training visualization. TensorFlow supports GPU and TPU acceleration for training large models efficiently.",
+    "category": "technology",
+    "tags": ["TensorFlow", "machine learning", "deep learning", "Google"]
+  },
+  {
+    "title": "Message Queue Systems: RabbitMQ",
+    "content": "RabbitMQ is an open-source message broker implementing AMQP protocol. It decouples producers and consumers for asynchronous communication. Key concepts include exchanges (direct, topic, fanout, headers), queues, bindings, and routing keys. Features include message acknowledgment, persistence, publisher confirms, and dead letter exchanges. RabbitMQ supports clustering and mirrored queues for high availability. It's widely used for task queues, event broadcasting, and request buffering.",
+    "category": "infrastructure",
+    "tags": ["RabbitMQ", "message queue", "AMQP", "messaging"]
+  },
+  {
+    "title": "Cosine Similarity and Distance Metrics",
+    "content": "Cosine similarity measures the angle between two vectors, ranging from -1 to 1, where 1 means identical direction. It's widely used in NLP for comparing text embeddings because it's magnitude-invariant. Other distance metrics include Euclidean distance (L2 norm) for geometric distance, dot product for similarity when vectors are normalized, and Manhattan distance (L1 norm). Choosing the right metric depends on data characteristics and application requirements.",
+    "category": "mathematics",
+    "tags": ["cosine similarity", "distance metrics", "vectors", "mathematics"]
+  },
+  {
+    "title": "Web Application Security: XSS and CSRF",
+    "content": "Cross-Site Scripting (XSS) injects malicious scripts into web pages viewed by other users, while Cross-Site Request Forgery (CSRF) tricks users into executing unintended actions. XSS prevention includes input sanitization, Content Security Policy (CSP), and output encoding. CSRF prevention uses anti-CSRF tokens, SameSite cookies, and origin verification. Using security headers (X-Content-Type-Options, X-Frame-Options) and keeping dependencies updated are also critical.",
+    "category": "security",
+    "tags": ["XSS", "CSRF", "web security", "OWASP"]
+  },
+  {
+    "title": "Data Visualization with D3.js",
+    "content": "D3.js (Data-Driven Documents) is a JavaScript library for creating dynamic, interactive data visualizations in web browsers. It binds data to DOM elements and applies data-driven transformations. D3 provides powerful features including scales, axes, transitions, forces for physics simulations, and geographic projections. SVG-based rendering enables precise control over visual elements. Libraries like Observable Plot and Visx build on D3 for simpler APIs.",
+    "category": "frontend",
+    "tags": ["D3.js", "data visualization", "SVG", "JavaScript"]
+  },
+  {
+    "title": "Embedding Models Comparison",
+    "content": "Text embedding models convert text to dense vectors of fixed dimensions. Popular models include all-MiniLM-L6-v2 (384 dims, fast), all-mpnet-base-v2 (768 dims, balanced), OpenAI text-embedding-3-small (1536 dims, API-based), and Cohere embed-v3. Model selection depends on accuracy requirements, latency constraints, and infrastructure. Smaller models like MiniLM are suitable for real-time applications. Benchmarks like MTEB (Massive Text Embedding Benchmark) compare model quality across tasks.",
+    "category": "NLP",
+    "tags": ["embeddings", "models", "MiniLM", "text encoding"]
+  },
+  {
+    "title": "Nginx Web Server and Reverse Proxy",
+    "content": "Nginx is a high-performance web server and reverse proxy used by over 30% of websites. As a reverse proxy, it load balances across multiple backend servers, terminates SSL, and caches responses. Configuration uses a directive-based syntax in nginx.conf. Key features include HTTP/2 support, gzip compression, rate limiting, and WebSocket proxying. Nginx Plus adds commercial features like active health checks, JWT authentication, and dynamic configuration.",
+    "category": "infrastructure",
+    "tags": ["Nginx", "web server", "reverse proxy", "load balancing"]
+  },
+  {
+    "title": "Transfer Learning in Deep Learning",
+    "content": "Transfer learning reuses knowledge from a model trained on one task to improve performance on a different but related task. Pre-trained models like ImageNet-trained CNNs or BERT provide learned feature representations. Fine-tuning adjusts the pre-trained weights on new data. Feature extraction uses the pre-trained model as a fixed feature extractor. Transfer learning dramatically reduces the data and compute needed for training, making deep learning accessible for smaller datasets.",
+    "category": "AI research",
+    "tags": ["transfer learning", "fine-tuning", "pre-training", "deep learning"]
+  },
+  {
+    "title": "MongoDB Schema Design Patterns",
+    "content": "MongoDB schema design differs from relational databases, favoring embedding over joining. Key patterns include the Extended Reference pattern (embedding frequently accessed fields), the Subset pattern (embedding a subset of related data), the Bucket pattern (grouping similar documents), and the Outlier pattern (handling exceptions). Schema should be designed based on access patterns rather than data relationships. The Attribute pattern handles documents with varying fields efficiently.",
+    "category": "database",
+    "tags": ["MongoDB", "schema design", "NoSQL", "data modeling"]
+  },
+  {
+    "title": "Kubernetes Helm Charts",
+    "content": "Helm is a package manager for Kubernetes that simplifies deploying and managing applications. Charts are packages of pre-configured Kubernetes resources. Values files customize deployments without modifying templates. Helm supports versioning, rollbacks, and dependencies between charts. The Chart Museum serves as a private chart repository. Helm 3 eliminated Tiller, improving security. Popular charts exist for databases, monitoring tools, and application frameworks.",
+    "category": "devops",
+    "tags": ["Helm", "Kubernetes", "charts", "deployment"]
+  },
+  {
+    "title": "Anomaly Detection in Data",
+    "content": "Anomaly detection identifies patterns that deviate significantly from expected behavior. Statistical methods include Z-score and IQR (Interquartile Range). Machine learning approaches include Isolation Forest, One-Class SVM, and Autoencoders. Time series anomaly detection uses ARIMA, Prophet, or LSTM networks. Applications include fraud detection, network intrusion detection, manufacturing defects, and healthcare monitoring. Combining multiple methods often yields the best results.",
+    "category": "data science",
+    "tags": ["anomaly detection", "outlier detection", "fraud detection", "ML"]
+  },
+  {
+    "title": "Progressive Web Apps (PWA)",
+    "content": "Progressive Web Apps combine web and native app capabilities. Key technologies include Service Workers for offline functionality, Web App Manifest for installability, and Push Notifications for engagement. PWAs are responsive, connectivity-independent, and update automatically. They can be discovered through search engines and shared via URL. Workbox simplifies service worker implementation. PWAs are supported by Chrome, Edge, Firefox, and Safari, though iOS support has limitations.",
+    "category": "frontend",
+    "tags": ["PWA", "service worker", "offline", "web apps"]
+  },
+  {
+    "title": "Database Sharding Strategies",
+    "content": "Sharding horizontally partitions data across multiple database instances to improve performance and scalability. Shard key selection is critical: range-based sharding supports ordered queries, hash-based sharding distributes data evenly, and zone-based sharding enables geographic distribution. MongoDB supports native sharding with config servers and mongos routers. Challenges include cross-shard queries, data rebalancing, and maintaining consistency. Proper shard key design avoids hotspots.",
+    "category": "database",
+    "tags": ["sharding", "horizontal scaling", "MongoDB", "distributed database"]
+  },
+  {
+    "title": "Attention Mechanisms in Neural Networks",
+    "content": "Attention mechanisms allow neural networks to focus on relevant parts of the input when producing output. Self-attention computes relationships between all positions in a sequence. Multi-head attention runs multiple attention functions in parallel. Scaled dot-product attention divides by the square root of dimension to prevent large dot products. Cross-attention enables interaction between encoder and decoder. Flash Attention and other optimizations reduce the quadratic memory complexity.",
+    "category": "AI research",
+    "tags": ["attention", "self-attention", "transformers", "neural networks"]
+  },
+  {
+    "title": "Continuous Monitoring and Alerting",
+    "content": "Continuous monitoring tracks application health, performance, and security in real-time. Key metrics include latency (p50, p95, p99), error rate, throughput, and resource utilization. Tools include Prometheus for metrics, Grafana for visualization, PagerDuty for alerting, and ELK Stack for log analysis. SLOs (Service Level Objectives) define acceptable performance thresholds. SLIs (Service Level Indicators) measure compliance. Alert fatigue can be reduced with proper threshold tuning.",
+    "category": "devops",
+    "tags": ["monitoring", "alerting", "SLO", "observability"]
+  },
+  {
+    "title": "Python Virtual Environments and Package Management",
+    "content": "Python virtual environments isolate project dependencies to prevent conflicts. Tools include venv (built-in), virtualenv, and conda. pip installs packages from PyPI. Requirements files (requirements.txt) pin dependencies for reproducibility. Poetry and Pipenv provide modern dependency management with lock files. pyproject.toml is the standard build configuration. Using virtual environments is essential for maintaining clean development and deployment environments.",
+    "category": "programming languages",
+    "tags": ["Python", "virtual environments", "pip", "package management"]
+  },
+  {
+    "title": "Information Retrieval Systems",
+    "content": "Information retrieval (IR) systems find relevant information from large collections. Classic models include Boolean model, Vector Space Model (TF-IDF), and probabilistic models (BM25). Modern IR uses neural models like dense retrievers (DPR) and cross-encoders for re-ranking. Evaluation metrics include precision, recall, F1 score, Mean Average Precision (MAP), and Normalized Discounted Cumulative Gain (NDCG). Hybrid systems combining sparse and dense retrieval often perform best.",
+    "category": "search",
+    "tags": ["information retrieval", "TF-IDF", "BM25", "ranking"]
+  },
+  {
+    "title": "Web Scraping and Data Collection",
+    "content": "Web scraping extracts data from websites using tools like Beautiful Soup, Scrapy, and Puppeteer. Key techniques include CSS selector and XPath-based extraction, handling pagination, managing sessions and cookies, and rotating proxies to avoid blocks. Ethical scraping respects robots.txt, rate limits requests, and complies with terms of service. Headless browsers handle JavaScript-rendered content. APIs are preferred over scraping when available.",
+    "category": "data engineering",
+    "tags": ["web scraping", "data collection", "Scrapy", "Beautiful Soup"]
+  },
+  {
+    "title": "Microservices Communication Patterns",
+    "content": "Microservices communicate through synchronous (REST, gRPC) and asynchronous (message queues, event streaming) patterns. Synchronous patterns are simpler but create tight coupling. Asynchronous patterns provide better resilience and scalability. Service mesh technologies like Istio handle cross-cutting concerns including encryption, authentication, and load balancing. Circuit breakers (Netflix Hystrix, Resilience4j) prevent cascade failures. API gateways (Kong, AWS API Gateway) manage external access to services.",
+    "category": "software engineering",
+    "tags": ["microservices", "communication", "API gateway", "service mesh"]
+  },
+  {
+    "title": "Time Complexity and Big O Notation",
+    "content": "Big O notation describes the upper bound of an algorithm's time or space complexity. Common complexities include O(1) constant, O(log n) logarithmic, O(n) linear, O(n log n) linearithmic, O(n^2) quadratic, and O(2^n) exponential. Hash table lookups are O(1), binary search is O(log n), and sorting algorithms range from O(n log n) to O(n^2). Understanding complexity helps choose efficient algorithms and data structures for performance-critical applications.",
+    "category": "computer science",
+    "tags": ["algorithms", "Big O", "complexity", "data structures"]
+  },
+  {
+    "title": "Vite.js Modern Build Tool",
+    "content": "Vite is a next-generation frontend build tool that provides instant server start and lightning-fast hot module replacement (HMR). It uses native ES modules during development and Rollup for production builds. Vite supports TypeScript, JSX, CSS modules, and PostCSS out of the box. Plugins extend functionality for frameworks like React, Vue, and Svelte. Environment variables prefixed with VITE_ are exposed to client-side code. Vite significantly improves developer experience over Webpack.",
+    "category": "frontend",
+    "tags": ["Vite", "build tool", "HMR", "frontend tooling"]
+  },
+  {
+    "title": "Recommendation Systems",
+    "content": "Recommendation systems suggest items to users based on various signals. Collaborative filtering uses user behavior patterns (user-based or item-based). Content-based filtering matches item features to user preferences. Hybrid systems combine both approaches. Deep learning models like neural collaborative filtering and transformers achieve state-of-the-art results. Evaluation metrics include precision@k, recall@k, and NDCG. Cold start problems are addressed with popularity-based or content-based recommendations.",
+    "category": "AI research",
+    "tags": ["recommendation systems", "collaborative filtering", "personalization"]
+  },
+  {
+    "title": "MongoDB Connection Pooling",
+    "content": "Connection pooling maintains a set of reusable database connections to reduce the overhead of creating new connections for each request. MongoDB drivers manage connection pools automatically. Key settings include maxPoolSize (maximum connections), minPoolSize (minimum idle connections), maxIdleTimeMS (connection timeout), and waitQueueTimeoutMS. Proper pool sizing depends on application concurrency and database capacity. Monitoring idle connections and pool utilization helps optimize performance.",
+    "category": "database",
+    "tags": ["MongoDB", "connection pooling", "performance", "database optimization"]
+  },
+  {
+    "title": "Natural Language Generation (NLG)",
+    "content": "Natural Language Generation creates human-readable text from structured data or other inputs. Modern NLG uses large language models like GPT-4, Claude, and Llama to generate coherent, contextually appropriate text. Applications include chatbots, content creation, report generation, code generation, and creative writing. Challenges include hallucination (generating false information), maintaining consistency, and controlling output quality. Techniques like RLHF (Reinforcement Learning from Human Feedback) improve output alignment.",
+    "category": "NLP",
+    "tags": ["NLG", "text generation", "LLM", "GPT"]
+  },
+  {
+    "title": "Load Balancing Algorithms",
+    "content": "Load balancing distributes network traffic across multiple servers to ensure reliability and performance. Algorithms include Round Robin (cyclic distribution), Least Connections (fewest active connections), Weighted Round Robin (server capacity-based), IP Hash (session persistence), and Least Response Time. Layer 4 load balancers operate at the transport layer, while Layer 7 operates at the application layer. Health checks remove unhealthy servers from the rotation.",
+    "category": "infrastructure",
+    "tags": ["load balancing", "scaling", "high availability", "networking"]
+  },
+  {
+    "title": "Exploratory Data Analysis (EDA)",
+    "content": "Exploratory Data Analysis is the process of analyzing datasets to summarize their main characteristics, often using statistical graphics. Key steps include examining data distributions, identifying outliers, checking for missing values, analyzing correlations, and testing hypotheses. Tools include Pandas profiling, Matplotlib, Seaborn, and Plotly for interactive visualizations. EDA informs feature engineering, model selection, and data cleaning decisions. It's a crucial step before building any machine learning model.",
+    "category": "data science",
+    "tags": ["EDA", "data analysis", "visualization", "statistics"]
+  },
+  {
+    "title": "WebAssembly (Wasm) Technology",
+    "content": "WebAssembly is a binary instruction format for stack-based virtual machines, designed as a compilation target for high-level languages. It enables near-native performance in web browsers for compute-intensive tasks. Languages like C++, Rust, and Go can compile to Wasm. Use cases include video editing, gaming, CAD tools, and AI inference in the browser. WASI (WebAssembly System Interface) extends Wasm beyond browsers to server-side and edge computing environments.",
+    "category": "technology",
+    "tags": ["WebAssembly", "Wasm", "performance", "web technology"]
+  },
+  {
+    "title": "Dependency Injection Pattern",
+    "content": "Dependency Injection (DI) is a design pattern where objects receive their dependencies from external sources rather than creating them internally. It promotes loose coupling, testability, and maintainability. DI can be constructor-based, setter-based, or interface-based. Frameworks like Spring (Java), Angular (TypeScript), and InversifyJS (JavaScript) provide IoC (Inversion of Control) containers for automatic dependency resolution. DI simplifies unit testing by allowing mock dependencies.",
+    "category": "software engineering",
+    "tags": ["dependency injection", "IoC", "design patterns", "testing"]
+  },
+  {
+    "title": "Azure Cognitive Services",
+    "content": "Azure Cognitive Services provides AI capabilities through REST APIs and SDKs. Services include Computer Vision for image analysis, Speech Service for speech-to-text and text-to-speech, Translator for language translation, Language Understanding (LUIS) for intent recognition, and Form Recognizer for document processing. These pre-built AI services enable developers to add intelligence to applications without deep ML expertise. Custom models can be trained for domain-specific needs.",
+    "category": "cloud",
+    "tags": ["Azure", "cognitive services", "AI APIs", "cloud AI"]
+  },
+  {
+    "title": "HNSW Index Algorithm for Vector Search",
+    "content": "Hierarchical Navigable Small World (HNSW) is an approximate nearest neighbor algorithm used in vector databases. It builds a multi-layer graph where each layer contains a subset of points. Search starts from the top layer (coarse) and navigates down to the bottom layer (fine-grained). HNSW provides logarithmic search complexity with high recall rates. Parameters include M (connections per node) and efConstruction (build-time quality). It's used in MongoDB Atlas Vector Search, Faiss, and many vector databases.",
+    "category": "algorithms",
+    "tags": ["HNSW", "ANN", "vector search", "graph algorithms"]
+  },
+  {
+    "title": "API Rate Limiting and Throttling",
+    "content": "Rate limiting controls the number of API requests a client can make within a time window. Common algorithms include Token Bucket, Leaky Bucket, Fixed Window, and Sliding Window. Implementation can be at the application level (middleware), API gateway, or load balancer. Response headers (X-RateLimit-Limit, X-RateLimit-Remaining) inform clients of their quota. Exceeding limits returns HTTP 429 (Too Many Requests). Rate limiting protects against abuse and ensures fair resource distribution.",
+    "category": "backend",
+    "tags": ["rate limiting", "API", "throttling", "security"]
+  },
+  {
+    "title": "Scikit-learn Machine Learning Library",
+    "content": "Scikit-learn is Python's most popular machine learning library, providing simple and efficient tools for data mining and analysis. It implements algorithms for classification (SVM, Random Forest), regression (Linear, Lasso), clustering (K-Means, DBSCAN), and dimensionality reduction (PCA, t-SNE). The unified API uses fit(), predict(), and transform() patterns. Pipelines chain preprocessing and modeling steps. Cross-validation evaluates model performance reliably.",
+    "category": "data science",
+    "tags": ["scikit-learn", "ML", "Python", "classification"]
+  },
+  {
+    "title": "DevSecOps Security Integration",
+    "content": "DevSecOps integrates security practices into the DevOps pipeline. This includes static application security testing (SAST) in CI/CD pipelines, dynamic testing (DAST) against running applications, dependency vulnerability scanning (Snyk, Dependabot), container image scanning, infrastructure security with IaC scanning, and secret management (Vault, AWS Secrets Manager). Shift-left security catches vulnerabilities early in development, reducing remediation costs.",
+    "category": "security",
+    "tags": ["DevSecOps", "security", "SAST", "vulnerability scanning"]
+  },
+  {
+    "title": "OLAP vs OLTP Database Systems",
+    "content": "OLTP (Online Transaction Processing) systems handle high-volume transactional operations with short response times, using row-based storage. OLAP (Online Analytical Processing) systems handle complex analytical queries over large datasets, using columnar storage. OLTP databases include MySQL, PostgreSQL, and MongoDB. OLAP databases include Snowflake, BigQuery, and ClickHouse. Modern hybrid systems (HTAP) like TiDB and CockroachDB handle both workloads on a single platform.",
+    "category": "database",
+    "tags": ["OLAP", "OLTP", "analytics", "transactional"]
+  },
+  {
+    "title": "FastAPI Python Web Framework",
+    "content": "FastAPI is a modern Python web framework for building APIs with automatic OpenAPI documentation. It leverages Python type hints for request validation using Pydantic models. Key features include async support with ASGI (Uvicorn), dependency injection, background tasks, WebSocket support, and middleware. FastAPI achieves performance comparable to Node.js and Go. It generates interactive Swagger UI and ReDoc documentation automatically. The framework is ideal for ML model serving and data-intensive APIs.",
+    "category": "backend",
+    "tags": ["FastAPI", "Python", "API", "async"]
+  },
+  {
+    "title": "Image Embeddings and Visual Search",
+    "content": "Image embeddings represent images as dense vectors that capture visual features and semantics. Pre-trained CNNs (ResNet, EfficientNet) or vision transformers (ViT, CLIP) generate these embeddings by extracting features from their intermediate layers. Visual search finds similar images by comparing embedding distances. Applications include e-commerce product search, reverse image search, duplicate detection, and content-based recommendation. CLIP enables cross-modal search between text and images.",
+    "category": "AI research",
+    "tags": ["image embeddings", "visual search", "CLIP", "computer vision"]
+  },
+  {
+    "title": "Error Handling Patterns in Node.js",
+    "content": "Error handling in Node.js requires understanding both synchronous and asynchronous patterns. Express.js uses error-handling middleware with four parameters. Async/await errors are caught with try-catch or wrapper functions like asyncHandler. Custom error classes (AppError) provide structured error information including status codes and messages. Unhandled rejections and uncaught exceptions need global handlers. Proper error logging, sanitizing error responses for clients, and using operational vs programmer error distinction is important.",
+    "category": "backend",
+    "tags": ["error handling", "Node.js", "Express", "async"]
+  },
+  {
+    "title": "MongoDB Atlas Search Capabilities",
+    "content": "MongoDB Atlas Search integrates Apache Lucene-based full-text search directly into MongoDB. It supports fuzzy matching, autocomplete, faceted search, highlighting, and compound queries. Atlas Search uses analyzers for language-specific tokenization and normalization. Custom scoring with functions and boosting improves relevance. Atlas Search indexes are defined declaratively and automatically maintained. Combined with Vector Search, it enables hybrid search combining keyword and semantic relevance.",
+    "category": "search",
+    "tags": ["MongoDB Atlas", "full-text search", "Lucene", "hybrid search"]
+  },
+  {
+    "title": "Recurrent Neural Networks and LSTMs",
+    "content": "Recurrent Neural Networks (RNNs) process sequential data by maintaining hidden states across time steps. Long Short-Term Memory (LSTM) networks address vanishing gradients with cell states and gating mechanisms (input, forget, output gates). GRU (Gated Recurrent Unit) is a simplified variant. Applications include language modeling, machine translation, sentiment analysis, and time series forecasting. While transformers have largely replaced RNNs for NLP, LSTMs remain useful for certain sequential tasks.",
+    "category": "AI research",
+    "tags": ["RNN", "LSTM", "sequential models", "deep learning"]
+  },
+  {
+    "title": "Elasticsearch vs MongoDB Atlas Search",
+    "content": "Elasticsearch and MongoDB Atlas Search both provide full-text search but differ in architecture. Elasticsearch is a dedicated search engine requiring a separate infrastructure, while Atlas Search integrates directly into MongoDB. Elasticsearch offers more advanced text analysis and a larger feature set. Atlas Search provides simpler operational management and data co-location. For applications already using MongoDB, Atlas Search avoids data synchronization complexity. Both support vector search for semantic queries.",
+    "category": "search",
+    "tags": ["Elasticsearch", "MongoDB", "search comparison", "text search"]
+  },
+  {
+    "title": "Docker Compose for Multi-Container Applications",
+    "content": "Docker Compose defines and runs multi-container applications using YAML configuration. Services, networks, and volumes are declared in docker-compose.yml. Key commands include docker-compose up (start services), docker-compose down (stop and remove), and docker-compose logs (view output). Compose supports environment files, healthchecks, depends_on for service ordering, and profiles for selective service activation. It's ideal for local development environments that mirror production setups.",
+    "category": "devops",
+    "tags": ["Docker Compose", "containers", "multi-container", "YAML"]
+  },
+  {
+    "title": "Approximate Nearest Neighbor Search",
+    "content": "Approximate Nearest Neighbor (ANN) algorithms find the closest vectors in high-dimensional spaces with controllable accuracy-speed trade-offs. Methods include tree-based (Annoy), graph-based (HNSW), hash-based (LSH), and quantization-based (Product Quantization). HNSW offers the best recall-speed balance for most applications. ANN is essential for vector search at scale, where exact search becomes impractical. Libraries include Faiss (Meta), ScaNN (Google), and Hnswlib.",
+    "category": "algorithms",
+    "tags": ["ANN", "nearest neighbor", "HNSW", "vector search"]
+  },
+  {
+    "title": "Semantic Similarity Metrics",
+    "content": "Semantic similarity measures how alike two pieces of text are in meaning. Cosine similarity between embeddings is the most common metric, ranging from 0 (unrelated) to 1 (identical meaning). Other metrics include Euclidean distance, Manhattan distance, and dot product. BLEU, ROUGE, and BERTScore evaluate text generation quality. Human evaluation remains the gold standard. Benchmark datasets like STS-B (Semantic Textual Similarity Benchmark) provide standardized evaluation. Choosing the right metric depends on the specific task and domain.",
+    "category": "NLP",
+    "tags": ["semantic similarity", "cosine similarity", "metrics", "evaluation"]
+  },
+  {
+    "title": "Mongoose ODM for MongoDB",
+    "content": "Mongoose is a Node.js Object Data Modeling (ODM) library for MongoDB. It provides schema definition, type validation, query building, and middleware hooks. Schemas define document structure with types, validators, and defaults. Models are compiled from schemas and provide CRUD operations. Population enables referencing documents across collections. Middleware (pre/post hooks) enable custom logic before or after database operations. Virtual fields compute derived values without persisting them.",
+    "category": "database",
+    "tags": ["Mongoose", "MongoDB", "ODM", "Node.js"]
+  },
+  {
+    "title": "Cross-Encoder vs Bi-Encoder for Retrieval",
+    "content": "Bi-encoders independently encode queries and documents into vectors, enabling fast retrieval via ANN search. Cross-encoders jointly encode query-document pairs, providing more accurate but slower relevance scoring. A common retrieval pipeline uses bi-encoders for initial retrieval (top-100) followed by cross-encoder re-ranking (top-10). Models like SBERT provide bi-encoder embeddings, while models fine-tuned on MS MARCO provide cross-encoder scores. This two-stage approach balances speed and accuracy.",
+    "category": "NLP",
+    "tags": ["cross-encoder", "bi-encoder", "retrieval", "re-ranking"]
+  },
+  {
+    "title": "GitHub Actions CI/CD Workflows",
+    "content": "GitHub Actions automates software workflows directly in GitHub repositories. Workflows are defined in YAML files under .github/workflows/. Triggers include push, pull_request, schedule, and manual dispatch. Jobs run on GitHub-hosted or self-hosted runners. Steps use pre-built actions from the marketplace or run shell commands. Matrix builds test across multiple configurations. Secrets store sensitive information. Caching dependencies speeds up builds. Reusable workflows share logic across repositories.",
+    "category": "devops",
+    "tags": ["GitHub Actions", "CI/CD", "automation", "workflows"]
+  },
+  {
+    "title": "Handling Large-Scale Data with MongoDB",
+    "content": "MongoDB handles large-scale data through sharding, replication, and efficient storage. Sharding distributes data across multiple servers for horizontal scaling. Replica sets provide redundancy and read scaling. The WiredTiger storage engine offers compression and document-level concurrency. Indexes including compound, multikey, text, and vector indexes optimize query performance. Time series collections efficiently store and query temporal data. Atlas provides managed scaling with auto-scaling compute and storage.",
+    "category": "database",
+    "tags": ["MongoDB", "scaling", "sharding", "large-scale data"]
+  },
+  {
+    "title": "Hybrid Search Combining Vectors and Keywords",
+    "content": "Hybrid search combines semantic vector search with traditional keyword search for optimal retrieval quality. Vector search understands meaning and intent, finding semantically similar results even without keyword matches. Keyword search excels at exact matching and specific terms like product codes or names. Reciprocal Rank Fusion (RRF) merges results from both approaches. MongoDB Atlas supports hybrid search by combining $vectorSearch with $search stages. This approach typically outperforms either method alone.",
+    "category": "search",
+    "tags": ["hybrid search", "vector search", "keyword search", "RRF"]
+  },
+  {
+    "title": "SentenceTransformers Library",
+    "content": "The SentenceTransformers library provides an easy-to-use framework for computing sentence and text embeddings. Built on top of Hugging Face Transformers, it includes pre-trained models optimized for semantic similarity, clustering, and information retrieval. Models like all-MiniLM-L6-v2 balance quality and speed, producing 384-dimensional embeddings. The library supports fine-tuning with custom datasets, training with contrastive or triplet loss, and evaluation with built-in benchmarks. It's the standard tool for generating text embeddings in Python.",
+    "category": "NLP",
+    "tags": ["SentenceTransformers", "embeddings", "Hugging Face", "semantic similarity"]
+  },
+  {
+    "title": "Vector Search Index Tuning",
+    "content": "Vector search index tuning optimizes the trade-off between search accuracy and performance. Key parameters include the number of candidates (numCandidates) for initial search, the final limit of results returned, and index-specific settings. For HNSW indexes, M (connections per node) and efConstruction (build-time neighbor exploration) affect index quality. Higher numCandidates improves recall but increases latency. MongoDB Atlas recommends setting numCandidates to at least 10x the desired result limit for good recall.",
+    "category": "database",
+    "tags": ["vector search", "index tuning", "performance", "HNSW parameters"]
+  },
+  {
+    "title": "MongoDB Atlas Cluster Setup",
+    "content": "Setting up a MongoDB Atlas cluster involves creating an organization and project, selecting a cloud provider (AWS, Azure, GCP) and region, choosing a cluster tier (free M0, shared, dedicated), and configuring security. Network access allows IP addresses or VPC peering. Database users require authentication credentials. Connection strings use the mongodb+srv:// protocol. Atlas provides backups, monitoring, alerts, and performance advisor. The free M0 tier includes 512MB storage and shared resources.",
+    "category": "database",
+    "tags": ["MongoDB Atlas", "cluster setup", "cloud database", "configuration"]
+  },
+  {
+    "title": "Express.js Middleware Pattern",
+    "content": "Express.js middleware functions are functions that have access to the request object, response object, and next function. Middleware executes sequentially in the order it's defined. Types include application-level, router-level, error-handling, built-in (express.json, express.static), and third-party (cors, helmet, morgan). Custom middleware handles cross-cutting concerns like logging, authentication, rate limiting, and request validation. Error-handling middleware has four parameters (err, req, res, next).",
+    "category": "backend",
+    "tags": ["Express.js", "middleware", "Node.js", "request handling"]
+  },
+  {
+    "title": "MongoDB Indexing for Performance",
+    "content": "MongoDB indexes support efficient query execution. Single field indexes optimize queries on one field. Compound indexes support queries on multiple fields (order matters). Multikey indexes handle arrays. Text indexes enable full-text search. 2dsphere indexes support geospatial queries. Wildcard indexes match fields dynamically. The explain() method shows query execution plans. The Performance Advisor in Atlas recommends indexes based on query patterns. Indexes consume storage and memory, so only create indexes that support actual queries.",
+    "category": "database",
+    "tags": ["MongoDB", "indexing", "performance", "query optimization"]
+  },
+  {
+    "title": "LangChain Framework for LLM Applications",
+    "content": "LangChain is a framework for building applications with large language models. It provides abstractions for chains (sequential LLM calls), agents (LLM-driven decision making), memory (conversation history), and tools (external integrations). Document loaders handle various file formats. Text splitters chunk documents for embeddings. Vector stores integrate with multiple databases including MongoDB Atlas. LangChain Expression Language (LCEL) enables composable chain definitions. It simplifies RAG, chatbot, and agent development.",
+    "category": "AI research",
+    "tags": ["LangChain", "LLM", "agents", "RAG framework"]
+  },
+  {
+    "title": "Performance Optimization for Node.js Applications",
+    "content": "Node.js performance optimization involves multiple strategies: profiling with clinic.js and node --inspect, reducing event loop blocking with worker threads, implementing connection pooling for databases, using streams for large data processing, caching with Redis, enabling HTTP keep-alive, implementing request compression (gzip, brotli), and using cluster module for multi-core utilization. Memory leak detection with heapdump and --expose-gc helps maintain long-running server health.",
+    "category": "backend",
+    "tags": ["Node.js", "performance", "optimization", "profiling"]
+  },
+  {
+    "title": "Company Knowledge Management Systems",
+    "content": "Knowledge management systems help organizations capture, organize, and share institutional knowledge. Features include document repositories, search functionality, tagging and categorization, version control, and access permissions. Semantic search enables finding relevant documents even when exact terms don't match. AI-powered knowledge bases use embeddings to understand document relationships. Benefits include reduced knowledge silos, faster onboarding, preserved institutional memory, and improved decision-making across the organization.",
+    "category": "enterprise",
+    "tags": ["knowledge management", "enterprise", "documents", "search"]
+  },
+  {
+    "title": "Employee Onboarding Process Guide",
+    "content": "Effective employee onboarding sets new hires up for success. The process typically spans 30-60-90 days, covering company culture, team introductions, tool access, role-specific training, and compliance requirements. Key elements include a welcome package, mentorship programs, structured learning paths, and regular check-ins. Digital onboarding platforms streamline paperwork and training modules. Studies show that structured onboarding programs improve new hire retention by 82% and productivity by over 70%.",
+    "category": "human resources",
+    "tags": ["onboarding", "HR", "employees", "training"]
+  },
+  {
+    "title": "Project Management with Jira and Confluence",
+    "content": "Jira is a project management tool for tracking issues, bugs, and tasks in software development. It supports Scrum and Kanban boards, sprint planning, and release management. Confluence is a collaboration platform for creating and sharing documentation, meeting notes, and project plans. Together, they provide a comprehensive project management ecosystem. Custom workflows, automation rules, and integration with development tools like GitHub and Bitbucket enhance team productivity.",
+    "category": "project management",
+    "tags": ["Jira", "Confluence", "Atlassian", "project management"]
+  },
+  {
+    "title": "Remote Work Best Practices",
+    "content": "Remote work requires intentional practices for productivity and wellbeing. Key practices include establishing a dedicated workspace, maintaining consistent schedules, using asynchronous communication tools like Slack, and setting clear boundaries between work and personal time. Virtual meeting fatigue can be reduced with camera-optional meetings and async video updates. Documentation culture becomes critical in remote teams. Regular virtual social events maintain team cohesion and company culture.",
+    "category": "workplace",
+    "tags": ["remote work", "productivity", "collaboration", "work-life balance"]
+  },
+  {
+    "title": "Business Intelligence and Data Analytics",
+    "content": "Business intelligence (BI) transforms raw data into actionable insights for strategic decision-making. BI tools like Tableau, Power BI, and Looker provide interactive dashboards and visualizations. Key components include data warehousing, ETL processes, OLAP cubes, and self-service analytics. KPIs and metrics track business performance. Predictive analytics uses statistical models to forecast trends. Data literacy across the organization is essential for data-driven decision making.",
+    "category": "business",
+    "tags": ["business intelligence", "analytics", "dashboards", "data-driven"]
+  },
+  {
+    "title": "Software Architecture Decision Records",
+    "content": "Architecture Decision Records (ADRs) document important architectural decisions and their rationale. Each ADR includes the context, decision, status, and consequences. ADRs create a decision log that helps new team members understand why the system is built a certain way. Templates like MADR (Markdown ADR) standardize the format. Storing ADRs in version control alongside code ensures they're accessible and versioned. Regular review of ADRs helps identify decisions that may need revisiting.",
+    "category": "software engineering",
+    "tags": ["ADR", "architecture", "documentation", "decisions"]
+  },
+  {
+    "title": "Customer Support Ticket Management",
+    "content": "Effective ticket management ensures timely resolution of customer issues. Systems like Zendesk, Freshdesk, and ServiceNow provide ticketing, SLA tracking, and customer communication tools. Key practices include ticket categorization, priority assignment, escalation workflows, and knowledge base integration. AI-powered features include auto-routing based on content analysis, suggested responses from knowledge base articles, and sentiment detection for urgent issues. CSAT and response time metrics measure support quality.",
+    "category": "enterprise",
+    "tags": ["customer support", "ticketing", "SLA", "help desk"]
+  },
+  {
+    "title": "Financial Technology and Digital Payments",
+    "content": "Fintech encompasses digital innovations in financial services including mobile banking, digital wallets, peer-to-peer lending, and cryptocurrency exchanges. Payment processing involves tokenization for security, PCI DSS compliance, and real-time settlement. Open banking APIs (PSD2) enable third-party financial services. Machine learning detects fraudulent transactions by analyzing spending patterns. Regulatory compliance (KYC, AML) remains crucial. APIs from Stripe, Plaid, and Square simplify payment integration.",
+    "category": "fintech",
+    "tags": ["fintech", "payments", "banking", "digital finance"]
+  },
+  {
+    "title": "Healthcare Data Interoperability",
+    "content": "Healthcare data interoperability enables different health IT systems to exchange and use patient data. Standards include HL7 FHIR (Fast Healthcare Interoperability Resources) for API-based data exchange, DICOM for medical imaging, and ICD-10 for diagnosis coding. Electronic Health Records (EHR) systems like Epic and Cerner store patient data. HIPAA regulations protect patient privacy. Machine learning on health data enables predictive diagnostics, drug discovery, and personalized medicine.",
+    "category": "healthcare",
+    "tags": ["healthcare", "interoperability", "FHIR", "EHR"]
+  },
+  {
+    "title": "Supply Chain Management and Logistics",
+    "content": "Supply chain management optimizes the flow of goods from suppliers to customers. Key components include demand forecasting, inventory management, warehouse operations, transportation planning, and last-mile delivery. Technologies like RFID, IoT sensors, and blockchain improve visibility and traceability. AI-driven demand planning reduces overstock and stockouts. Just-in-time (JIT) and lean manufacturing minimize inventory costs. ERP systems like SAP and Oracle integrate end-to-end supply chain processes.",
+    "category": "operations",
+    "tags": ["supply chain", "logistics", "inventory", "operations"]
+  },
+  {
+    "title": "E-commerce Platform Architecture",
+    "content": "E-commerce platforms require scalable architecture handling product catalogs, user accounts, shopping carts, payments, inventory, and fulfillment. Microservices separate these concerns for independent scaling. Search functionality is critical, with features like faceted filtering, autocomplete, and personalized recommendations. CDNs serve product images globally. Payment gateways (Stripe, PayPal, Adyen) handle transactions securely. A/B testing optimizes conversion funnels. Peak load handling during sales events requires elastic scaling.",
+    "category": "software engineering",
+    "tags": ["e-commerce", "architecture", "payments", "scalability"]
+  },
+  {
+    "title": "Marketing Analytics and Attribution",
+    "content": "Marketing analytics measures campaign effectiveness using data-driven approaches. Attribution models assign credit to marketing touchpoints: last-click, first-click, linear, time-decay, and data-driven (algorithmic) models. Key metrics include Customer Acquisition Cost (CAC), Lifetime Value (LTV), Return on Ad Spend (ROAS), and conversion rates. Tools like Google Analytics, Mixpanel, and Amplitude track user behavior. Marketing mix modeling and incrementality testing provide causal measurement of campaign impact.",
+    "category": "marketing",
+    "tags": ["marketing analytics", "attribution", "CAC", "LTV"]
+  },
+  {
+    "title": "Environmental Sustainability in Tech",
+    "content": "The tech industry's environmental impact includes energy consumption by data centers, electronic waste, and carbon emissions from manufacturing. Green computing practices include using energy-efficient hardware, optimizing code to reduce compute requirements, carbon-aware computing (scheduling workloads when renewable energy is abundant), and extending device lifespans. Cloud providers offer sustainability tools and carbon-neutral regions. Measuring and reporting Scope 1, 2, and 3 emissions drives accountability.",
+    "category": "sustainability",
+    "tags": ["sustainability", "green computing", "carbon footprint", "environment"]
+  },
+  {
+    "title": "Legal Document Analysis with AI",
+    "content": "AI-powered legal document analysis automates contract review, due diligence, and legal research. NLP techniques extract key clauses, identify risks, and compare documents against templates. Named Entity Recognition identifies parties, dates, and monetary amounts. Document classification categorizes legal documents by type. Semantic search enables finding relevant case law and precedents. Tools like Kira Systems and Luminance use ML for contract analysis, reducing review time from hours to minutes.",
+    "category": "legal tech",
+    "tags": ["legal tech", "contract analysis", "NLP", "document review"]
+  },
+  {
+    "title": "Inventory Management Systems",
+    "content": "Inventory management systems track stock levels, orders, sales, and deliveries. Key methods include ABC analysis (categorizing by importance), Economic Order Quantity (EOQ) for optimal ordering, and safety stock calculations for demand variability. Warehouse Management Systems (WMS) optimize picking, packing, and shipping. Real-time inventory tracking uses barcodes, RFID, and IoT sensors. Integration with ERP and e-commerce platforms ensures accurate stock availability across channels.",
+    "category": "operations",
+    "tags": ["inventory", "warehouse", "supply chain", "management"]
+  },
+  {
+    "title": "Cybersecurity Incident Response",
+    "content": "Incident response is a structured approach to handling security breaches. The NIST framework defines phases: Preparation, Detection and Analysis, Containment, Eradication, Recovery, and Lessons Learned. SIEM tools (Splunk, QRadar) aggregate security events for threat detection. Incident response teams follow runbooks for common attack types. Forensic analysis preserves evidence for investigation. Post-incident reviews improve future response. Tabletop exercises test organizational readiness.",
+    "category": "security",
+    "tags": ["incident response", "SIEM", "cybersecurity", "forensics"]
+  },
+  {
+    "title": "Product Management Prioritization Frameworks",
+    "content": "Product managers use frameworks to decide what to build next. RICE scoring evaluates Reach, Impact, Confidence, and Effort. MoSCoW categorizes features as Must-have, Should-have, Could-have, and Won't-have. The Kano model classifies features by customer satisfaction: basic, performance, and delight. Opportunity scoring identifies gaps between importance and satisfaction. Impact mapping connects goals to deliverables. Effective prioritization balances customer needs, business goals, and technical constraints.",
+    "category": "product management",
+    "tags": ["product management", "prioritization", "RICE", "roadmap"]
+  },
+  {
+    "title": "Digital Transformation Strategy",
+    "content": "Digital transformation modernizes business operations through technology adoption. Key pillars include customer experience digitization, operational process automation, workforce enablement, and business model innovation. Common initiatives include cloud migration, data platform modernization, AI/ML adoption, and API-first architecture. Success requires executive sponsorship, change management, upskilling programs, and clear KPIs. Design thinking approaches ensure solutions address real user needs rather than technology for its own sake.",
+    "category": "business",
+    "tags": ["digital transformation", "strategy", "innovation", "modernization"]
+  },
+  {
+    "title": "Compliance and Regulatory Technology",
+    "content": "RegTech uses technology to manage regulatory compliance efficiently. Key areas include KYC (Know Your Customer) verification, AML (Anti-Money Laundering) screening, data privacy compliance (GDPR, CCPA), financial reporting (SOX), and audit trail management. Automated compliance monitoring reduces manual effort and human error. AI-driven solutions detect suspicious patterns and anomalies. Regulatory sandboxes allow testing innovative compliance approaches. Cloud-based GRC (Governance, Risk, Compliance) platforms centralize compliance management.",
+    "category": "compliance",
+    "tags": ["RegTech", "compliance", "KYC", "AML"]
+  },
+  {
+    "title": "User Experience Research Methods",
+    "content": "UX research methods help understand user needs and behaviors. Qualitative methods include user interviews, contextual inquiry, card sorting, and usability testing. Quantitative methods include surveys, A/B testing, analytics, and task success metrics. Diary studies capture longitudinal user experiences. Jobs-to-be-Done framework identifies user motivations. Personas and journey maps synthesize research into actionable artifacts. Continuous discovery with weekly user touchpoints keeps teams aligned with user needs.",
+    "category": "design",
+    "tags": ["UX research", "usability", "user interviews", "design"]
+  },
+  {
+    "title": "EdTech and Learning Management Systems",
+    "content": "Learning Management Systems (LMS) deliver, track, and manage educational content. Features include course creation, progress tracking, assessments, certificates, and analytics. Platforms like Canvas, Moodle, and Coursera serve different educational contexts. Adaptive learning uses AI to personalize content difficulty and pacing. Microlearning breaks content into small, focused modules. xAPI (Experience API) tracks learning activities across platforms. Gamification elements like badges and leaderboards improve engagement.",
+    "category": "education",
+    "tags": ["EdTech", "LMS", "e-learning", "education"]
+  },
+  {
+    "title": "Real Estate Technology and PropTech",
+    "content": "PropTech applies technology to real estate transactions, management, and investment. Virtual tours and 3D modeling enable remote property viewing. AI-powered valuation models estimate property prices using comparable sales, location data, and market trends. Smart building technology uses IoT sensors for energy management, occupancy tracking, and predictive maintenance. Blockchain enables fractional ownership and transparent property records. CRM systems manage tenant and buyer relationships efficiently.",
+    "category": "real estate",
+    "tags": ["PropTech", "real estate", "smart buildings", "valuation"]
+  },
+  {
+    "title": "Sports Analytics and Performance",
+    "content": "Sports analytics uses data to improve team and player performance. Tracking technologies capture player movements, ball trajectories, and physiological metrics. Statistical models analyze game strategies, predict outcomes, and optimize lineups. Computer vision extracts insights from game footage. Wearable devices monitor training load and recovery. Expected Goals (xG) in soccer and Win Probability Added (WPA) in baseball are popular advanced metrics. Teams use data science for scouting, draft decisions, and injury prevention.",
+    "category": "sports",
+    "tags": ["sports analytics", "performance", "statistics", "tracking"]
+  },
+  {
+    "title": "Agricultural Technology and Precision Farming",
+    "content": "AgTech revolutionizes farming with data-driven approaches. Precision agriculture uses GPS, drones, and satellite imagery for crop monitoring. IoT sensors measure soil moisture, temperature, and nutrient levels. Machine learning predicts crop yields, detects diseases, and optimizes irrigation schedules. Autonomous tractors and robotic harvesters reduce labor requirements. Supply chain traceability ensures food safety from farm to table. Vertical farming and hydroponics enable urban food production.",
+    "category": "agriculture",
+    "tags": ["AgTech", "precision farming", "IoT", "agriculture"]
+  },
+  {
+    "title": "Music Technology and Audio Processing",
+    "content": "Music technology encompasses digital audio workstations (DAWs), synthesizers, audio processing algorithms, and music information retrieval. AI generates music using models trained on vast datasets. Audio feature extraction identifies tempo, key, and genre. Spotify's recommendation system uses collaborative filtering and audio analysis. Spatial audio creates immersive 3D soundscapes. Lossy compression (MP3, AAC) and lossless (FLAC) formats trade file size for quality. MIDI enables digital instrument communication.",
+    "category": "entertainment",
+    "tags": ["music tech", "audio", "DAW", "processing"]
+  },
+  {
+    "title": "Autonomous Vehicles and Self-Driving Technology",
+    "content": "Autonomous vehicles use a combination of sensors (LiDAR, radar, cameras), computer vision, machine learning, and path planning algorithms to navigate without human input. The SAE defines 6 levels of autonomy (0-5). Key challenges include edge cases, sensor fusion, real-time decision making, and regulatory frameworks. Companies like Waymo, Cruise, and Tesla take different approaches (LiDAR-based vs vision-only). V2X (Vehicle-to-Everything) communication enables cooperation between vehicles and infrastructure.",
+    "category": "technology",
+    "tags": ["autonomous vehicles", "self-driving", "LiDAR", "computer vision"]
+  },
+  {
+    "title": "Robotics and Industrial Automation",
+    "content": "Industrial robots perform tasks like welding, painting, assembly, and inspection with high precision and consistency. Collaborative robots (cobots) work safely alongside humans without safety cages. Robot Operating System (ROS) provides software frameworks for robot software development. Computer vision enables pick-and-place, quality inspection, and navigation. Digital twins simulate robot operations before physical deployment. Industry 4.0 connects robots, IoT, and AI for smart manufacturing.",
+    "category": "manufacturing",
+    "tags": ["robotics", "automation", "cobots", "Industry 4.0"]
+  },
+  {
+    "title": "Climate Data Analysis and Modeling",
+    "content": "Climate science uses computational models to understand and predict climate patterns. General Circulation Models (GCMs) simulate atmosphere, ocean, and land interactions. Satellite remote sensing provides global temperature, precipitation, and ice coverage data. Machine learning improves weather forecasting and identifies climate patterns. Carbon cycle modeling tracks greenhouse gas emissions. Reanalysis datasets combine observations with models for historical climate reconstruction. Open datasets from NASA and NOAA enable global research collaboration.",
+    "category": "environmental science",
+    "tags": ["climate", "modeling", "remote sensing", "weather"]
+  },
+  {
+    "title": "Telecommunications and 5G Networks",
+    "content": "5G networks provide enhanced mobile broadband (up to 20 Gbps), ultra-reliable low-latency communication (1ms), and massive IoT connectivity (1 million devices/km2). Network slicing creates virtual networks for different use cases. Edge computing at cell towers reduces latency for applications like autonomous vehicles and remote surgery. Spectrum bands include Sub-6 GHz for coverage and mmWave for capacity. Open RAN architecture disaggregates network components for flexibility and vendor diversity.",
+    "category": "telecommunications",
+    "tags": ["5G", "telecommunications", "networks", "IoT"]
+  },
+  {
+    "title": "Space Technology and Satellite Systems",
+    "content": "Space technology encompasses satellite communication, Earth observation, navigation (GPS, Galileo), and space exploration. CubeSats and small satellites democratize access to space. Satellite constellations like Starlink provide global internet coverage. Synthetic Aperture Radar (SAR) enables all-weather Earth imaging. Space debris tracking uses radar and optical sensors. Commercial space companies (SpaceX, Blue Origin) reduce launch costs. AI automates satellite image analysis for agriculture, urban planning, and disaster response.",
+    "category": "aerospace",
+    "tags": ["space tech", "satellites", "remote sensing", "GPS"]
+  },
+  {
+    "title": "Pharmaceutical Drug Discovery with AI",
+    "content": "AI accelerates drug discovery by predicting molecular properties, identifying drug targets, and optimizing lead compounds. Deep learning models predict protein structures (AlphaFold) and drug-protein interactions. Virtual screening evaluates millions of chemical compounds computationally. Generative models design novel molecules with desired properties. Natural language processing mines scientific literature for research insights. Clinical trial optimization uses ML to identify suitable patient populations and predict outcomes.",
+    "category": "pharma",
+    "tags": ["drug discovery", "AI", "pharmaceutical", "AlphaFold"]
+  },
+  {
+    "title": "Geospatial Data Analysis and GIS",
+    "content": "Geographic Information Systems (GIS) analyze spatial data for mapping, planning, and decision-making. Tools include QGIS, ArcGIS, and PostGIS. Spatial data types include points, lines, polygons, and rasters. Geospatial analysis includes buffer zones, spatial joins, interpolation, and network analysis. Web mapping uses Leaflet, Mapbox, and Google Maps APIs. LiDAR and photogrammetry create detailed 3D terrain models. Geospatial data supports urban planning, environmental monitoring, disaster response, and logistics optimization.",
+    "category": "geospatial",
+    "tags": ["GIS", "geospatial", "mapping", "spatial analysis"]
+  },
+  {
+    "title": "Energy Systems and Smart Grid Technology",
+    "content": "Smart grids modernize electricity distribution using digital communication technology. Advanced Metering Infrastructure (AMI) enables two-way communication between utilities and consumers. Demand response programs adjust consumption based on grid conditions. Distributed energy resources (solar, wind, batteries) require sophisticated management. SCADA systems monitor and control grid operations. Machine learning forecasts renewable energy generation and consumption patterns. Microgrids provide resilient local energy systems.",
+    "category": "energy",
+    "tags": ["smart grid", "energy", "renewable", "IoT"]
+  },
+  {
+    "title": "Cybersecurity Threat Intelligence",
+    "content": "Threat intelligence involves collecting, analyzing, and sharing information about current and potential cyber threats. Sources include open-source intelligence (OSINT), dark web monitoring, industry sharing groups (ISACs), and commercial feeds. The MITRE ATT&CK framework catalogs adversary tactics, techniques, and procedures. Indicators of Compromise (IoCs) include IP addresses, domains, file hashes, and behavioral patterns. Threat intelligence platforms (TIP) aggregate and correlate threat data for proactive defense.",
+    "category": "security",
+    "tags": ["threat intelligence", "MITRE ATT&CK", "cybersecurity", "OSINT"]
+  },
+  {
+    "title": "Bioinformatics and Genomic Data Analysis",
+    "content": "Bioinformatics applies computational techniques to biological data, particularly DNA, RNA, and protein sequences. Sequence alignment algorithms (BLAST, Smith-Waterman) find homologous sequences. Genome assembly reconstructs complete genomes from short reads. RNA-seq analysis quantifies gene expression. Variant calling identifies genetic mutations. Machine learning classifies diseases from genomic markers. Tools include Biopython, Bioconductor, and Galaxy. The Human Genome Project and public databases like GenBank enable research worldwide.",
+    "category": "bioinformatics",
+    "tags": ["bioinformatics", "genomics", "sequence analysis", "biology"]
+  },
+  {
+    "title": "Digital Marketing and SEO Strategies",
+    "content": "Search Engine Optimization (SEO) improves website visibility in search results. Key practices include keyword research, on-page optimization (meta tags, headings, content), technical SEO (site speed, mobile-friendliness, structured data), and off-page SEO (backlinks, social signals). Content marketing creates valuable content for target audiences. Paid search (SEM) with Google Ads and social media advertising complement organic efforts. Core Web Vitals measure page experience. Analytics track campaign ROI and user behavior patterns.",
+    "category": "marketing",
+    "tags": ["SEO", "digital marketing", "content marketing", "SEM"]
+  },
+  {
+    "title": "Nonprofit Technology and Impact Measurement",
+    "content": "Nonprofits use technology to amplify their social impact. CRM systems like Salesforce Nonprofit Cloud manage donor relationships, volunteers, and beneficiary tracking. Impact measurement frameworks (Logic Model, Theory of Change) quantify program outcomes. Data analytics identifies effective interventions and allocates resources efficiently. Digital fundraising platforms enable online giving campaigns. Technology solutions should be accessible and affordable, with refurbished hardware programs and discounted software licenses through TechSoup.",
+    "category": "nonprofit",
+    "tags": ["nonprofit", "impact measurement", "fundraising", "social impact"]
+  },
+  {
+    "title": "Insurance Technology and Claims Processing",
+    "content": "InsurTech modernizes insurance with digital distribution, automated underwriting, and streamlined claims processing. Telematics devices and IoT sensors enable usage-based insurance pricing. AI processes claims by analyzing photos of damage, medical records, and policy details. Chatbots handle customer inquiries and first notice of loss. Fraud detection models identify suspicious patterns in claims data. Parametric insurance automatically triggers payouts based on predefined events like natural disaster measurements.",
+    "category": "insurance",
+    "tags": ["InsurTech", "insurance", "claims", "underwriting"]
+  },
+  {
+    "title": "Food Technology and Safety Systems",
+    "content": "Food technology ensures food safety across the supply chain from production to consumption. HACCP (Hazard Analysis Critical Control Points) identifies and controls food safety hazards. IoT sensors monitor temperature, humidity, and contamination during transport and storage. Blockchain provides traceability from farm to fork. AI-powered quality inspection uses computer vision to detect defects. Predictive analytics forecasts shelf life and prevents food waste. Lab-grown meat and plant-based proteins represent emerging food tech innovations.",
+    "category": "food tech",
+    "tags": ["food tech", "food safety", "HACCP", "traceability"]
+  }
+]

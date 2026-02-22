@@ -3,6 +3,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const documentRoutes = require('./routes/documentRoutes.cjs');
 const searchRoutes = require('./routes/searchRoutes.cjs');
+const askRoutes = require('./routes/askRoutes.cjs');
 const { notFoundMiddleware } = require('./middleware/notFound.cjs');
 const { errorMiddleware } = require('./middleware/errorMiddleware.cjs');
 const { responseTimeLogger } = require('./middleware/responseTimeLogger.cjs');
@@ -23,6 +24,7 @@ app.get('/health', (req, res) => {
 
 app.use('/documents', documentRoutes);
 app.use('/search', searchRoutes);
+app.use('/ask', askRoutes);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);

@@ -52,6 +52,14 @@ const searchDocumentsQuerySchema = z.object({
     )
 });
 
+const askQuestionSchema = z.object({
+  question: z
+    .string({ required_error: 'question is required' })
+    .trim()
+    .min(1, 'question is required')
+    .max(2000, 'question cannot exceed 2000 characters'),
+});
+
 const listDocumentsQuerySchema = z.object({
   limit: z
     .string()
@@ -67,5 +75,6 @@ module.exports = {
   createDocumentSchema,
   searchDocumentSchema,
   searchDocumentsQuerySchema,
+  askQuestionSchema,
   listDocumentsQuerySchema
 };
