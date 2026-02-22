@@ -1,5 +1,5 @@
 import { apiClient } from './client';
-import type { AddDocumentPayload, RAGResponse, SearchResponse, SearchResultItem } from '../types';
+import type { AddDocumentPayload, DocumentItem, RAGResponse, SearchResponse, SearchResultItem, StatsData } from '../types';
 
 type RawSearchResponse = {
   data?: SearchResultItem[];
@@ -53,4 +53,16 @@ export const askQuestion = async (question: string): Promise<RAGResponse> => {
 
 export const addDocument = async (payload: AddDocumentPayload): Promise<void> => {
   await apiClient.post('/documents', payload);
+};
+
+export const fetchDocuments = async (limit = 100): Promise<DocumentItem[]> => {
+  const { data } = await apiClient.get<{ success: boolean; count: number; data: DocumentItem[] }>('/documents', {
+    params: { limit },
+  });
+  return data.data;
+};
+
+export const fetchStats = async (): Promise<StatsData> => {
+  const { data } = await apiClient.get<{ success: boolean; data: StatsData }>('/documents/stats');
+  return data.data;
 };

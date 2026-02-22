@@ -36,3 +36,36 @@ export type AddDocumentPayload = {
   title: string;
   content: string;
 };
+
+export type DocumentItem = {
+  _id: string;
+  title: string;
+  content: string;
+  category?: string;
+  tags?: string[];
+  createdAt: string;
+};
+
+export type CategoryStat = {
+  name: string;
+  count: number;
+};
+
+export type TagStat = {
+  name: string;
+  count: number;
+};
+
+export type RecentDoc = {
+  _id: string;
+  title: string;
+  category?: string;
+  createdAt: string;
+};
+
+export type StatsData = {
+  totalDocuments: number;
+  categories: CategoryStat[];
+  topTags: TagStat[];
+  recentDocuments: RecentDoc[];
+};

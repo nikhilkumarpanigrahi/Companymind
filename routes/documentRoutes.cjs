@@ -2,7 +2,8 @@ const express = require('express');
 const {
   createDocumentHandler,
   searchDocumentsHandler,
-  getDocumentsHandler
+  getDocumentsHandler,
+  getStatsHandler
 } = require('../controllers/documentController.cjs');
 const { validateRequest } = require('../middleware/validateRequest.cjs');
 const {
@@ -15,5 +16,6 @@ const router = express.Router();
 
 router.post('/', validateRequest(createDocumentSchema), createDocumentHandler);
 router.get('/', validateRequest(listDocumentsQuerySchema, 'query'), getDocumentsHandler);
+router.get('/stats', getStatsHandler);
 
 module.exports = router;

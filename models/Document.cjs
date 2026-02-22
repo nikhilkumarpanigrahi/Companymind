@@ -12,6 +12,15 @@ const documentSchema = new mongoose.Schema(
       required: true,
       trim: true
     },
+    category: {
+      type: String,
+      trim: true,
+      default: 'uncategorized'
+    },
+    tags: {
+      type: [String],
+      default: []
+    },
     embedding: {
       type: [Number],
       required: true,

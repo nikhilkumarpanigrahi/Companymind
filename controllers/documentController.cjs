@@ -2,6 +2,7 @@ const { generateEmbedding } = require('../services/embeddingService.cjs');
 const {
   createDocument,
   listDocuments,
+  getDocumentStats,
   vectorSearchDocuments
 } = require('../services/documentService.cjs');
 const { asyncHandler } = require('../utils/asyncHandler.cjs');
@@ -71,9 +72,19 @@ const getDocumentsHandler = asyncHandler(async (req, res) => {
   });
 });
 
+const getStatsHandler = asyncHandler(async (_req, res) => {
+  const stats = await getDocumentStats();
+
+  return res.status(200).json({
+    success: true,
+    data: stats
+  });
+});
+
 module.exports = {
   createDocumentHandler,
   searchDocumentsHandler,
   searchDocumentsQueryHandler,
-  getDocumentsHandler
+  getDocumentsHandler,
+  getStatsHandler
 };
