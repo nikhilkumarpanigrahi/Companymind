@@ -1,0 +1,45 @@
+# ──────────────────────────────────────────────────────────────
+#  CompanyMind — Production Docker Compose
+#  Usage: docker compose -f docker-compose.prod.yml up -d
+# ──────────────────────────────────────────────────────────────
+version: "3.9"
+
+services:
+  # ── Express Backend + React Frontend ──────────────────────
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env.production
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      embedding:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  # ── Python Embedding Service ──────────────────────────────
+  embedding:
+    build:
+      context: ./embedding-service
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - WORKERS=1
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s

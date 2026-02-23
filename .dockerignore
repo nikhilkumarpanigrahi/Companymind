@@ -1,0 +1,9 @@
+node_modules
+dist
+.env
+.git
+.gitignore
+*.md
+embedding-service/__pycache__
+embedding-service/app/__pycache__
+data/

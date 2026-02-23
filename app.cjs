@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const helmet = require('helmet');
 const cors = require('cors');
 const documentRoutes = require('./routes/documentRoutes.cjs');
@@ -11,7 +12,9 @@ const { responseTimeLogger } = require('./middleware/responseTimeLogger.cjs');
 
 const app = express();
 
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: false, // Allow inline scripts for React
+}));
 app.use(cors());
 app.use(express.json({ limit: '1mb' }));
 app.use(responseTimeLogger);
@@ -28,7 +31,18 @@ app.use('/search', searchRoutes);
 app.use('/ask', askRoutes);
 app.use('/benchmark', benchmarkRoutes);
 
-app.use(notFoundMiddleware);
+// ── Serve React frontend in production ──────────────────────
+if (process.env.NODE_ENV === 'production') {
+  const distPath = path.join(__dirname, 'dist');
+  app.use(express.static(distPath));
+  // SPA fallback: serve index.html for any non-API route
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(distPath, 'index.html'));
+  });
+} else {
+  app.use(notFoundMiddleware);
+}
+
 app.use(errorMiddleware);
 
 module.exports = app;

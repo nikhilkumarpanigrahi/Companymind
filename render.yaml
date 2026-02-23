@@ -1,0 +1,54 @@
+# ═══════════════════════════════════════════════════════════════
+#  CompanyMind — Render Blueprint (Infrastructure as Code)
+#  https://render.com/docs/blueprint-spec
+#
+#  To deploy:
+#  1. Push this repo to GitHub
+#  2. Go to https://dashboard.render.com → New → Blueprint
+#  3. Connect your repo → Render reads this file automatically
+# ═══════════════════════════════════════════════════════════════
+
+services:
+  # ── Web Service: Express API + React Frontend ─────────────
+  - type: web
+    name: companymind-web
+    runtime: node
+    region: oregon
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: node server.cjs
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 8080
+      - key: MONGODB_URI
+        sync: false   # You'll set this manually in the Render dashboard
+      - key: MONGODB_DB_NAME
+        value: companymind
+      - key: EMBEDDING_API_URL
+        fromService:
+          name: companymind-embedding
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL
+        # After deploy, append /embed-query to this in the dashboard
+      - key: EMBEDDING_API_KEY
+        value: ""
+      - key: VECTOR_INDEX_NAME
+        value: documents_embedding_index
+      - key: GROQ_API_KEY
+        sync: false   # You'll set this manually in the Render dashboard
+
+  # ── Embedding Service: Python FastAPI ─────────────────────
+  - type: web
+    name: companymind-embedding
+    runtime: docker
+    region: oregon
+    plan: free
+    dockerfilePath: ./embedding-service/Dockerfile
+    dockerContext: ./embedding-service
+    healthCheckPath: /health
+    envVars:
+      - key: WORKERS
+        value: "1"
