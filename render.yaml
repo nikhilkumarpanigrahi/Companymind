@@ -15,7 +15,7 @@ services:
     runtime: node
     region: oregon
     plan: free
-    buildCommand: npm ci && npm run build
+    buildCommand: npm ci --include=dev && npm run build
     startCommand: node server.cjs
     healthCheckPath: /health
     envVars:
