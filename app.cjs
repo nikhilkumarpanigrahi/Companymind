@@ -61,10 +61,10 @@ app.get('/health', async (req, res) => {
   }
 });
 
-app.use('/documents', documentRoutes);
-app.use('/search', searchLimiter, searchRoutes);
-app.use('/ask', searchLimiter, askRoutes);
-app.use('/benchmark', benchmarkRoutes);
+app.use('/api/documents', documentRoutes);
+app.use('/api/search', searchLimiter, searchRoutes);
+app.use('/api/ask', searchLimiter, askRoutes);
+app.use('/api/benchmark', benchmarkRoutes);
 
 // ── Serve React frontend in production ──────────────────────
 if (process.env.NODE_ENV === 'production') {
@@ -78,6 +78,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(notFoundMiddleware);
 }
 
+// Error handler (must be last middleware)
 app.use(errorMiddleware);
 
 module.exports = app;

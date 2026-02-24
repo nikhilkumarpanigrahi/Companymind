@@ -22,7 +22,7 @@ export const searchDocuments = async (
   page: number,
   pageSize: number
 ): Promise<SearchResponse> => {
-  const { data } = await apiClient.get<RawSearchResponse>('/search', {
+  const { data } = await apiClient.get<RawSearchResponse>('/api/search', {
     params: {
       q: query,
       page,
@@ -47,7 +47,7 @@ export const searchDocuments = async (
 };
 
 export const askQuestion = async (question: string): Promise<RAGResponse> => {
-  const { data } = await apiClient.post<RAGResponse>('/ask', { question }, { timeout: 30000 });
+  const { data } = await apiClient.post<RAGResponse>('/api/ask', { question }, { timeout: 30000 });
   return data;
 };
 
@@ -67,11 +67,11 @@ export const askQuestionStream = (
   }
 ): (() => void) => {
   const controller = new AbortController();
-  const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+  const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
 
   (async () => {
     try {
-      const response = await fetch(`${API_BASE}/ask/stream`, {
+      const response = await fetch(`${API_BASE}/api/ask/stream`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question, conversationHistory }),
@@ -116,27 +116,27 @@ export const askQuestionStream = (
 };
 
 export const addDocument = async (payload: AddDocumentPayload): Promise<void> => {
-  await apiClient.post('/documents', payload);
+  await apiClient.post('/api/documents', payload);
 };
 
 export const fetchDocuments = async (limit = 500): Promise<DocumentItem[]> => {
-  const { data } = await apiClient.get<{ success: boolean; count: number; data: DocumentItem[] }>('/documents', {
+  const { data } = await apiClient.get<{ success: boolean; count: number; data: DocumentItem[] }>('/api/documents', {
     params: { limit },
   });
   return data.data;
 };
 
 export const fetchStats = async (): Promise<StatsData> => {
-  const { data } = await apiClient.get<{ success: boolean; data: StatsData }>('/documents/stats');
+  const { data } = await apiClient.get<{ success: boolean; data: StatsData }>('/api/documents/stats');
   return data.data;
 };
 
 export const fetchAnalytics = async (): Promise<AnalyticsData> => {
-  const { data } = await apiClient.get<{ success: boolean; data: AnalyticsData }>('/ask/analytics');
+  const { data } = await apiClient.get<{ success: boolean; data: AnalyticsData }>('/api/ask/analytics');
   return data.data;
 };
 
 export const runBenchmark = async (query: string, limit = 10): Promise<BenchmarkResponse> => {
-  const { data } = await apiClient.post<BenchmarkResponse>('/benchmark', { query, limit }, { timeout: 30000 });
+  const { data } = await apiClient.post<BenchmarkResponse>('/api/benchmark', { query, limit }, { timeout: 30000 });
   return data;
 };
