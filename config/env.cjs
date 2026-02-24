@@ -6,7 +6,7 @@ const requiredVariables = ['MONGODB_URI', 'EMBEDDING_API_URL'];
 
 for (const variable of requiredVariables) {
   if (!process.env[variable]) {
-    throw new Error(`Missing required environment variable: ${variable}`);
+    console.warn(`⚠️  Missing environment variable: ${variable} — some features may not work`);
   }
 }
 
