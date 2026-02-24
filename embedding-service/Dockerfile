@@ -8,7 +8,13 @@
 # ── Stage 1: Model Downloader ────────────────────────────────
 FROM python:3.11-slim AS model-downloader
 
-RUN pip install --no-cache-dir sentence-transformers==3.3.1
+# Install CPU-only PyTorch first (skips ~3 GB of NVIDIA CUDA wheels)
+RUN pip install --no-cache-dir --retries 5 --timeout 60 \
+    torch==2.5.1+cpu --index-url https://download.pytorch.org/whl/cpu
+
+# Then install sentence-transformers (torch requirement already satisfied)
+RUN pip install --no-cache-dir --retries 5 --timeout 60 \
+    sentence-transformers==3.3.1
 
 # Pre‑download the model so it's baked into the image
 RUN python -c "\
@@ -28,9 +34,13 @@ RUN apt-get update && \
 
 WORKDIR /service
 
-# Install Python dependencies
+# Install CPU-only PyTorch first (avoids downloading ~3 GB CUDA wheels)
+RUN pip install --no-cache-dir --retries 5 --timeout 60 \
+    torch==2.5.1+cpu --index-url https://download.pytorch.org/whl/cpu
+
+# Install remaining Python dependencies
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --retries 5 --timeout 60 -r requirements.txt
 
 # Copy cached model from stage 1
 COPY --from=model-downloader /root/.cache/huggingface /root/.cache/huggingface

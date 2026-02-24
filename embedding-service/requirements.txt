@@ -6,8 +6,8 @@ pydantic==2.10.4
 pydantic-settings==2.7.1
 
 # ── ML / NLP ─────────────────────────────────────────────────
+# torch is installed separately in Dockerfile (CPU-only build)
 sentence-transformers==3.3.1
-torch==2.5.1            # CPU-only; replace with torch+cu121 for GPU
 numpy==1.26.4
 
 # ── Utilities ────────────────────────────────────────────────
