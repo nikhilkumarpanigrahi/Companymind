@@ -7,3 +7,4 @@ vite.config.js
 vite.config.d.ts
 __pycache__/
 *.pyc
+seeds/large-dataset.json

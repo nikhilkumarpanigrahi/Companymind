@@ -1,6 +1,36 @@
 const { Document } = require('../models/Document.cjs');
 const { env } = require('../config/env.cjs');
 
+// ── In-memory LRU cache for search results ──────────────────────
+class LRUCache {
+  constructor(maxSize = 200, ttlMs = 5 * 60 * 1000) {
+    this.maxSize = maxSize;
+    this.ttlMs = ttlMs;
+    this.cache = new Map();
+  }
+  get(key) {
+    const entry = this.cache.get(key);
+    if (!entry) return undefined;
+    if (Date.now() - entry.ts > this.ttlMs) { this.cache.delete(key); return undefined; }
+    // Move to end (most recently used)
+    this.cache.delete(key);
+    this.cache.set(key, entry);
+    return entry.value;
+  }
+  set(key, value) {
+    if (this.cache.size >= this.maxSize) {
+      // Delete oldest entry
+      const oldest = this.cache.keys().next().value;
+      this.cache.delete(oldest);
+    }
+    this.cache.set(key, { value, ts: Date.now() });
+  }
+}
+const searchCache = new LRUCache(200, 5 * 60 * 1000); // 5 min TTL
+
+/** Build a cache key from query + limit */
+const cacheKey = (prefix, query, limit) => `${prefix}:${query.trim().toLowerCase()}:${limit}`;
+
 const createDocument = async ({ title, content, embedding, category, tags }) => {
   const docData = { title, content, embedding };
   if (category) docData.category = category;
@@ -46,7 +76,7 @@ const getDocumentStats = async () => {
 };
 
 const vectorSearchDocuments = async ({ embedding, limit = 10 }) => {
-  const numCandidates = Math.max(limit * 20, 200);
+  const numCandidates = Math.max(limit * 20, 500);
 
   return Document.aggregate([
     {
@@ -99,44 +129,102 @@ const regexSearchDocuments = async ({ query, limit = 10 }) => {
     );
 };
 
-/**
- * Hybrid search: MongoDB $vectorSearch + post-hoc text-match boosting.
- * Strategy: run vector search, then boost results whose title/content
- * contain query keywords (simulating a hybrid retrieval pipeline).
- */
-const hybridSearchDocuments = async ({ embedding, query, limit = 10 }) => {
-  const numCandidates = Math.max(limit * 20, 200);
-  const vectorResults = await Document.aggregate([
-    {
-      $vectorSearch: {
-        index: env.VECTOR_INDEX_NAME,
-        path: 'embedding',
-        queryVector: embedding,
-        numCandidates,
-        limit: limit * 3 // over-fetch for re-ranking
-      }
-    },
-    {
-      $project: {
-        title: 1,
-        content: 1,
-        createdAt: 1,
-        vectorScore: { $meta: 'vectorSearchScore' }
-      }
-    }
-  ]);
+/** Minimum relevance score — results below this are discarded */
+const MIN_SCORE_THRESHOLD = 0.35;
 
-  // Keyword-boost: check how many query tokens appear in title/content
-  const tokens = query.toLowerCase().split(/\s+/).filter(Boolean);
-  const reRanked = vectorResults.map((doc) => {
-    const text = ((doc.title || '') + ' ' + (doc.content || '')).toLowerCase();
-    const matchCount = tokens.filter((t) => text.includes(t)).length;
-    const keywordBoost = tokens.length > 0 ? (matchCount / tokens.length) * 0.25 : 0;
-    return { ...doc, score: doc.vectorScore + keywordBoost };
+/**
+ * Reciprocal Rank Fusion (RRF) — merges two ranked lists by position.
+ * score = sum( 1 / (k + rank_i) ) for each list the doc appears in.
+ * Parameter k = 60 is the standard constant from the RRF paper.
+ */
+const RRF_K = 60;
+
+const reciprocalRankFusion = (vectorResults, textResults, limit) => {
+  const scoreMap = new Map(); // docId -> { doc, rrfScore }
+
+  vectorResults.forEach((doc, idx) => {
+    const id = doc._id?.toString();
+    const rrfScore = 1 / (RRF_K + idx + 1);
+    scoreMap.set(id, { doc, rrfScore });
   });
 
-  reRanked.sort((a, b) => b.score - a.score);
-  return reRanked.slice(0, limit);
+  textResults.forEach((doc, idx) => {
+    const id = doc._id?.toString();
+    const rrfScore = 1 / (RRF_K + idx + 1);
+    if (scoreMap.has(id)) {
+      scoreMap.get(id).rrfScore += rrfScore;
+    } else {
+      scoreMap.set(id, { doc, rrfScore });
+    }
+  });
+
+  return Array.from(scoreMap.values())
+    .sort((a, b) => b.rrfScore - a.rrfScore)
+    .slice(0, limit)
+    .map(({ doc, rrfScore }) => ({ ...doc, score: rrfScore }));
+};
+
+/**
+ * Hybrid search: Reciprocal Rank Fusion (RRF) of
+ *   1) MongoDB $vectorSearch (semantic)
+ *   2) MongoDB $text search (keyword / BM25-style)
+ * Both result sets are merged using RRF for robust, parameter-free ranking.
+ */
+const hybridSearchDocuments = async ({ embedding, query, limit = 10 }) => {
+  // Check cache first
+  const ck = cacheKey('hybrid', query, limit);
+  const cached = searchCache.get(ck);
+  if (cached) return cached;
+
+  const numCandidates = Math.max(limit * 20, 500);
+  const overFetchLimit = Math.max(limit * 5, 50);
+
+  // Run vector search and text search in parallel
+  const [vectorResults, textResults] = await Promise.all([
+    Document.aggregate([
+      {
+        $vectorSearch: {
+          index: env.VECTOR_INDEX_NAME,
+          path: 'embedding',
+          queryVector: embedding,
+          numCandidates,
+          limit: overFetchLimit
+        }
+      },
+      {
+        $project: {
+          title: 1,
+          content: 1,
+          category: 1,
+          tags: 1,
+          createdAt: 1,
+          vectorScore: { $meta: 'vectorSearchScore' }
+        }
+      }
+    ]),
+    // Text search (BM25-style keyword matching)
+    Document.find(
+      { $text: { $search: query } },
+      { score: { $meta: 'textScore' }, title: 1, content: 1, category: 1, tags: 1, createdAt: 1 }
+    )
+      .sort({ score: { $meta: 'textScore' } })
+      .limit(overFetchLimit)
+      .lean()
+      .catch(() => []) // graceful fallback if text index missing
+  ]);
+
+  // Merge with RRF
+  let merged = reciprocalRankFusion(vectorResults, textResults, limit);
+
+  // Apply minimum score threshold
+  // For RRF the max single-source score is 1/(60+1) ≈ 0.016, so threshold on percentile
+  // Filter out docs that only appeared in one list with rank > threshold position
+  // We keep results where rrfScore > 1/(RRF_K + limit * 3) as a reasonable cutoff
+  const rrfThreshold = 1 / (RRF_K + limit * 3);
+  merged = merged.filter(doc => doc.score >= rrfThreshold);
+
+  searchCache.set(ck, merged);
+  return merged;
 };
 
 module.exports = {

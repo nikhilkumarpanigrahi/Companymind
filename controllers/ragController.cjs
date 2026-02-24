@@ -1,5 +1,5 @@
 const { generateEmbedding } = require('../services/embeddingService.cjs');
-const { vectorSearchDocuments } = require('../services/documentService.cjs');
+const { hybridSearchDocuments } = require('../services/documentService.cjs');
 const { generateRAGAnswer, streamRAGAnswer } = require('../services/ragService.cjs');
 const { asyncHandler } = require('../utils/asyncHandler.cjs');
 
@@ -17,7 +17,7 @@ const askQuestionHandler = asyncHandler(async (req, res) => {
   const startedAt = process.hrtime.bigint();
 
   const embedding = await generateEmbedding(question);
-  const documents = await vectorSearchDocuments({ embedding, limit: 5 });
+  const documents = await hybridSearchDocuments({ embedding, query: question, limit: 5 });
   const { answer, model, tokensUsed } = await generateRAGAnswer(question, documents);
 
   const finishedAt = process.hrtime.bigint();
@@ -61,34 +61,41 @@ const askQuestionStreamHandler = asyncHandler(async (req, res) => {
     'X-Accel-Buffering': 'no', // disable Nginx buffering
   });
 
-  const embedding = await generateEmbedding(question);
-  const documents = await vectorSearchDocuments({ embedding, limit: 5 });
+  try {
+    const embedding = await generateEmbedding(question);
+    const documents = await hybridSearchDocuments({ embedding, query: question, limit: 5 });
 
-  // Send sources immediately so the client can render them
-  const sources = documents.map((doc) => ({
-    id: doc._id?.toString(),
-    title: doc.title || 'Untitled',
-    snippet: (doc.content || '').slice(0, 200),
-    relevanceScore: typeof doc.score === 'number' ? doc.score : 0,
-  }));
-  res.write(`data: ${JSON.stringify({ type: 'sources', sources })}\n\n`);
+    // Send sources immediately so the client can render them
+    const sources = documents.map((doc) => ({
+      id: doc._id?.toString(),
+      title: doc.title || 'Untitled',
+      snippet: (doc.content || '').slice(0, 200),
+      relevanceScore: typeof doc.score === 'number' ? doc.score : 0,
+    }));
+    res.write(`data: ${JSON.stringify({ type: 'sources', sources })}\n\n`);
 
-  // Stream the LLM answer
-  const { answer, model } = await streamRAGAnswer(question, documents, res, conversationHistory || []);
+    // Stream the LLM answer
+    const { answer, model } = await streamRAGAnswer(question, documents, res, conversationHistory || []);
 
-  const finishedAt = process.hrtime.bigint();
-  const tookMs = Number(finishedAt - startedAt) / 1_000_000;
+    const finishedAt = process.hrtime.bigint();
+    const tookMs = Number(finishedAt - startedAt) / 1_000_000;
 
-  logQuery('ask-stream', question, Number(tookMs.toFixed(2)));
+    logQuery('ask-stream', question, Number(tookMs.toFixed(2)));
 
-  // Final event
-  res.write(`data: ${JSON.stringify({
-    type: 'done',
-    meta: { model, tokensUsed: 0, sourcesUsed: sources.length, tookMs: Number(tookMs.toFixed(2)) },
-    fullAnswer: answer,
-  })}\n\n`);
+    // Final event
+    res.write(`data: ${JSON.stringify({
+      type: 'done',
+      meta: { model, tokensUsed: 0, sourcesUsed: sources.length, tookMs: Number(tookMs.toFixed(2)) },
+      fullAnswer: answer,
+    })}\n\n`);
 
-  res.end();
+    res.end();
+  } catch (err) {
+    // Send error via SSE so the client can display it
+    const errMsg = err.message || 'An unexpected error occurred during streaming';
+    res.write(`data: ${JSON.stringify({ type: 'error', error: errMsg })}\n\n`);
+    res.end();
+  }
 });
 
 /**

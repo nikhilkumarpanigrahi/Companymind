@@ -4,6 +4,7 @@ All values can be overridden via environment variables or a .env file.
 """
 
 from functools import lru_cache
+from typing import List
 from pydantic_settings import BaseSettings
 
 
@@ -23,14 +24,14 @@ class Settings(BaseSettings):
     # Device: "cpu", "cuda", or "auto" (auto picks GPU if available)
     DEVICE: str = "cpu"
     # Maximum tokens the model will process per text (truncation)
-    MAX_SEQ_LENGTH: int = 256
+    MAX_SEQ_LENGTH: int = 512
 
     # ── Batch ────────────────────────────────────────────────────────────
     MAX_BATCH_SIZE: int = 512  # upper‑bound texts per /embed-batch call
     NORMALIZE_EMBEDDINGS: bool = True  # L2 normalize output vectors
 
     # ── CORS ─────────────────────────────────────────────────────────────
-    CORS_ORIGINS: list[str] = ["*"]
+    CORS_ORIGINS: List[str] = ["*"]
 
     # ── Logging ──────────────────────────────────────────────────────────
     LOG_LEVEL: str = "INFO"

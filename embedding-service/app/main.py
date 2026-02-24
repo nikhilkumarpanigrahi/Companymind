@@ -95,6 +95,7 @@ async def health():
         model_name=settings.MODEL_NAME,
         embedding_dimension=engine.dimension,
         version=settings.APP_VERSION,
+        cache_stats=engine.cache_stats if engine.is_loaded else None,
     )
 
 

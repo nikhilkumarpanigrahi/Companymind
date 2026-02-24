@@ -2,6 +2,8 @@
 Pydantic models for request / response validation.
 """
 
+from typing import Any, Dict, List, Optional
+
 from pydantic import BaseModel, Field
 
 
@@ -20,7 +22,7 @@ class EmbedQueryRequest(BaseModel):
 
 class EmbedBatchRequest(BaseModel):
     """Batch of texts to embed (typically documents being ingested)."""
-    texts: list[str] = Field(
+    texts: List[str] = Field(
         ...,
         min_length=1,
         description="A list of text strings to generate embeddings for.",
@@ -39,7 +41,7 @@ class EmbedBatchRequest(BaseModel):
 
 class EmbedQueryResponse(BaseModel):
     """Response for a single‑query embedding."""
-    embedding: list[float] = Field(
+    embedding: List[float] = Field(
         ..., description="L2‑normalized embedding vector."
     )
     dimension: int = Field(
@@ -52,7 +54,7 @@ class EmbedQueryResponse(BaseModel):
 
 class EmbedBatchResponse(BaseModel):
     """Response for a batch embedding request."""
-    embeddings: list[list[float]] = Field(
+    embeddings: List[List[float]] = Field(
         ..., description="List of L2‑normalized embedding vectors."
     )
     dimension: int = Field(
@@ -73,3 +75,4 @@ class HealthResponse(BaseModel):
     model_name: str
     embedding_dimension: int
     version: str
+    cache_stats: Optional[Dict[str, Any]] = None

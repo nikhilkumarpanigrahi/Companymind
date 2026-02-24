@@ -1,4 +1,14 @@
+import { useEffect, useState } from 'react';
+import { fetchStats } from '../api/documents';
+import type { StatsData } from '../types';
+
 function HowItWorksPage() {
+  const [stats, setStats] = useState<StatsData | null>(null);
+
+  useEffect(() => {
+    fetchStats().then(setStats).catch(() => {});
+  }, []);
+
   return (
     <section className="animate-fadeIn space-y-10 max-w-4xl mx-auto">
       {/* Header */}
@@ -166,7 +176,7 @@ function HowItWorksPage() {
           <div className="glass-light rounded-xl p-4">
             <h3 className="mb-2 text-sm font-semibold text-slate-300">What's in it?</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              173 curated technical documents spanning 50+ categories including AI, databases, software engineering,
+              {stats ? stats.totalDocuments.toLocaleString() : '…'} curated technical documents spanning {stats ? `${stats.categories.length}+` : '…'} categories including AI, databases, software engineering,
               DevOps, security, NLP, cloud computing, and more. Each document is a comprehensive overview of a key
               technology topic with detailed explanations.
             </p>

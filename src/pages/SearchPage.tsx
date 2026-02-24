@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { askQuestionStream, searchDocuments } from '../api/documents';
+import { askQuestionStream, fetchStats, searchDocuments } from '../api/documents';
 import AIAnswer from '../components/AIAnswer';
 import ErrorToast from '../components/ErrorToast';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -26,9 +26,15 @@ function SearchPage() {
   const [query, setQuery] = useState('');
   const [mode, setMode] = useState<'search' | 'ask'>('search');
   const [results, setResults] = useState<SearchResultItem[]>([]);
+  const [docCount, setDocCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetchStats().then(s => setDocCount(s.totalDocuments)).catch(() => {});
+  }, []);
   const [ragResponse, setRagResponse] = useState<RAGResponse | null>(null);
   const [streamingAnswer, setStreamingAnswer] = useState('');
   const [streamingSources, setStreamingSources] = useState<RAGSource[]>([]);
+  const streamingSourcesRef = useRef<RAGSource[]>([]);
   const [isStreaming, setIsStreaming] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isAskLoading, setIsAskLoading] = useState(false);
@@ -96,13 +102,14 @@ function SearchPage() {
       },
       onSources: (sources) => {
         setStreamingSources(sources);
+        streamingSourcesRef.current = sources;
         setIsAskLoading(false); // stop shimmer, show streaming text
       },
       onDone: (meta, fullAnswer) => {
         const finalResponse: RAGResponse = {
           success: true,
           answer: fullAnswer,
-          sources: streamingSources.length > 0 ? streamingSources : [],
+          sources: streamingSourcesRef.current.length > 0 ? streamingSourcesRef.current : [],
           meta,
         };
         setRagResponse(finalResponse);
@@ -126,7 +133,7 @@ function SearchPage() {
     });
 
     abortRef.current = cancel;
-  }, [query, isAskLoading, isStreaming, conversationHistory, streamingSources]);
+  }, [query, isAskLoading, isStreaming, conversationHistory]);
 
   const handleModeChange = (newMode: 'search' | 'ask') => {
     setMode(newMode);
@@ -165,7 +172,7 @@ function SearchPage() {
             <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent"> Engine</span>
           </h1>
           <p className="mx-auto max-w-lg text-base text-slate-400">
-            Search 173+ documents with semantic understanding, or ask AI to synthesize answers from your knowledge base.
+            Search {docCount ? `${docCount.toLocaleString()}+` : ''} documents with semantic understanding, or ask AI to synthesize answers from your knowledge base.
           </p>
         </div>
       )}

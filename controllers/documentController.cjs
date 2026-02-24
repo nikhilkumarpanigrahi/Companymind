@@ -3,8 +3,10 @@ const {
   createDocument,
   listDocuments,
   getDocumentStats,
-  vectorSearchDocuments
+  vectorSearchDocuments,
+  hybridSearchDocuments
 } = require('../services/documentService.cjs');
+const { Document } = require('../models/Document.cjs');
 const { asyncHandler } = require('../utils/asyncHandler.cjs');
 const { logQuery } = require('./ragController.cjs');
 
@@ -49,10 +51,12 @@ const searchDocumentsQueryHandler = asyncHandler(async (req, res) => {
   const pageSizeNum = Number(pageSize);
   const startedAt = process.hrtime.bigint();
 
-  // Fetch a generous set of results to enable real pagination
-  const maxResults = Math.max(pageSizeNum * 5, 50);
+  // Fetch enough results for good relevance ranking
+  const maxResults = Math.max(pageSizeNum * 5, 100);
   const embedding = await generateEmbedding(q);
-  const results = await vectorSearchDocuments({ embedding, limit: maxResults });
+
+  // Use RRF hybrid search (vector + keyword) for best relevance
+  const results = await hybridSearchDocuments({ embedding, query: q, limit: maxResults });
 
   const allMapped = results.map((item) => ({
     id: item._id?.toString(),
@@ -61,6 +65,7 @@ const searchDocumentsQueryHandler = asyncHandler(async (req, res) => {
     relevanceScore: typeof item.score === 'number' ? item.score : 0
   }));
 
+  // Get true total count for pagination (count matching docs or total DB docs)
   const total = allMapped.length;
   const start = (pageNum - 1) * pageSizeNum;
   const pageResults = allMapped.slice(start, start + pageSizeNum);

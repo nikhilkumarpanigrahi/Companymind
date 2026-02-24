@@ -14,10 +14,19 @@ require('dotenv').config();
 const { Document } = require('../models/Document.cjs');
 const { connectToDatabase } = require('../config/db.cjs');
 
+// CLI arguments
+const args = process.argv.slice(2);
+let INPUT_FILE = path.join(__dirname, 'sample-documents.json');
+let NO_WAIT = false;
+for (const arg of args) {
+  if (arg.startsWith('--file=')) INPUT_FILE = path.resolve(arg.split('=').slice(1).join('='));
+  if (arg === '--no-wait') NO_WAIT = true;
+}
+
 // Configuration
 const EMBEDDING_API_URL = process.env.EMBEDDING_API_URL || 'http://localhost:8000/embed-query';
 const EMBEDDING_API_KEY = process.env.EMBEDDING_API_KEY || '';
-const BATCH_SIZE = 10; // Process 10 documents at a time
+const BATCH_SIZE = 25; // Process 25 documents at a time
 const DELAY_MS = 100; // Delay between batches to avoid overwhelming the API
 
 // Helper: Generate embedding for text
@@ -121,10 +130,9 @@ const seedDatabase = async () => {
     }
 
     // Load sample documents
-    console.log('📖 Loading sample documents...');
-    const sampleDocsPath = path.join(__dirname, 'sample-documents.json');
-    const sampleDocuments = JSON.parse(fs.readFileSync(sampleDocsPath, 'utf8'));
-    console.log(`✅ Loaded ${sampleDocuments.length} sample documents\n`);
+    console.log(`📖 Loading documents from ${INPUT_FILE}...`);
+    const sampleDocuments = JSON.parse(fs.readFileSync(INPUT_FILE, 'utf8'));
+    console.log(`✅ Loaded ${sampleDocuments.length} documents\n`);
 
     // Check for existing documents
     const existingCount = await Document.countDocuments();
@@ -134,9 +142,13 @@ const seedDatabase = async () => {
       console.log('   1. Skip seeding (press Ctrl+C)');
       console.log('   2. Continue anyway (will add duplicates)\n');
       
-      // Wait 5 seconds before continuing
-      console.log('   Continuing in 5 seconds...');
-      await sleep(5000);
+      // Wait 5 seconds before continuing (skip with --no-wait)
+      if (!NO_WAIT) {
+        console.log('   Continuing in 5 seconds...');
+        await sleep(5000);
+      } else {
+        console.log('   --no-wait flag set, continuing immediately...');
+      }
     }
 
     // Process documents in batches

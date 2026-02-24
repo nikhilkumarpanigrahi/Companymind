@@ -119,7 +119,7 @@ export const addDocument = async (payload: AddDocumentPayload): Promise<void> =>
   await apiClient.post('/documents', payload);
 };
 
-export const fetchDocuments = async (limit = 100): Promise<DocumentItem[]> => {
+export const fetchDocuments = async (limit = 500): Promise<DocumentItem[]> => {
   const { data } = await apiClient.get<{ success: boolean; count: number; data: DocumentItem[] }>('/documents', {
     params: { limit },
   });

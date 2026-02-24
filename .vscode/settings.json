@@ -1,0 +1,7 @@
+{
+  "python.defaultInterpreterPath": "C:\\Program Files\\Python38\\python.exe",
+  "python.analysis.extraPaths": [
+    "embedding-service",
+    "C:\\Users\\bharg\\AppData\\Roaming\\Python\\Python38\\site-packages"
+  ]
+}
