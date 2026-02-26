@@ -15,7 +15,6 @@ export default {
       },
       boxShadow: {
         soft: '0 10px 30px -15px rgba(17, 24, 39, 0.25)',
-        glow: '0 0 20px rgba(99, 102, 241, 0.1)',
       },
       keyframes: {
         fadeInUp: {

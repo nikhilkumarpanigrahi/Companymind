@@ -131,7 +131,7 @@ function MethodCard({ methodKey, data }: { methodKey: string; data: BenchmarkMet
   const icon = METHOD_ICONS[methodKey] || '🔍';
 
   return (
-    <div className="glass rounded-2xl p-5 transition-all hover:shadow-glow">
+    <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-5 transition-colors hover:border-white/[0.12]">
       <div className="flex items-start gap-3 mb-3">
         <span className="text-2xl">{icon}</span>
         <div className="flex-1 min-w-0">
@@ -223,16 +223,11 @@ export default function BenchmarksPage() {
     <section className="animate-fadeIn">
       {/* Header */}
       <div className="mb-8">
-        <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-[10px] font-semibold text-amber-300 uppercase tracking-wider">
-          <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
-          Search Strategy Benchmarks
-        </div>
-        <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-          MongoDB Search
-          <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-red-400 bg-clip-text text-transparent"> Comparison</span>
+        <h1 className="text-2xl font-semibold tracking-tight text-white">
+          Search Benchmarks
         </h1>
-        <p className="mt-2 max-w-2xl text-sm text-slate-400">
-          Run the same query through <strong className="text-slate-300">4 different MongoDB search strategies</strong> and compare latency, relevance, and result overlap in real-time. See why vector search outperforms traditional approaches for semantic understanding.
+        <p className="mt-2 max-w-2xl text-sm text-slate-500">
+          Run the same query through 4 different MongoDB search strategies and compare latency, relevance, and result overlap.
         </p>
       </div>
 
@@ -245,13 +240,13 @@ export default function BenchmarksPage() {
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleRun()}
             placeholder="Enter a search query to benchmark..."
-            className="w-full rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white placeholder-slate-500 outline-none transition-all focus:border-amber-500/40 focus:ring-2 focus:ring-amber-500/20"
+            className="w-full rounded-md border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition-colors focus:border-white/[0.16]"
           />
         </div>
         <button
           onClick={() => handleRun()}
           disabled={isRunning || !query.trim()}
-          className="shrink-0 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 px-6 py-3 text-sm font-bold text-white shadow-lg transition-all hover:shadow-[0_0_20px_rgba(245,158,11,0.3)] disabled:opacity-40 disabled:cursor-not-allowed"
+          className="shrink-0 rounded-md bg-white/[0.1] px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-white/[0.15] disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {isRunning ? (
             <span className="flex items-center gap-2">
@@ -280,21 +275,21 @@ export default function BenchmarksPage() {
 
       {/* Pipeline visualization */}
       {isRunning && (
-        <div className="mb-8 flex flex-col items-center gap-4 animate-fadeIn">
+        <div className="mb-8 flex flex-col items-center gap-3 animate-fadeIn">
           <div className="flex items-center gap-3">
             {['Regex Scan', 'Text Index', 'Embedding', 'Vector Search', 'Hybrid Re-rank'].map((step, i) => (
               <div key={step} className="flex items-center gap-2">
                 <div
-                  className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 text-amber-400 animate-pulse"
+                  className="flex h-9 w-9 items-center justify-center rounded-md border border-white/[0.08] bg-white/[0.04] text-sm animate-pulse"
                   style={{ animationDelay: `${i * 200}ms` }}
                 >
-                  <span className="text-sm">{['🔤', '📝', '🧠', '🎯', '⚡'][i]}</span>
+                  <span>{['🔤', '📝', '🧠', '🎯', '⚡'][i]}</span>
                 </div>
-                {i < 4 && <div className="hidden sm:block h-[2px] w-6 bg-white/10" />}
+                {i < 4 && <div className="hidden sm:block h-px w-6 bg-white/[0.08]" />}
               </div>
             ))}
           </div>
-          <p className="text-xs text-slate-500 animate-pulse">Running 4 search strategies in parallel...</p>
+          <p className="text-xs text-slate-600 animate-pulse">Running 4 search strategies in parallel...</p>
         </div>
       )}
 
@@ -302,9 +297,9 @@ export default function BenchmarksPage() {
       {summary && methods && !isRunning && (
         <div className="space-y-8 animate-fadeIn">
           {/* Latency comparison */}
-          <div className="glass rounded-2xl p-6">
-            <h2 className="mb-1 text-base font-bold text-white flex items-center gap-2">
-              <span className="text-lg">⏱</span> Latency Comparison
+          <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-6">
+            <h2 className="mb-1 text-sm font-medium text-white flex items-center gap-2">
+              Latency Comparison
             </h2>
             <p className="text-[11px] text-slate-500 mb-4">
               Query: "<span className="text-slate-300">{summary.query}</span>" — Embedding generation: {summary.totalEmbeddingMs.toFixed(1)}ms
@@ -327,20 +322,20 @@ export default function BenchmarksPage() {
             {summary.methods.map((m) => {
               const color = METHOD_COLORS[m.key] || '#6366f1';
               return (
-                <div key={m.key} className="glass-light rounded-xl p-4 text-center">
+                <div key={m.key} className="rounded-md border border-white/[0.06] bg-white/[0.02] p-4 text-center">
                   <span className="text-2xl">{METHOD_ICONS[m.key]}</span>
-                  <p className="mt-1 text-xs font-bold text-slate-300">{m.method.split('(')[0].trim()}</p>
+                  <p className="mt-1 text-xs font-medium text-slate-300">{m.method.split('(')[0].trim()}</p>
                   <div className="mt-3 flex justify-center gap-4">
                     <div>
-                      <p className="text-lg font-extrabold" style={{ color }}>{m.latencyMs.toFixed(0)}<span className="text-xs text-slate-500">ms</span></p>
+                      <p className="text-lg font-semibold" style={{ color }}>{m.latencyMs.toFixed(0)}<span className="text-xs text-slate-500">ms</span></p>
                       <p className="text-[9px] text-slate-600">Latency</p>
                     </div>
                     <div>
-                      <p className="text-lg font-extrabold text-slate-300">{m.resultCount}</p>
+                      <p className="text-lg font-semibold text-slate-300">{m.resultCount}</p>
                       <p className="text-[9px] text-slate-600">Results</p>
                     </div>
                     <div>
-                      <p className="text-lg font-extrabold text-slate-300">{m.avgScore.toFixed(3)}</p>
+                      <p className="text-lg font-semibold text-slate-300">{m.avgScore.toFixed(3)}</p>
                       <p className="text-[9px] text-slate-600">Avg Score</p>
                     </div>
                   </div>
@@ -350,9 +345,9 @@ export default function BenchmarksPage() {
           </div>
 
           {/* Result overlap heatmap */}
-          <div className="glass rounded-2xl p-6">
-            <h2 className="mb-1 text-base font-bold text-white flex items-center gap-2">
-              <span className="text-lg">🔀</span> Result Overlap Matrix
+          <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-6">
+            <h2 className="mb-1 text-sm font-medium text-white flex items-center gap-2">
+              Result Overlap Matrix
             </h2>
             <p className="text-[11px] text-slate-500 mb-4">
               Shows what percentage of results from each method also appear in the other.
@@ -363,8 +358,8 @@ export default function BenchmarksPage() {
 
           {/* Detailed method cards */}
           <div>
-            <h2 className="mb-4 text-base font-bold text-white flex items-center gap-2">
-              <span className="text-lg">🔍</span> Detailed Results by Method
+            <h2 className="mb-4 text-sm font-medium text-white">
+              Detailed Results by Method
             </h2>
             <div className="grid gap-4 lg:grid-cols-2">
               {Object.entries(methods).map(([key, methodData]) => (
@@ -374,9 +369,9 @@ export default function BenchmarksPage() {
           </div>
 
           {/* Key insights */}
-          <div className="glass rounded-2xl p-6 border-l-4 border-emerald-500/50">
-            <h2 className="mb-3 text-base font-bold text-white flex items-center gap-2">
-              <span className="text-lg">💡</span> Key Insights for Judges
+          <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] border-l-emerald-500/40 border-l-2 p-6">
+            <h2 className="mb-3 text-sm font-medium text-white">
+              Key Insights
             </h2>
             <ul className="space-y-2 text-sm text-slate-400">
               <li className="flex items-start gap-2">
@@ -423,7 +418,7 @@ export default function BenchmarksPage() {
 
       {/* Empty state */}
       {!data && !isRunning && (
-        <div className="mt-12 rounded-2xl border border-white/5 bg-white/[0.02] p-10 text-center animate-fadeIn">
+        <div className="mt-12 rounded-lg border border-white/[0.06] bg-white/[0.02] p-10 text-center animate-fadeIn">
           <span className="text-4xl">🏁</span>
           <p className="mt-3 text-sm text-slate-400">Enter a query above and hit <strong className="text-slate-300">Run Benchmark</strong> to compare all 4 MongoDB search strategies head-to-head.</p>
           <p className="mt-1 text-[11px] text-slate-600">Each benchmark runs Regex, Text, Vector, and Hybrid search — then shows latency, scoring, and overlap analysis.</p>

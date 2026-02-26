@@ -73,21 +73,15 @@ function AdminPage() {
 
   return (
     <section className="mx-auto w-full max-w-2xl animate-fadeIn">
-      <div className="mb-8 text-center">
-        <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-1.5 text-xs font-medium text-emerald-300">
-          <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M12 5v14M5 12h14" strokeLinecap="round" />
-          </svg>
-          Knowledge Base Management
-        </div>
-        <h1 className="mb-2 text-3xl font-extrabold tracking-tight text-white">Add Document</h1>
-        <p className="text-sm text-slate-400">
+      <div className="mb-8">
+        <h1 className="mb-2 text-2xl font-semibold tracking-tight text-white">Add Document</h1>
+        <p className="text-sm text-slate-500">
           Add a new document to your knowledge base. It will be auto-embedded for semantic search &amp; RAG.
-          {docCount !== null && <span className="text-indigo-400 ml-1">({docCount} documents indexed)</span>}
+          {docCount !== null && <span className="text-slate-400 ml-1">({docCount} documents indexed)</span>}
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="glass rounded-2xl p-6 space-y-5">
+      <form onSubmit={handleSubmit} className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-6 space-y-5">
         {/* Title */}
         <div>
           <label className="mb-2 block text-sm font-medium text-slate-300" htmlFor="title">Title</label>
@@ -95,7 +89,7 @@ function AdminPage() {
             id="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full rounded-xl border border-white/10 bg-white/[0.05] px-4 py-3 text-white placeholder-slate-500 outline-none transition focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/25"
+            className="w-full rounded-md border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-white placeholder-slate-600 outline-none transition-colors focus:border-white/[0.16]"
             placeholder="e.g. Introduction to Vector Databases"
           />
         </div>
@@ -107,7 +101,7 @@ function AdminPage() {
             id="category"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="w-full rounded-xl border border-white/10 bg-white/[0.05] px-4 py-3 text-white outline-none transition focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/25 [&>option]:bg-slate-800"
+            className="w-full rounded-md border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-white outline-none transition-colors focus:border-white/[0.16] [&>option]:bg-slate-800"
           >
             <option value="">Select a category...</option>
             {CATEGORIES.map((cat) => (
@@ -123,10 +117,10 @@ function AdminPage() {
             {tags.map((tag) => (
               <span
                 key={tag}
-                className="inline-flex items-center gap-1 rounded-lg border border-indigo-500/20 bg-indigo-500/10 px-2.5 py-1 text-xs text-indigo-300"
+                className="inline-flex items-center gap-1 rounded-md border border-white/[0.06] bg-white/[0.04] px-2.5 py-1 text-xs text-slate-300"
               >
                 {tag}
-                <button type="button" onClick={() => removeTag(tag)} className="ml-0.5 text-indigo-400 hover:text-white">
+                <button type="button" onClick={() => removeTag(tag)} className="ml-0.5 text-slate-500 hover:text-white">
                   &times;
                 </button>
               </span>
@@ -137,13 +131,13 @@ function AdminPage() {
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
               onKeyDown={handleTagKeyDown}
-              className="flex-1 rounded-xl border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-white placeholder-slate-500 outline-none transition focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/25"
+              className="flex-1 rounded-md border border-white/[0.08] bg-white/[0.03] px-4 py-2.5 text-sm text-white placeholder-slate-600 outline-none transition-colors focus:border-white/[0.16]"
               placeholder="Type a tag and press Enter (max 10)"
             />
             <button
               type="button"
               onClick={handleAddTag}
-              className="rounded-xl border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-slate-400 hover:bg-white/[0.08] hover:text-white transition-all"
+              className="rounded-md border border-white/[0.08] bg-white/[0.03] px-4 py-2.5 text-sm text-slate-400 hover:border-white/[0.12] hover:text-white transition-colors"
             >
               Add
             </button>
@@ -157,7 +151,7 @@ function AdminPage() {
             id="content"
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="min-h-52 w-full rounded-xl border border-white/10 bg-white/[0.05] px-4 py-3 text-white placeholder-slate-500 outline-none transition focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/25"
+            className="min-h-52 w-full rounded-md border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-white placeholder-slate-600 outline-none transition-colors focus:border-white/[0.16]"
             placeholder="Paste the document text here..."
           />
           <p className="mt-1 text-right text-[10px] text-slate-600">{content.length} / 10,000 chars</p>
@@ -168,7 +162,7 @@ function AdminPage() {
           <button
             type="submit"
             disabled={isSaving}
-            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 transition-all hover:shadow-indigo-500/40 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex items-center gap-2 rounded-md bg-white/[0.1] px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-white/[0.15] disabled:cursor-not-allowed disabled:opacity-60"
           >
             {isSaving ? (
               <>
@@ -199,7 +193,7 @@ function AdminPage() {
         </div>
       </form>
 
-      <div className="mt-6 glass-light rounded-xl p-4 text-center">
+      <div className="mt-6 rounded-md border border-white/[0.04] bg-white/[0.02] p-4 text-center">
         <p className="text-xs text-slate-500">
           Documents are automatically embedded using <span className="text-slate-400">MiniLM-L6-v2</span> (384 dimensions)
           and indexed in <span className="text-slate-400">MongoDB Atlas Vector Search</span> for instant retrieval.

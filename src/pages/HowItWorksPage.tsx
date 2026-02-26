@@ -13,32 +13,19 @@ function HowItWorksPage() {
     <section className="animate-fadeIn space-y-10 max-w-4xl mx-auto">
       {/* Header */}
       <div className="text-center">
-        <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-purple-500/20 bg-purple-500/10 px-4 py-1.5 text-xs font-medium text-purple-300">
-          <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <circle cx="12" cy="12" r="10" />
-            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-            <line x1="12" y1="17" x2="12.01" y2="17" />
-          </svg>
-          Architecture &amp; Design
-        </div>
-        <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">How CompanyMind Works</h1>
-        <p className="mt-3 mx-auto max-w-2xl text-sm text-slate-400 leading-relaxed">
+        <h1 className="text-2xl font-semibold tracking-tight text-white">How CompanyMind Works</h1>
+        <p className="mt-3 mx-auto max-w-2xl text-sm text-slate-500 leading-relaxed">
           CompanyMind solves the challenge of finding relevant information across large document collections by using
           AI-powered semantic understanding instead of traditional keyword matching.
         </p>
       </div>
 
       {/* Problem Statement */}
-      <div className="glass rounded-2xl p-6 border-l-4 border-l-red-500/50">
-        <h2 className="mb-3 flex items-center gap-2 text-lg font-bold text-white">
-          <svg className="h-5 w-5 text-red-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <circle cx="12" cy="12" r="10" />
-            <line x1="12" y1="8" x2="12" y2="12" />
-            <line x1="12" y1="16" x2="12.01" y2="16" />
-          </svg>
+      <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-6 border-l-2 border-l-red-500/40">
+        <h2 className="mb-3 text-sm font-medium text-white">
           The Problem
         </h2>
-        <p className="text-sm text-slate-400 leading-relaxed">
+        <p className="text-sm text-slate-500 leading-relaxed">
           Traditional search systems rely on exact keyword matching, which fails when users describe concepts in different words.
           A search for "how to speed up database queries" would miss a document titled "Database Indexing Strategies" because
           the exact keywords don't match — even though the document is exactly what the user needs. Organizations lose
@@ -47,15 +34,11 @@ function HowItWorksPage() {
       </div>
 
       {/* Solution */}
-      <div className="glass rounded-2xl p-6 border-l-4 border-l-emerald-500/50">
-        <h2 className="mb-3 flex items-center gap-2 text-lg font-bold text-white">
-          <svg className="h-5 w-5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-            <path d="M22 4L12 14.01l-3-3" />
-          </svg>
+      <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-6 border-l-2 border-l-emerald-500/40">
+        <h2 className="mb-3 text-sm font-medium text-white">
           Our Solution
         </h2>
-        <p className="text-sm text-slate-400 leading-relaxed">
+        <p className="text-sm text-slate-500 leading-relaxed">
           CompanyMind converts every document into a 384-dimensional vector embedding that captures its <em className="text-slate-300">meaning</em>,
           not just its words. When you search, your query is also converted to a vector, and MongoDB Atlas finds the most
           semantically similar documents using cosine similarity. The RAG (Retrieval-Augmented Generation) pipeline goes
@@ -66,7 +49,7 @@ function HowItWorksPage() {
 
       {/* Pipeline Steps */}
       <div>
-        <h2 className="mb-6 text-center text-lg font-bold text-white">The RAG Pipeline</h2>
+        <h2 className="mb-6 text-center text-sm font-medium text-white">The RAG Pipeline</h2>
         <div className="space-y-4">
           {[
             {
@@ -143,8 +126,8 @@ function HowItWorksPage() {
               pink: 'text-pink-400',
             };
             return (
-              <div key={item.step} className={`glass rounded-2xl p-5 flex items-start gap-4 border-l-4 ${borderColors[item.color]}`}>
-                <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${bgColors[item.color]}`}>
+              <div key={item.step} className={`rounded-lg border border-white/[0.06] bg-white/[0.02] p-5 flex items-start gap-4 border-l-2 ${borderColors[item.color]}`}>
+                <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-md ${bgColors[item.color]}`}>
                   <svg className={`h-5 w-5 ${textColors[item.color]}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     {item.icon}
                   </svg>
@@ -163,43 +146,38 @@ function HowItWorksPage() {
       </div>
 
       {/* Dataset Info */}
-      <div className="glass rounded-2xl p-6">
-        <h2 className="mb-4 flex items-center gap-2 text-lg font-bold text-white">
-          <svg className="h-5 w-5 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <ellipse cx="12" cy="5" rx="9" ry="3" />
-            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
-            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
-          </svg>
+      <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-6">
+        <h2 className="mb-4 text-sm font-medium text-white">
           About the Dataset
         </h2>
         <div className="grid gap-4 sm:grid-cols-2">
-          <div className="glass-light rounded-xl p-4">
-            <h3 className="mb-2 text-sm font-semibold text-slate-300">What's in it?</h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
+          <div className="rounded-md border border-white/[0.04] bg-white/[0.02] p-4">
+            <h3 className="mb-2 text-sm font-medium text-slate-300">What's in it?</h3>
+            <p className="text-xs text-slate-500 leading-relaxed">
               {stats ? stats.totalDocuments.toLocaleString() : '…'} curated technical documents spanning {stats ? `${stats.categories.length}+` : '…'} categories including AI, databases, software engineering,
               DevOps, security, NLP, cloud computing, and more. Each document is a comprehensive overview of a key
               technology topic with detailed explanations.
             </p>
           </div>
-          <div className="glass-light rounded-xl p-4">
-            <h3 className="mb-2 text-sm font-semibold text-slate-300">How it's structured</h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
+          <div className="rounded-md border border-white/[0.04] bg-white/[0.02] p-4">
+            <h3 className="mb-2 text-sm font-medium text-slate-300">How it's structured</h3>
+            <p className="text-xs text-slate-500 leading-relaxed">
               Each document has a title, content body, category label, and semantic tags. The content is embedded using
               the all-MiniLM-L6-v2 model into 384-dimensional vectors, stored with the document in MongoDB Atlas for
               instant vector similarity search.
             </p>
           </div>
-          <div className="glass-light rounded-xl p-4">
-            <h3 className="mb-2 text-sm font-semibold text-slate-300">Why this dataset?</h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
+          <div className="rounded-md border border-white/[0.04] bg-white/[0.02] p-4">
+            <h3 className="mb-2 text-sm font-medium text-slate-300">Why this dataset?</h3>
+            <p className="text-xs text-slate-500 leading-relaxed">
               The dataset simulates a real-world company knowledge base with diverse technical topics. It demonstrates
               how semantic search outperforms keyword search — for example, searching "speed up my app" returns documents
               about caching, indexing, and optimization even though those exact words aren't in the query.
             </p>
           </div>
-          <div className="glass-light rounded-xl p-4">
-            <h3 className="mb-2 text-sm font-semibold text-slate-300">Extensibility</h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
+          <div className="rounded-md border border-white/[0.04] bg-white/[0.02] p-4">
+            <h3 className="mb-2 text-sm font-medium text-slate-300">Extensibility</h3>
+            <p className="text-xs text-slate-500 leading-relaxed">
               You can add your own documents through the Admin page. Each new document is automatically embedded
               and indexed, becoming instantly searchable. The system scales to thousands of documents with the
               same low-latency performance.
@@ -209,12 +187,8 @@ function HowItWorksPage() {
       </div>
 
       {/* Tech Stack Details */}
-      <div className="glass rounded-2xl p-6">
-        <h2 className="mb-4 flex items-center gap-2 text-lg font-bold text-white">
-          <svg className="h-5 w-5 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <rect x="2" y="3" width="20" height="14" rx="2" />
-            <path d="M8 21h8M12 17v4" />
-          </svg>
+      <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-6">
+        <h2 className="mb-4 text-sm font-medium text-white">
           Tech Stack
         </h2>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -224,11 +198,11 @@ function HowItWorksPage() {
             { name: 'Groq + Llama 3', role: 'LLM for RAG', detail: 'llama-3.3-70b-versatile via Groq\'s ultra-fast inference API (~1-3s response time)' },
             { name: 'FastAPI (Python)', role: 'Embedding Microservice', detail: 'Serves embedding generation as a REST API on port 8000 with health checks' },
             { name: 'Express.js', role: 'Backend API', detail: 'REST API with Zod validation, Helmet security, CORS, centralized error handling' },
-            { name: 'React + Vite + TS', role: 'Frontend', detail: 'TypeScript SPA with Tailwind CSS, glass-morphism UI, real-time search with debounce' },
+            { name: 'React + Vite + TS', role: 'Frontend', detail: 'TypeScript SPA with Tailwind CSS, clean dark UI, real-time search with debounce' },
           ].map((tech) => (
-            <div key={tech.name} className="glass-light rounded-xl p-4 hover:bg-white/[0.04] transition-all">
-              <h3 className="text-sm font-semibold text-white">{tech.name}</h3>
-              <p className="text-[11px] font-medium text-indigo-400">{tech.role}</p>
+            <div key={tech.name} className="rounded-md border border-white/[0.04] bg-white/[0.02] p-4 hover:border-white/[0.08] transition-colors">
+              <h3 className="text-sm font-medium text-white">{tech.name}</h3>
+              <p className="text-[11px] font-medium text-slate-400">{tech.role}</p>
               <p className="mt-1 text-[11px] text-slate-500 leading-relaxed">{tech.detail}</p>
             </div>
           ))}
@@ -236,11 +210,8 @@ function HowItWorksPage() {
       </div>
 
       {/* Performance */}
-      <div className="glass rounded-2xl p-6">
-        <h2 className="mb-4 flex items-center gap-2 text-lg font-bold text-white">
-          <svg className="h-5 w-5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-          </svg>
+      <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-6">
+        <h2 className="mb-4 text-sm font-medium text-white">
           Performance Benchmarks
         </h2>
         <div className="grid gap-4 sm:grid-cols-4">
@@ -251,8 +222,8 @@ function HowItWorksPage() {
             { label: 'RAG Answer', value: '~1-3s', desc: 'Groq Llama 3 70B' },
           ].map((perf) => (
             <div key={perf.label} className="text-center">
-              <p className="text-2xl font-bold text-white">{perf.value}</p>
-              <p className="text-xs font-semibold text-indigo-400">{perf.label}</p>
+              <p className="text-2xl font-semibold text-white">{perf.value}</p>
+              <p className="text-xs font-medium text-slate-400">{perf.label}</p>
               <p className="text-[10px] text-slate-500">{perf.desc}</p>
             </div>
           ))}

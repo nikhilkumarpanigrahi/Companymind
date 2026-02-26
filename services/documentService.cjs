@@ -176,8 +176,10 @@ const hybridSearchDocuments = async ({ embedding, query, limit = 10 }) => {
   const cached = searchCache.get(ck);
   if (cached) return cached;
 
-  const numCandidates = Math.max(limit * 20, 500);
   const overFetchLimit = Math.max(limit * 5, 50);
+
+  // Tune numCandidates proportionally to overFetchLimit (10x) with ceiling
+  const numCandidates = Math.min(Math.max(overFetchLimit * 10, 200), 1000);
 
   // Run vector search and text search in parallel
   const [vectorResults, textResults] = await Promise.all([
