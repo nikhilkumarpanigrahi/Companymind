@@ -62,7 +62,7 @@ const searchDocumentsQueryHandler = asyncHandler(async (req, res) => {
     id: item._id?.toString(),
     title: item.title || 'Untitled',
     snippet: (item.content || '').slice(0, 220),
-    relevanceScore: typeof item.score === 'number' ? item.score : 0
+    relevanceScore: typeof item.vectorScore === 'number' ? item.vectorScore : (typeof item.score === 'number' ? item.score : 0)
   }));
 
   // Get true total count for pagination (count matching docs or total DB docs)

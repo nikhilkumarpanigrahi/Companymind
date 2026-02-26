@@ -16,7 +16,6 @@ function simpleMarkdown(text: string): string {
     .replace(/`([^`]+)`/g, '<code>$1</code>')
     .replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>')
     .replace(/^[-*] (.+)$/gm, '<li>$1</li>')
-    .replace(/\[Source: (.+?)\]/g, '<span class="inline-flex items-center gap-1 rounded-md bg-indigo-500/10 px-2 py-0.5 text-xs font-medium text-indigo-300 border border-indigo-500/20">📄 $1</span>')
     .replace(/\n\n/g, '</p><p>')
     .replace(/\n/g, '<br/>');
 
@@ -37,8 +36,8 @@ function AIAnswer({ data, compact }: AIAnswerProps) {
 
   if (compact) {
     return (
-      <div className="glass-light rounded-xl p-4">
-        <div className="ai-answer text-xs leading-relaxed text-slate-400 line-clamp-3"
+      <div className="rounded-md border border-white/[0.06] bg-white/[0.02] p-3">
+        <div className="ai-answer text-xs leading-relaxed text-slate-500 line-clamp-3"
           dangerouslySetInnerHTML={{ __html: simpleMarkdown(data.answer) }}
         />
       </div>
@@ -46,57 +45,49 @@ function AIAnswer({ data, compact }: AIAnswerProps) {
   }
 
   return (
-    <div className="animate-fadeInUp">
-      <div className="glass rounded-2xl p-6 shadow-glow">
-        <div className="mb-4 flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-indigo-500">
-            <svg className="h-4 w-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M12 2a8 8 0 0 1 8 8c0 3.5-2 5.5-4 7l-1 4H9l-1-4c-2-1.5-4-3.5-4-7a8 8 0 0 1 8-8z" />
-              <path d="M10 22h4" />
+    <div>
+      <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-5">
+        <div className="mb-3 flex items-center gap-2.5">
+          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-white/[0.06]">
+            <svg className="h-3.5 w-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
             </svg>
           </div>
-          <div>
-            <h3 className="text-sm font-semibold text-white">CompanyMind AI</h3>
-            <p className="text-xs text-slate-500">Powered by {data.meta.model}</p>
+          <div className="flex-1">
+            <p className="text-sm font-medium text-slate-300">AI Answer</p>
           </div>
-          <div className="ml-auto flex items-center gap-3 text-xs text-slate-500">
-            <span className="flex items-center gap-1">
-              <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="10" />
-                <path d="M12 6v6l4 2" />
-              </svg>
-              {data.meta.tookMs.toFixed(0)}ms
-            </span>
+          <div className="flex items-center gap-3 text-[11px] text-slate-600">
+            <span>{data.meta.tookMs.toFixed(0)}ms</span>
             <span>{data.meta.sourcesUsed} sources</span>
-            <span>{data.meta.tokensUsed} tokens</span>
+            <span className="text-slate-700">{data.meta.model}</span>
           </div>
         </div>
 
         <div
-          className="ai-answer text-sm leading-relaxed text-slate-300"
+          className="ai-answer text-sm leading-relaxed text-slate-400"
           dangerouslySetInnerHTML={{ __html: simpleMarkdown(data.answer) }}
         />
 
-        {/* Copy & action buttons */}
-        <div className="mt-4 flex items-center gap-2 border-t border-white/5 pt-3">
+        {/* Copy button */}
+        <div className="mt-3 flex items-center border-t border-white/[0.04] pt-3">
           <button
             onClick={handleCopy}
-            className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs text-slate-400 transition-all hover:bg-white/[0.08] hover:text-white"
+            className="flex items-center gap-1.5 rounded-md px-2.5 py-1 text-[11px] text-slate-500 transition-colors hover:bg-white/[0.04] hover:text-slate-300"
           >
             {copied ? (
               <>
-                <svg className="h-3.5 w-3.5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg className="h-3 w-3 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                Copied!
+                Copied
               </>
             ) : (
               <>
-                <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <rect x="9" y="9" width="13" height="13" rx="2" />
                   <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
                 </svg>
-                Copy answer
+                Copy
               </>
             )}
           </button>
@@ -105,42 +96,34 @@ function AIAnswer({ data, compact }: AIAnswerProps) {
 
       {/* Sources */}
       {data.sources.length > 0 && (
-        <div className="mt-4">
-          <h4 className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
-            <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-              <path d="M14 2v6h6" />
-            </svg>
-            Sources Retrieved
-          </h4>
-          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-            {data.sources.map((source, i) => (
-              <div
-                key={source.id || i}
-                className="glass-light rounded-xl p-3 transition-all hover:bg-white/[0.06]"
-              >
-                <div className="mb-1 flex items-center gap-2">
-                  <span className="flex h-5 w-5 items-center justify-center rounded bg-indigo-500/20 text-[10px] font-bold text-indigo-300">
-                    {i + 1}
-                  </span>
-                  <h5 className="truncate text-xs font-semibold text-slate-300">{source.title}</h5>
-                </div>
-                <p className="text-[11px] leading-relaxed text-slate-500 line-clamp-2">
-                  {source.snippet}
-                </p>
-                <div className="mt-2 flex items-center gap-1">
-                  <div className="h-1 w-10 rounded-full bg-white/5 overflow-hidden">
-                    <div
-                      className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-emerald-500"
-                      style={{ width: `${Math.round(source.relevanceScore * 100)}%` }}
-                    />
+        <div className="mt-3">
+          <p className="mb-2 text-[11px] font-medium uppercase tracking-wider text-slate-600">
+            Sources
+          </p>
+          <div className="grid gap-1.5 sm:grid-cols-2 lg:grid-cols-3">
+            {data.sources.map((source, i) => {
+              const pct = Math.round(source.relevanceScore * 100);
+              const scoreBg =
+                pct >= 80 ? 'bg-emerald-500/15 text-emerald-400' :
+                pct >= 60 ? 'bg-blue-500/15 text-blue-400' :
+                'bg-slate-500/15 text-slate-400';
+              return (
+                <div
+                  key={source.id || i}
+                  className="rounded-md border border-white/[0.06] bg-white/[0.02] p-2.5 transition-colors hover:bg-white/[0.04]"
+                >
+                  <div className="mb-1 flex items-center justify-between gap-2">
+                    <h5 className="truncate text-xs font-medium text-slate-400">{source.title}</h5>
+                    <span className={`shrink-0 rounded px-1.5 py-0.5 text-[10px] font-semibold tabular-nums ${scoreBg}`}>
+                      {pct}%
+                    </span>
                   </div>
-                  <span className="text-[10px] font-mono text-slate-600">
-                    {Math.round(source.relevanceScore * 100)}%
-                  </span>
+                  <p className="text-[11px] leading-relaxed text-slate-600 line-clamp-2">
+                    {source.snippet}
+                  </p>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}

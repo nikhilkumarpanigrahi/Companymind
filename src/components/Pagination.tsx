@@ -15,24 +15,23 @@ function Pagination({ page, pageSize, total, onPageChange }: PaginationProps) {
   }
 
   return (
-    <div className="mt-6 flex items-center justify-center gap-4">
+    <div className="mt-4 flex items-center justify-center gap-3">
       <button
         type="button"
         onClick={() => onPageChange(page - 1)}
         disabled={prevDisabled}
-        className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-300 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-30"
+        className="rounded-md border border-white/[0.06] bg-white/[0.02] px-3 py-1.5 text-xs font-medium text-slate-400 transition-colors hover:bg-white/[0.05] disabled:cursor-not-allowed disabled:opacity-30"
       >
         Previous
       </button>
-      <p className="text-sm text-slate-500">
-        Page <span className="font-semibold text-slate-300">{page}</span> of{' '}
-        <span className="font-semibold text-slate-300">{totalPages}</span>
-      </p>
+      <span className="text-xs text-slate-600">
+        {page} / {totalPages}
+      </span>
       <button
         type="button"
         onClick={() => onPageChange(page + 1)}
         disabled={nextDisabled}
-        className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-300 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-30"
+        className="rounded-md border border-white/[0.06] bg-white/[0.02] px-3 py-1.5 text-xs font-medium text-slate-400 transition-colors hover:bg-white/[0.05] disabled:cursor-not-allowed disabled:opacity-30"
       >
         Next
       </button>

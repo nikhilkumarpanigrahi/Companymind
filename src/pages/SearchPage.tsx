@@ -167,26 +167,21 @@ function SearchPage() {
     <section className="flex min-h-[72vh] flex-col items-center">
       {/* Hero */}
       {showHero && (
-        <div className="mt-8 mb-2 text-center animate-fadeIn sm:mt-12">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-indigo-500/20 bg-indigo-500/10 px-4 py-1.5 text-xs font-medium text-indigo-300">
-            <span className="h-1.5 w-1.5 rounded-full bg-indigo-400 animate-pulse" />
-            Powered by MongoDB Atlas Vector Search + RAG
-          </div>
-          <h1 className="mb-3 text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
-            Your AI Knowledge
-            <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent"> Engine</span>
+        <div className="mt-6 mb-2 text-center sm:mt-10">
+          <h1 className="mb-2 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+            CompanyMind
           </h1>
-          <p className="mx-auto max-w-lg text-base text-slate-400">
-            Search {docCount ? `${docCount.toLocaleString()}+` : ''} documents with semantic understanding, or ask AI to synthesize answers from your knowledge base.
+          <p className="mx-auto max-w-md text-sm text-slate-500">
+            Search {docCount ? `${docCount.toLocaleString()}` : ''} documents with semantic understanding or ask AI to generate answers.
           </p>
         </div>
       )}
 
       {/* Compact header when searching */}
       {!showHero && (
-        <div className="mt-4 mb-2 text-center animate-fadeIn">
-          <h1 className="text-xl font-bold tracking-tight text-white sm:text-2xl">
-            Company<span className="text-indigo-400">Mind</span>
+        <div className="mt-3 mb-2 text-center">
+          <h1 className="text-lg font-semibold tracking-tight text-white">
+            CompanyMind
           </h1>
         </div>
       )}
@@ -205,31 +200,31 @@ function SearchPage() {
 
         {/* Conversation memory indicator */}
         {mode === 'ask' && conversationHistory.length > 0 && (
-          <div className="mx-auto mt-3 flex max-w-2xl items-center justify-between rounded-lg border border-purple-500/20 bg-purple-500/5 px-4 py-2">
-            <span className="flex items-center gap-2 text-xs text-purple-300">
-              <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <div className="mx-auto mt-2 flex max-w-2xl items-center justify-between rounded-md border border-white/[0.06] bg-white/[0.02] px-3 py-2">
+            <span className="flex items-center gap-1.5 text-xs text-slate-500">
+              <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
               </svg>
-              {Math.floor(conversationHistory.length / 2)} previous exchange{conversationHistory.length > 2 ? 's' : ''} in memory — AI can follow up
+              {Math.floor(conversationHistory.length / 2)} previous exchange{conversationHistory.length > 2 ? 's' : ''} in context
             </span>
             <button
               onClick={handleClearConversation}
-              className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
+              className="text-xs text-slate-600 hover:text-slate-400 transition-colors"
             >
-              Clear history
+              Clear
             </button>
           </div>
         )}
 
         {/* Example queries */}
         {showHero && (
-          <div className="mx-auto mt-6 flex max-w-2xl flex-wrap items-center justify-center gap-2 animate-fadeIn">
+          <div className="mx-auto mt-5 flex max-w-2xl flex-wrap items-center justify-center gap-2">
             <span className="text-xs text-slate-600">Try:</span>
             {EXAMPLE_QUERIES.map((example) => (
               <button
                 key={example}
                 onClick={() => handleExampleClick(example)}
-                className="rounded-lg border border-white/5 bg-white/[0.03] px-3 py-1.5 text-xs text-slate-400 transition-all hover:bg-white/[0.08] hover:text-slate-200 hover:border-white/10"
+                className="rounded-md border border-white/[0.06] bg-white/[0.02] px-3 py-1.5 text-xs text-slate-500 transition-colors hover:bg-white/[0.05] hover:text-slate-300"
               >
                 {example}
               </button>
@@ -253,20 +248,20 @@ function SearchPage() {
       )}
 
       {/* Results Area */}
-      <div className="mt-6 w-full max-w-3xl">
+      <div className="mt-5 w-full max-w-3xl">
         {/* Search results */}
-        {mode === 'search' && isLoading && <LoadingSpinner message="Searching vectors..." />}
+        {mode === 'search' && isLoading && <LoadingSpinner message="Searching..." />}
 
         {mode === 'search' && !isLoading && results.map((item, i) => (
-          <div key={item.id || `${item.title}-${item.relevanceScore}`} className="mb-3">
+          <div key={item.id || `${item.title}-${item.relevanceScore}`} className="mb-2">
             <ResultCard item={item} index={i} />
           </div>
         ))}
 
         {isEmpty && (
-          <div className="mt-10 rounded-2xl border border-white/5 bg-white/[0.02] p-8 text-center animate-fadeIn">
-            <p className="text-slate-500">
-              No results found for <span className="font-semibold text-slate-400">"{debouncedQuery}"</span>
+          <div className="mt-8 rounded-lg border border-white/[0.06] bg-white/[0.02] p-6 text-center">
+            <p className="text-sm text-slate-500">
+              No results found for <span className="font-medium text-slate-400">"{debouncedQuery}"</span>
             </p>
           </div>
         )}
@@ -282,76 +277,72 @@ function SearchPage() {
 
         {/* Past conversation exchanges */}
         {mode === 'ask' && pastExchanges.map((exchange, i) => (
-          <div key={i} className="mb-4 opacity-60">
-            <div className="mb-2 flex items-center gap-2">
-              <span className="rounded-lg bg-white/5 px-3 py-1.5 text-xs text-slate-400">{exchange.question}</span>
+          <div key={i} className="mb-3 opacity-50">
+            <div className="mb-1.5 flex items-center gap-2">
+              <span className="rounded-md bg-white/[0.04] px-2.5 py-1 text-xs text-slate-500">{exchange.question}</span>
             </div>
             <AIAnswer data={exchange.response} compact />
           </div>
         ))}
 
-        {/* Ask AI — streaming shimmer */}
+        {/* Ask AI — loading */}
         {mode === 'ask' && isAskLoading && !streamingAnswer && (
-          <div className="mt-4">
-            <div className="glass rounded-2xl p-6 pulse-glow">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-indigo-500 animate-pulse">
-                  <svg className="h-4 w-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 2a8 8 0 0 1 8 8c0 3.5-2 5.5-4 7l-1 4H9l-1-4c-2-1.5-4-3.5-4-7a8 8 0 0 1 8-8z" />
+          <div className="mt-3">
+            <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-5">
+              <div className="flex items-center gap-2.5 mb-3">
+                <div className="flex h-7 w-7 items-center justify-center rounded-md bg-white/[0.06]">
+                  <svg className="h-3.5 w-3.5 text-slate-400 animate-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-white">CompanyMind AI</h3>
-                  <p className="text-xs text-slate-500">Analyzing documents & generating response...</p>
+                  <p className="text-sm font-medium text-slate-300">Generating answer...</p>
+                  <p className="text-[11px] text-slate-600">Retrieving documents and analyzing</p>
                 </div>
               </div>
-              <div className="space-y-3">
-                <div className="h-4 w-3/4 rounded bg-white/5 animate-shimmer bg-gradient-to-r from-white/5 via-white/10 to-white/5 bg-[length:200%_100%]" />
-                <div className="h-4 w-full rounded bg-white/5 animate-shimmer bg-gradient-to-r from-white/5 via-white/10 to-white/5 bg-[length:200%_100%]" />
-                <div className="h-4 w-2/3 rounded bg-white/5 animate-shimmer bg-gradient-to-r from-white/5 via-white/10 to-white/5 bg-[length:200%_100%]" />
+              <div className="space-y-2.5">
+                <div className="h-3 w-3/4 rounded bg-white/[0.04] animate-pulse" />
+                <div className="h-3 w-full rounded bg-white/[0.04] animate-pulse" />
+                <div className="h-3 w-2/3 rounded bg-white/[0.04] animate-pulse" />
               </div>
             </div>
           </div>
         )}
 
-        {/* Streaming answer (live tokens) */}
+        {/* Streaming answer */}
         {mode === 'ask' && isStreaming && streamingAnswer && (
-          <div className="mt-4">
-            <div className="glass rounded-2xl p-6 shadow-glow">
-              <div className="mb-4 flex items-center gap-3">
-                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-indigo-500">
-                  <svg className="h-4 w-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 2a8 8 0 0 1 8 8c0 3.5-2 5.5-4 7l-1 4H9l-1-4c-2-1.5-4-3.5-4-7a8 8 0 0 1 8-8z" />
+          <div className="mt-3">
+            <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-5">
+              <div className="mb-3 flex items-center gap-2.5">
+                <div className="flex h-7 w-7 items-center justify-center rounded-md bg-white/[0.06]">
+                  <svg className="h-3.5 w-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-white">CompanyMind AI</h3>
-                  <p className="text-xs text-emerald-400 flex items-center gap-1">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    Generating response...
+                  <p className="text-sm font-medium text-slate-300">AI Answer</p>
+                  <p className="flex items-center gap-1 text-[11px] text-emerald-500">
+                    <span className="h-1 w-1 rounded-full bg-emerald-500 animate-pulse" />
+                    Generating...
                   </p>
                 </div>
               </div>
-              <div className="ai-answer text-sm leading-relaxed text-slate-300 whitespace-pre-wrap">
+              <div className="ai-answer text-sm leading-relaxed text-slate-400 whitespace-pre-wrap">
                 {streamingAnswer}
-                <span className="inline-block w-2 h-4 ml-0.5 bg-indigo-400 animate-pulse" />
+                <span className="inline-block w-1.5 h-3.5 ml-0.5 bg-slate-500 animate-pulse" />
               </div>
             </div>
 
-            {/* Show sources while streaming */}
+            {/* Sources while streaming */}
             {streamingSources.length > 0 && (
-              <div className="mt-3">
-                <h4 className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
-                  <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                    <path d="M14 2v6h6" />
-                  </svg>
+              <div className="mt-2">
+                <p className="mb-1.5 text-[11px] font-medium uppercase tracking-wider text-slate-600">
                   Sources
-                </h4>
-                <div className="grid gap-2 sm:grid-cols-3">
+                </p>
+                <div className="grid gap-1.5 sm:grid-cols-3">
                   {streamingSources.map((s, i) => (
-                    <div key={i} className="glass-light rounded-xl p-2 text-[11px] text-slate-400 truncate">
-                      <span className="text-indigo-300 font-medium">{i+1}.</span> {s.title}
+                    <div key={i} className="rounded-md border border-white/[0.06] bg-white/[0.02] px-2.5 py-1.5 text-[11px] text-slate-500 truncate">
+                      <span className="text-slate-400 font-medium">{i+1}.</span> {s.title}
                     </div>
                   ))}
                 </div>
@@ -362,27 +353,22 @@ function SearchPage() {
 
         {/* Final AI answer */}
         {mode === 'ask' && ragResponse && !isStreaming && !isAskLoading && (
-          <div className="mt-4">
+          <div className="mt-3">
             <AIAnswer data={ragResponse} />
           </div>
         )}
       </div>
 
-      {/* Tech Stack Badge */}
+      {/* Tech stack */}
       {showHero && (
-        <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-4 animate-fadeIn" style={{ animationDelay: '200ms', animationFillMode: 'both' }}>
-          {[
-            { icon: '🍃', label: 'MongoDB Atlas', desc: 'Vector Search' },
-            { icon: '🧠', label: 'MiniLM-L6-v2', desc: '384-dim embeddings' },
-            { icon: '⚡', label: 'Groq + Llama 3', desc: 'RAG Generation' },
-            { icon: '⚛️', label: 'React + Vite', desc: 'Frontend' },
-          ].map((tech) => (
-            <div key={tech.label} className="glass-light rounded-xl p-4 text-center transition-all hover:bg-white/[0.06]">
-              <div className="mb-1 text-xl">{tech.icon}</div>
-              <p className="text-xs font-semibold text-slate-300">{tech.label}</p>
-              <p className="text-[10px] text-slate-500">{tech.desc}</p>
-            </div>
-          ))}
+        <div className="mt-12 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[11px] text-slate-600">
+          <span>MongoDB Atlas Vector Search</span>
+          <span className="text-slate-700">|</span>
+          <span>MiniLM-L6-v2 Embeddings</span>
+          <span className="text-slate-700">|</span>
+          <span>Groq + Llama 3</span>
+          <span className="text-slate-700">|</span>
+          <span>React + Vite</span>
         </div>
       )}
 

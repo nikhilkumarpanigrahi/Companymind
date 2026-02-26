@@ -5,8 +5,7 @@ type PipelineStep = {
   icon: React.ReactNode;
   label: string;
   description: string;
-  color: string;       // gradient from
-  colorTo: string;     // gradient to
+  accent: string; // tailwind text/border color token
 };
 
 const SEARCH_STEPS: PipelineStep[] = [
@@ -20,8 +19,7 @@ const SEARCH_STEPS: PipelineStep[] = [
     ),
     label: 'User Query',
     description: 'Parsing natural language input',
-    color: 'from-blue-500',
-    colorTo: 'to-cyan-400',
+    accent: 'blue',
   },
   {
     id: 'embed',
@@ -33,8 +31,7 @@ const SEARCH_STEPS: PipelineStep[] = [
     ),
     label: 'Embedding Service',
     description: 'Converting text → 384-dim vector',
-    color: 'from-purple-500',
-    colorTo: 'to-violet-400',
+    accent: 'violet',
   },
   {
     id: 'vector',
@@ -47,8 +44,7 @@ const SEARCH_STEPS: PipelineStep[] = [
     ),
     label: 'Vector Search',
     description: 'MongoDB Atlas cosine similarity',
-    color: 'from-emerald-500',
-    colorTo: 'to-green-400',
+    accent: 'emerald',
   },
   {
     id: 'results',
@@ -63,8 +59,7 @@ const SEARCH_STEPS: PipelineStep[] = [
     ),
     label: 'Ranked Results',
     description: 'Top documents by relevance score',
-    color: 'from-indigo-500',
-    colorTo: 'to-blue-400',
+    accent: 'indigo',
   },
 ];
 
@@ -81,8 +76,7 @@ const ASK_STEPS: PipelineStep[] = [
     ),
     label: 'LLM (Groq + Llama 3)',
     description: 'RAG: context + question → answer',
-    color: 'from-orange-500',
-    colorTo: 'to-amber-400',
+    accent: 'amber',
   },
   {
     id: 'answer',
@@ -93,18 +87,17 @@ const ASK_STEPS: PipelineStep[] = [
     ),
     label: 'AI Answer',
     description: 'Synthesized response with sources',
-    color: 'from-pink-500',
-    colorTo: 'to-rose-400',
+    accent: 'rose',
   },
 ];
 
 /** Animated dot traveling along the connector line. */
 function TravelDot({ active }: { active: boolean }) {
   return (
-    <div className="relative mx-1 hidden h-[2px] w-8 overflow-hidden sm:block md:w-12 lg:w-16">
-      <div className={`absolute inset-0 rounded-full transition-colors duration-300 ${active ? 'bg-white/20' : 'bg-white/5'}`} />
+    <div className="relative mx-1 hidden h-px w-8 overflow-hidden sm:block md:w-12 lg:w-16">
+      <div className={`absolute inset-0 transition-colors duration-300 ${active ? 'bg-white/15' : 'bg-white/[0.06]'}`} />
       {active && (
-        <div className="absolute top-1/2 h-2 w-2 -translate-y-1/2 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.6)] animate-travelDot" />
+        <div className="absolute top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-white/80 animate-travelDot" />
       )}
     </div>
   );
@@ -120,45 +113,40 @@ function StepNode({
   state: 'waiting' | 'active' | 'done';
   index: number;
 }) {
-  const ringColor =
+  const border =
     state === 'active'
-      ? 'ring-2 ring-white/40 shadow-[0_0_20px_rgba(255,255,255,0.12)]'
+      ? 'border-white/20'
       : state === 'done'
-        ? 'ring-1 ring-emerald-500/40'
-        : 'ring-1 ring-white/10';
+        ? 'border-emerald-500/30'
+        : 'border-white/[0.06]';
 
   return (
     <div
-      className={`flex flex-col items-center text-center transition-all duration-500 ${state === 'waiting' ? 'opacity-40 scale-95' : 'opacity-100 scale-100'}`}
+      className={`flex flex-col items-center text-center transition-all duration-400 ${state === 'waiting' ? 'opacity-35' : 'opacity-100'}`}
       style={{ animationDelay: `${index * 80}ms` }}
     >
-      {/* Circle icon */}
+      {/* Icon */}
       <div
-        className={`relative flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br ${step.color} ${step.colorTo} text-white transition-all duration-500 ${ringColor}`}
+        className={`relative flex h-10 w-10 items-center justify-center rounded-lg border bg-white/[0.04] text-slate-300 transition-all duration-400 ${border}`}
       >
         {step.icon}
 
-        {/* Pulse ring when active */}
-        {state === 'active' && (
-          <span className="absolute inset-0 rounded-xl animate-ping bg-white/10" />
-        )}
-
-        {/* Done checkmark overlay */}
+        {/* Done checkmark */}
         {state === 'done' && (
-          <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-500 text-[10px] text-white shadow-lg animate-scaleIn">
+          <span className="absolute -right-1 -top-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-emerald-500 text-[9px] text-white animate-scaleIn">
             ✓
           </span>
         )}
       </div>
 
       {/* Label */}
-      <span className={`mt-2 text-[11px] font-semibold leading-tight transition-colors duration-300 ${state === 'active' ? 'text-white' : state === 'done' ? 'text-emerald-300' : 'text-slate-500'}`}>
+      <span className={`mt-1.5 text-[10px] font-medium leading-tight transition-colors duration-300 ${state === 'active' ? 'text-white' : state === 'done' ? 'text-emerald-400/80' : 'text-slate-600'}`}>
         {step.label}
       </span>
 
-      {/* Description */}
+      {/* Description — only visible when active */}
       <span
-        className={`mt-0.5 max-w-[100px] text-[9px] leading-tight transition-all duration-500 ${state === 'active' ? 'text-slate-400 opacity-100 translate-y-0' : 'text-slate-600 opacity-0 -translate-y-1'}`}
+        className={`mt-0.5 max-w-[100px] text-[9px] leading-tight transition-all duration-400 ${state === 'active' ? 'text-slate-500 opacity-100' : 'opacity-0'}`}
       >
         {step.description}
       </span>
@@ -250,16 +238,15 @@ export default function SearchPipelineAnimation({ mode, isActive, isDone }: Prop
         ))}
       </div>
 
-      {/* Elapsed time and vector info bar when done */}
+      {/* Status bar when done */}
       {isDone && (
-        <div className="mt-3 flex items-center justify-center gap-3 animate-fadeIn">
-          <span className="rounded-full bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 text-[10px] font-medium text-emerald-400">
-            Pipeline complete
-          </span>
+        <div className="mt-3 flex items-center justify-center gap-2 animate-fadeIn">
+          <span className="text-[10px] font-medium text-emerald-400/70">Complete</span>
+          <span className="text-slate-700">·</span>
           <span className="text-[10px] text-slate-600">
             {mode === 'search'
-              ? 'Query → 384-dim embedding → cosine similarity → top-k results'
-              : 'Query → embedding → vector search → context injection → LLM generation'}
+              ? 'Query → embedding → cosine similarity → top-k'
+              : 'Query → embedding → vector search → context → LLM'}
           </span>
         </div>
       )}

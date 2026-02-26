@@ -140,12 +140,12 @@ const MIN_SCORE_THRESHOLD = 0.35;
 const RRF_K = 60;
 
 const reciprocalRankFusion = (vectorResults, textResults, limit) => {
-  const scoreMap = new Map(); // docId -> { doc, rrfScore }
+  const scoreMap = new Map(); // docId -> { doc, rrfScore, vectorScore }
 
   vectorResults.forEach((doc, idx) => {
     const id = doc._id?.toString();
     const rrfScore = 1 / (RRF_K + idx + 1);
-    scoreMap.set(id, { doc, rrfScore });
+    scoreMap.set(id, { doc, rrfScore, vectorScore: doc.vectorScore ?? 0 });
   });
 
   textResults.forEach((doc, idx) => {
@@ -161,7 +161,7 @@ const reciprocalRankFusion = (vectorResults, textResults, limit) => {
   return Array.from(scoreMap.values())
     .sort((a, b) => b.rrfScore - a.rrfScore)
     .slice(0, limit)
-    .map(({ doc, rrfScore }) => ({ ...doc, score: rrfScore }));
+    .map(({ doc, rrfScore, vectorScore }) => ({ ...doc, score: rrfScore, vectorScore }));
 };
 
 /**

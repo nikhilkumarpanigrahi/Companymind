@@ -17,7 +17,6 @@ function SearchBar({ value, onChange, onClear, mode, onModeChange, onAsk, isLoad
     onTranscript: (text) => onChange(text),
     onEnd: (finalText) => {
       onChange(finalText);
-      // Auto-trigger ask if in ask mode
       if (mode === 'ask' && finalText.trim()) {
         setTimeout(() => onAsk(), 300);
       }
@@ -33,55 +32,43 @@ function SearchBar({ value, onChange, onClear, mode, onModeChange, onAsk, isLoad
   return (
     <div className="w-full">
       {/* Mode toggle */}
-      <div className="mx-auto mb-4 flex w-full max-w-2xl items-center justify-center gap-2">
+      <div className="mx-auto mb-3 flex w-full max-w-2xl items-center justify-center gap-1 rounded-lg border border-white/[0.06] bg-white/[0.02] p-1">
         <button
           onClick={() => onModeChange('search')}
-          className={`flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200 ${
+          className={`flex items-center gap-1.5 rounded-md px-4 py-1.5 text-[13px] font-medium transition-all duration-150 ${
             mode === 'search'
-              ? 'bg-indigo-500/20 text-indigo-300 shadow-[0_0_12px_rgba(99,102,241,0.2)]'
-              : 'text-slate-500 hover:text-slate-300 hover:bg-white/5'
+              ? 'bg-white/[0.08] text-white'
+              : 'text-slate-500 hover:text-slate-300'
           }`}
         >
-          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <circle cx="11" cy="11" r="8" />
             <path d="m21 21-4.35-4.35" />
           </svg>
-          Semantic Search
+          Search
         </button>
         <button
           onClick={() => onModeChange('ask')}
-          className={`flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200 ${
+          className={`flex items-center gap-1.5 rounded-md px-4 py-1.5 text-[13px] font-medium transition-all duration-150 ${
             mode === 'ask'
-              ? 'bg-purple-500/20 text-purple-300 shadow-[0_0_12px_rgba(168,85,247,0.2)]'
-              : 'text-slate-500 hover:text-slate-300 hover:bg-white/5'
+              ? 'bg-white/[0.08] text-white'
+              : 'text-slate-500 hover:text-slate-300'
           }`}
         >
-          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M12 2a8 8 0 0 1 8 8c0 3.5-2 5.5-4 7l-1 4H9l-1-4c-2-1.5-4-3.5-4-7a8 8 0 0 1 8-8z" />
-            <path d="M10 22h4" />
+          <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
           </svg>
           Ask AI
         </button>
       </div>
 
       {/* Search input */}
-      <div className={`mx-auto w-full max-w-2xl rounded-2xl transition-all duration-300 ${
-        mode === 'ask'
-          ? 'glass shadow-[0_0_30px_rgba(168,85,247,0.1)] focus-within:shadow-[0_0_50px_rgba(168,85,247,0.2)]'
-          : 'glass shadow-[0_0_30px_rgba(99,102,241,0.1)] focus-within:shadow-[0_0_50px_rgba(99,102,241,0.2)]'
-      }`}>
-        <div className="flex items-center gap-3 px-5 py-4">
-          {mode === 'search' ? (
-            <svg className="h-5 w-5 shrink-0 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.35-4.35" />
-            </svg>
-          ) : (
-            <svg className="h-5 w-5 shrink-0 text-purple-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M12 2a8 8 0 0 1 8 8c0 3.5-2 5.5-4 7l-1 4H9l-1-4c-2-1.5-4-3.5-4-7a8 8 0 0 1 8-8z" />
-              <path d="M10 22h4" />
-            </svg>
-          )}
+      <div className="mx-auto w-full max-w-2xl rounded-lg border border-white/[0.08] bg-white/[0.03] transition-colors duration-150 focus-within:border-white/[0.16] focus-within:bg-white/[0.04]">
+        <div className="flex items-center gap-2 px-4 py-3">
+          <svg className="h-4 w-4 shrink-0 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
+          </svg>
           <input
             value={value}
             onChange={(e) => onChange(e.target.value)}
@@ -90,32 +77,25 @@ function SearchBar({ value, onChange, onClear, mode, onModeChange, onAsk, isLoad
               speech.isListening
                 ? 'Listening...'
                 : mode === 'search'
-                  ? 'Search your knowledge base...'
-                  : 'Ask a question about your documents...'
+                  ? 'Search documents...'
+                  : 'Ask a question...'
             }
-            className="w-full border-none bg-transparent text-base text-white outline-none placeholder:text-slate-500 sm:text-lg"
+            className="w-full border-none bg-transparent text-sm text-white outline-none placeholder:text-slate-600"
           />
 
-          {/* Voice input button */}
+          {/* Voice input */}
           {speech.isSupported && (
             <button
               onClick={speech.toggle}
               type="button"
               title={speech.isListening ? 'Stop listening' : 'Voice input'}
-              className={`relative shrink-0 rounded-xl p-2.5 transition-all duration-300 ${
+              className={`shrink-0 rounded-md p-1.5 transition-colors duration-150 ${
                 speech.isListening
-                  ? 'bg-red-500/20 text-red-400 shadow-[0_0_20px_rgba(239,68,68,0.3)]'
-                  : 'bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white'
+                  ? 'bg-red-500/15 text-red-400'
+                  : 'text-slate-500 hover:bg-white/[0.06] hover:text-slate-300'
               }`}
             >
-              {/* Pulse rings when listening */}
-              {speech.isListening && (
-                <>
-                  <span className="absolute inset-0 rounded-xl animate-ping bg-red-500/10" />
-                  <span className="absolute inset-[-4px] rounded-2xl border-2 border-red-500/20 animate-pulseRing" />
-                </>
-              )}
-              <svg className="relative h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
                 <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
                 <line x1="12" y1="19" x2="12" y2="22" />
@@ -126,7 +106,7 @@ function SearchBar({ value, onChange, onClear, mode, onModeChange, onAsk, isLoad
           {value && !isLoading && (
             <button
               onClick={onClear}
-              className="shrink-0 rounded-lg bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-400 transition hover:bg-white/10 hover:text-white"
+              className="shrink-0 rounded-md px-2 py-1 text-xs text-slate-500 transition-colors hover:bg-white/[0.06] hover:text-slate-300"
               type="button"
             >
               Clear
@@ -136,12 +116,12 @@ function SearchBar({ value, onChange, onClear, mode, onModeChange, onAsk, isLoad
             <button
               onClick={onAsk}
               disabled={isLoading}
-              className="shrink-0 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 px-4 py-2 text-sm font-semibold text-white transition-all hover:shadow-glow disabled:opacity-50"
+              className="shrink-0 rounded-md bg-white/[0.1] px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-white/[0.15] disabled:opacity-40"
               type="button"
             >
               {isLoading ? (
-                <span className="flex items-center gap-2">
-                  <span className="h-3 w-3 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                <span className="flex items-center gap-1.5">
+                  <span className="h-3 w-3 animate-spin rounded-full border-2 border-white/40 border-t-white" />
                   Thinking...
                 </span>
               ) : (
@@ -154,27 +134,13 @@ function SearchBar({ value, onChange, onClear, mode, onModeChange, onAsk, isLoad
 
       {/* Voice listening indicator */}
       {speech.isListening && (
-        <div className="mx-auto mt-3 w-full max-w-2xl animate-fadeIn">
-          <div className="flex items-center justify-center gap-3 rounded-xl border border-red-500/20 bg-red-500/5 px-4 py-2.5">
-            {/* Waveform animation */}
-            <div className="flex items-center gap-[3px]">
-              {[...Array(5)].map((_, i) => (
-                <div
-                  key={i}
-                  className="w-1 rounded-full bg-red-400 animate-voiceWave"
-                  style={{
-                    animationDelay: `${i * 0.15}s`,
-                    height: '16px',
-                  }}
-                />
-              ))}
-            </div>
-            <span className="text-xs font-medium text-red-300">
-              Listening... speak your {mode === 'ask' ? 'question' : 'search query'}
-            </span>
+        <div className="mx-auto mt-2 w-full max-w-2xl">
+          <div className="flex items-center justify-center gap-2 rounded-md border border-red-500/15 bg-red-500/5 px-3 py-2 text-xs text-red-400">
+            <span className="h-1.5 w-1.5 rounded-full bg-red-400 animate-pulse" />
+            Listening...
             <button
               onClick={speech.stopListening}
-              className="ml-auto rounded-lg bg-red-500/20 px-2.5 py-1 text-[10px] font-semibold text-red-300 transition hover:bg-red-500/30"
+              className="ml-2 text-[11px] text-slate-500 hover:text-slate-300"
             >
               Stop
             </button>
@@ -184,8 +150,8 @@ function SearchBar({ value, onChange, onClear, mode, onModeChange, onAsk, isLoad
 
       {/* Voice error */}
       {speech.error && !speech.isListening && (
-        <div className="mx-auto mt-2 w-full max-w-2xl animate-fadeIn">
-          <p className="text-center text-[11px] text-amber-400/80">{speech.error}</p>
+        <div className="mx-auto mt-2 w-full max-w-2xl">
+          <p className="text-center text-[11px] text-amber-400/70">{speech.error}</p>
         </div>
       )}
     </div>

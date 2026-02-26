@@ -82,80 +82,70 @@ function Layout({ children }: PropsWithChildren) {
   const location = useLocation();
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
-      {/* Background gradient orbs */}
-      <div className="gradient-orb gradient-orb-1" />
-      <div className="gradient-orb gradient-orb-2" />
-      <div className="gradient-orb gradient-orb-3" />
-
-      <div className="relative z-10 flex min-h-screen">
+    <div className="relative min-h-screen">
+      <div className="relative flex min-h-screen">
         {/* Sidebar */}
-        <aside className="fixed left-0 top-0 z-20 hidden h-screen w-60 flex-col border-r border-white/[0.06] bg-[#0a0a12]/80 backdrop-blur-xl lg:flex">
+        <aside className="fixed left-0 top-0 z-20 hidden h-screen w-56 flex-col border-r border-white/[0.06] bg-[#0c0c14] lg:flex">
           {/* Logo */}
-          <div className="flex h-16 items-center gap-3 px-5 border-b border-white/[0.06]">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-glow">
-              <svg className="h-4 w-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <div className="flex h-14 items-center gap-2.5 px-5 border-b border-white/[0.06]">
+            <div className="flex h-6 w-6 items-center justify-center rounded bg-white/[0.08]">
+              <svg className="h-3.5 w-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
-            <span className="text-base font-bold tracking-tight text-white">
-              Company<span className="text-indigo-400">Mind</span>
+            <span className="text-sm font-semibold text-slate-300">
+              CompanyMind
             </span>
           </div>
 
           {/* Nav links */}
-          <nav className="flex-1 space-y-1 px-3 py-4">
+          <nav className="flex-1 space-y-0.5 px-3 py-3">
             {NAV_ITEMS.map((item) => {
               const active = isActive(item, location.pathname);
               return (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200 ${
+                  className={`flex items-center gap-2.5 rounded-md px-3 py-2 text-[13px] font-medium transition-colors duration-100 ${
                     active
-                      ? 'bg-indigo-500/15 text-white shadow-[0_0_12px_rgba(99,102,241,0.15)]'
-                      : 'text-slate-400 hover:bg-white/[0.04] hover:text-slate-200'
+                      ? 'bg-white/[0.06] text-white'
+                      : 'text-slate-500 hover:bg-white/[0.03] hover:text-slate-300'
                   }`}
                 >
-                  <span className={active ? 'text-indigo-400' : ''}>{item.icon}</span>
+                  <span className={active ? 'text-slate-300' : 'text-slate-600'}>{item.icon}</span>
                   {item.label}
-                  {active && (
-                    <span className="ml-auto h-1.5 w-1.5 rounded-full bg-indigo-400" />
-                  )}
                 </Link>
               );
             })}
           </nav>
 
           {/* Sidebar footer */}
-          <div className="border-t border-white/[0.06] px-4 py-4">
-            <div className="glass-light rounded-xl p-3 text-center">
-              <p className="text-[10px] text-slate-500 leading-relaxed">
-                Powered by MongoDB Atlas Vector Search + Groq LLM
-              </p>
-            </div>
+          <div className="border-t border-white/[0.06] px-4 py-3">
+            <p className="text-[10px] text-slate-700 text-center">
+              Vector Search + Groq LLM
+            </p>
           </div>
         </aside>
 
         {/* Mobile top bar */}
-        <header className="fixed left-0 right-0 top-0 z-20 flex h-14 items-center justify-between border-b border-white/[0.06] bg-[#0a0a12]/90 backdrop-blur-xl px-4 lg:hidden">
+        <header className="fixed left-0 right-0 top-0 z-20 flex h-12 items-center justify-between border-b border-white/[0.06] bg-[#0c0c14]/95 backdrop-blur-sm px-4 lg:hidden">
           <Link to="/" className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600">
-              <svg className="h-3.5 w-3.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <div className="flex h-6 w-6 items-center justify-center rounded bg-white/[0.08]">
+              <svg className="h-3 w-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
-            <span className="text-sm font-bold text-white">Company<span className="text-indigo-400">Mind</span></span>
+            <span className="text-sm font-semibold text-slate-300">CompanyMind</span>
           </Link>
-          <nav className="flex items-center gap-1">
+          <nav className="flex items-center gap-0.5">
             {NAV_ITEMS.map((item) => {
               const active = isActive(item, location.pathname);
               return (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`rounded-lg p-2 transition-all ${
-                    active ? 'bg-indigo-500/15 text-indigo-400' : 'text-slate-500 hover:text-slate-300'
+                  className={`rounded-md p-1.5 transition-colors ${
+                    active ? 'bg-white/[0.06] text-white' : 'text-slate-600 hover:text-slate-400'
                   }`}
                   title={item.label}
                 >
@@ -167,8 +157,8 @@ function Layout({ children }: PropsWithChildren) {
         </header>
 
         {/* Main content */}
-        <main className="flex-1 pt-14 lg:pt-0 lg:pl-60">
-          <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+        <main className="flex-1 pt-12 lg:pt-0 lg:pl-56">
+          <div className="mx-auto max-w-5xl px-4 py-5 sm:px-6 lg:px-8 lg:py-6">
             {children}
           </div>
         </main>

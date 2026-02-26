@@ -27,7 +27,7 @@ const askQuestionHandler = asyncHandler(async (req, res) => {
     id: doc._id?.toString(),
     title: doc.title || 'Untitled',
     snippet: (doc.content || '').slice(0, 200),
-    relevanceScore: typeof doc.score === 'number' ? doc.score : 0,
+    relevanceScore: typeof doc.vectorScore === 'number' ? doc.vectorScore : (typeof doc.score === 'number' ? doc.score : 0),
   }));
 
   logQuery('ask', question, Number(tookMs.toFixed(2)));
@@ -70,7 +70,7 @@ const askQuestionStreamHandler = asyncHandler(async (req, res) => {
       id: doc._id?.toString(),
       title: doc.title || 'Untitled',
       snippet: (doc.content || '').slice(0, 200),
-      relevanceScore: typeof doc.score === 'number' ? doc.score : 0,
+      relevanceScore: typeof doc.vectorScore === 'number' ? doc.vectorScore : (typeof doc.score === 'number' ? doc.score : 0),
     }));
     res.write(`data: ${JSON.stringify({ type: 'sources', sources })}\n\n`);
 
