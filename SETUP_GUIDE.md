@@ -1,25 +1,31 @@
-# CompanyMind - Complete Setup Guide
+# Setup Guide
 
-> **Step-by-step guide to get CompanyMind running from scratch.**
+> Step-by-step instructions to get CompanyMind running from scratch.
 
 ---
 
 ## Prerequisites
 
-- **Node.js** v18+ and npm
-- **Python** 3.9+ (for the embedding service)
-- **MongoDB Atlas** free account ([signup here](https://www.mongodb.com/cloud/atlas/register))
-- **Git** (to clone the repo)
+| Requirement | Version | Notes |
+|:-----------|:--------|:------|
+| **Node.js** | 18+ | [Download](https://nodejs.org/) |
+| **Python** | 3.9+ | [Download](https://www.python.org/downloads/) |
+| **MongoDB Atlas** | Free M0 | [Sign up](https://www.mongodb.com/cloud/atlas/register) |
+| **Groq API Key** | Free | [Get key](https://console.groq.com) |
+| **Git** | Any | [Download](https://git-scm.com/) |
 
 ---
 
-## Step 1: Install Dependencies
+## Step 1: Clone & Install Dependencies
 
 ```bash
-# Install Node.js dependencies
+git clone https://github.com/nikhilkumarpanigrahi/Companymind.git
+cd Companymind
+
+# Node.js dependencies
 npm install
 
-# Install Python dependencies for the embedding service
+# Python dependencies for the embedding service
 cd embedding-service
 pip install -r requirements.txt
 cd ..
@@ -27,17 +33,18 @@ cd ..
 
 ---
 
-## Step 2: Create a MongoDB Atlas Free Cluster
+## Step 2: Create a MongoDB Atlas Cluster
 
 1. Go to [MongoDB Atlas](https://cloud.mongodb.com/) and sign in
-2. Click **"Build a Database"** → Select **M0 Free Tier**
-3. Choose a cloud provider (AWS recommended) and region closest to you
+2. Click **"Build a Database"** → **M0 Free Tier**
+3. Choose **AWS** (recommended) and your nearest region
 4. Click **"Create Deployment"**
-5. **Create a database user**: Set a username and password (save these!)
-6. **Network access**: Click "Add My Current IP Address" (or add `0.0.0.0/0` for development)
-7. Click **"Connect"** → **"Drivers"** → Copy the connection string
+5. **Create a database user** — save the username and password
+6. **Network Access** → **"Add My Current IP Address"** (or `0.0.0.0/0` for development)
+7. Click **"Connect"** → **"Drivers"** → copy the connection string
 
-Your connection string looks like:
+Your connection string will look like:
+
 ```
 mongodb+srv://myuser:mypassword@cluster0.abc123.mongodb.net/?retryWrites=true&w=majority
 ```
@@ -46,31 +53,42 @@ mongodb+srv://myuser:mypassword@cluster0.abc123.mongodb.net/?retryWrites=true&w=
 
 ## Step 3: Configure Environment Variables
 
-Edit the `.env` file in the project root:
+Create (or edit) the `.env` file in the project root:
 
 ```env
-# Replace with YOUR MongoDB Atlas connection string
+# MongoDB Atlas connection (replace with YOUR credentials)
 MONGODB_URI=mongodb+srv://YOUR_USERNAME:YOUR_PASSWORD@YOUR_CLUSTER.mongodb.net/companymind?retryWrites=true&w=majority
 
-# These should stay as-is:
-PORT=8080
-VITE_API_BASE_URL=http://localhost:8080
+# Groq API key for RAG (LLM answer generation)
+GROQ_API_KEY=gsk_your_key_here
+
+# Embedding service URL (local default)
 EMBEDDING_API_URL=http://localhost:8000/embed-query
+
+# Frontend API base URL
+VITE_API_BASE_URL=http://localhost:8080
+
+# Server port
+PORT=8080
+
+# Vector search index name (must match Step 4)
 VECTOR_INDEX_NAME=documents_embedding_index
 ```
 
-**Important**: Replace `YOUR_USERNAME`, `YOUR_PASSWORD`, and `YOUR_CLUSTER` with your actual Atlas credentials.
+Replace `YOUR_USERNAME`, `YOUR_PASSWORD`, and `YOUR_CLUSTER` with your actual Atlas credentials.
 
 ---
 
-## Step 4: Create the Vector Search Index in Atlas
+## Step 4: Create the Vector Search Index
 
-1. In MongoDB Atlas, go to your cluster → **"Browse Collections"**
-2. The `companymind` database will be created automatically when you seed data
-3. Go to **"Atlas Search"** tab → Click **"Create Search Index"**
-4. Choose **"JSON Editor"** 
+This is the critical step that enables semantic search.
+
+1. In MongoDB Atlas, navigate to your cluster → **"Browse Collections"**
+2. The `companymind` database will be created automatically when you seed data (Step 6)
+3. Go to the **"Atlas Search"** tab → **"Create Search Index"**
+4. Choose **"JSON Editor"**
 5. Select the `companymind.documents` collection
-6. Set index name to: `documents_embedding_index`
+6. Set the index name to: `documents_embedding_index`
 7. Paste this JSON definition:
 
 ```json
@@ -87,55 +105,67 @@ VECTOR_INDEX_NAME=documents_embedding_index
 ```
 
 8. Click **"Create Search Index"**
-9. Wait for status to show **"Active"** (takes ~1 minute)
+9. Wait for the status to show **"Active"** (~1 minute)
 
-> **Why 384 dimensions?** The embedding service uses the `all-MiniLM-L6-v2` model which produces 384-dimensional vectors.
+> **Why 384 dimensions?** The `all-MiniLM-L6-v2` embedding model produces 384-dimensional vectors. This must match exactly.
 
 ---
 
 ## Step 5: Start the Embedding Service
 
-The embedding service generates vector embeddings from text. Start it first:
+The embedding service converts text into 384-dimensional vectors using the MiniLM-L6-v2 model.
 
 ```bash
 cd embedding-service
 uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 
-Wait until you see the model loaded message. First run takes longer as it downloads the model (~80MB).
+Wait until you see the model loaded message. The **first run** takes longer as it downloads the model (~80 MB).
 
 Verify it's running:
+
 ```bash
 curl http://localhost:8000/health
-# Should return: {"status":"healthy","model_loaded":true,...}
+```
+
+Expected response:
+
+```json
+{
+  "status": "healthy",
+  "model_loaded": true,
+  "model_name": "all-MiniLM-L6-v2",
+  "embedding_dimension": 384
+}
 ```
 
 ---
 
 ## Step 6: Seed the Database
 
-With the embedding service running, open a **new terminal** and run:
+With the embedding service running, open a **new terminal**:
 
 ```bash
 npm run db:seed
 ```
 
 This will:
-- Connect to your MongoDB Atlas cluster
-- Load 173 sample documents from `seeds/sample-documents.json`
-- Generate 384-dimensional vector embeddings for each document via the Python API
-- Insert all documents into the `companymind.documents` collection
+1. Connect to your MongoDB Atlas cluster
+2. Load 173 sample documents from `seeds/sample-documents.json`
+3. Generate 384-dimensional vector embeddings for each document
+4. Insert all documents into the `companymind.documents` collection
 
-The seeding processes documents in batches of 10. It takes approximately 1-3 minutes depending on your hardware.
+Documents are processed in batches of 25. It takes approximately 1–3 minutes.
 
 **Expected output:**
+
 ```
 🚀 Starting database seeding...
 ✅ Connected to MongoDB
 ✅ Embedding service is healthy
 📄 Loaded 173 documents from sample data
-🔄 Processing batch 1/18...
-🔄 Processing batch 2/18...
+🔄 Processing batch 1/7...
+🔄 Processing batch 2/7...
 ...
 ✅ Successfully seeded 173 documents
 ```
@@ -144,91 +174,140 @@ The seeding processes documents in batches of 10. It takes approximately 1-3 min
 
 ## Step 7: Start the Application
 
-Open **two terminals**:
+Open **two more terminals**:
 
-**Terminal 1 - Backend API:**
+**Terminal 2 — Backend API:**
+
 ```bash
 npm run dev:server
 ```
-Backend runs at `http://localhost:8080`
 
-**Terminal 2 - Frontend (Vite):**
+Backend runs at `http://localhost:8080`. You should see:
+
+```
+Server listening on port 8080
+Database connected successfully
+```
+
+**Terminal 3 — Frontend:**
+
 ```bash
 npm run dev
 ```
-Frontend runs at `http://localhost:5173` (default Vite port)
+
+Frontend runs at `http://localhost:5173` (default Vite port).
 
 ---
 
-## Step 8: Test Semantic Search
+## Step 8: Verify Everything Works
 
-1. Open `http://localhost:5173` in your browser
-2. Type a query like **"how do vector databases work"** in the search bar
-3. Results should appear ranked by semantic relevance
+### 8a. Open the App
 
-### Example Queries to Try:
-| Query | What it should find |
-|-------|-------------------|
-| "how do vector databases work" | Vector databases, HNSW, similarity search docs |
-| "machine learning for beginners" | ML intro, deep learning, data science lifecycle |
-| "building REST APIs" | RESTful API design, Express.js, Node.js docs |
-| "database performance" | Indexing strategies, query optimization, connection pooling |
+Navigate to [http://localhost:5173](http://localhost:5173) in your browser.
+
+### 8b. Try Semantic Search
+
+Type a query in the search bar. Results should appear ranked by semantic relevance.
+
+| Query | Expected Results |
+|:------|:----------------|
+| "how do vector databases work" | Vector DB, HNSW, similarity search docs |
+| "machine learning for beginners" | ML intro, deep learning, data science docs |
+| "speed up my application" | Caching, indexing, optimization docs |
+| "building REST APIs" | RESTful design, Express.js, Node.js docs |
+| "database performance" | Indexing strategies, query optimization docs |
 | "deploying to the cloud" | AWS Lambda, Kubernetes, Docker, CI/CD docs |
-| "protecting web apps from hackers" | XSS/CSRF, cybersecurity, OWASP, DevSecOps docs |
-| "how transformers work in AI" | Transformer architecture, attention mechanisms, BERT |
-| "company knowledge search" | Knowledge management, semantic search docs |
+| "protecting web apps from hackers" | XSS/CSRF, cybersecurity, OWASP docs |
+| "how transformers work in AI" | Transformer architecture, attention, BERT docs |
+
+### 8c. Try Ask AI
+
+Switch to the **"Ask AI"** mode and ask a question. You should see:
+- Source documents listed immediately
+- Answer streamed token-by-token with a blinking cursor
+- Source citations in the answer text
+
+### 8d. Check the Dashboard
+
+Navigate to the Dashboard page to see:
+- Total document count
+- Category distribution
+- Top tags
+- Query analytics (after performing some searches)
 
 ---
 
-## Architecture Overview
+## Alternative: Docker Setup
 
-```
-┌─────────────┐     ┌─────────────────┐     ┌─────────────────────┐
-│   React UI  │────▶│  Express.js API  │────▶│   MongoDB Atlas     │
-│  (Vite)     │     │  (Port 8080)     │     │   (Vector Search)   │
-│  Port 5173  │     │                  │     │                     │
-└─────────────┘     └────────┬─────────┘     └─────────────────────┘
-                             │
-                    ┌────────▼─────────┐
-                    │  Python FastAPI   │
-                    │  Embedding Service│
-                    │  (Port 8000)      │
-                    │  MiniLM-L6-v2     │
-                    └──────────────────┘
+If you prefer Docker, you can run everything with one command:
+
+```bash
+docker-compose -f docker-compose.prod.yml up --build
 ```
 
-**Search Flow:**
-1. User types a query in the React frontend
-2. Frontend sends GET/POST to Express.js API (`/search`)
-3. API calls Python embedding service to convert query text → 384-dim vector
-4. API runs `$vectorSearch` aggregation on MongoDB Atlas
-5. Atlas finds documents with the most similar vectors (cosine similarity)
-6. Results are returned ranked by relevance score
+This builds both services with multi-stage Docker builds:
+- Web service on port 8080
+- Embedding service on port 8000
+- ML model baked into the image (no cold-start download)
+- Health checks configured
+
+You still need to:
+1. Set `MONGODB_URI` and `GROQ_API_KEY` in `.env`
+2. Create the Vector Search index in Atlas (Step 4)
+3. Seed the database (Step 6)
 
 ---
 
 ## Troubleshooting
 
 | Problem | Solution |
-|---------|----------|
-| `MONGODB_URI is required` | Make sure `.env` has your actual connection string |
+|:--------|:---------|
+| `MONGODB_URI is required` | Ensure `.env` has your actual connection string |
 | `connect ECONNREFUSED :8000` | Start the embedding service first (Step 5) |
 | Seeding fails with auth error | Check your Atlas username/password in `.env` |
-| Search returns no results | Verify the vector search index is "Active" in Atlas |
-| Vector index errors | Ensure index uses `384` dimensions, not `1536` |
-| Frontend can't reach backend | Check both use PORT=8080 in `.env` |
-| Model download slow | First run downloads ~80MB model; subsequent runs use cache |
+| Search returns 0 results | Verify the Vector Search index is "Active" in Atlas |
+| Vector index errors | Ensure index uses **384** dimensions, not 1536 |
+| Frontend can't reach backend | Ensure `VITE_API_BASE_URL=http://localhost:8080` in `.env` |
+| Model download is slow | First run downloads ~80 MB model; subsequent runs use cache |
+| `EADDRINUSE` port error | Another process is using port 8080 or 8000. Kill it or change ports |
+| "No text index" warning | This is normal — text search will gracefully degrade. The text index is created automatically by Mongoose. |
+| Docker build fails | Ensure Docker has at least 4 GB memory allocated |
+| SSE streaming not working | If behind a reverse proxy (Nginx), ensure `proxy_buffering off;` is set |
 
 ---
 
-## Useful Commands
+## Available Commands
 
-```bash
-npm run dev:server      # Start backend API
-npm run dev             # Start frontend (Vite)
-npm run db:seed         # Seed database with 173 documents
-npm run db:stats        # Check database health/stats
-npm run benchmark       # Run performance benchmarks
-npm run test:relevance  # Run relevance tests
-npm run build           # Build frontend for production
-```
+| Command | Description |
+|:--------|:-----------|
+| `npm run dev` | Start Vite frontend dev server (hot reload) |
+| `npm run dev:server` | Start Express backend with nodemon (auto-restart) |
+| `npm run start:server` | Start Express backend (production, no auto-restart) |
+| `npm run build` | TypeScript check + Vite production build |
+| `npm run preview` | Preview production build locally |
+| `npm run db:seed` | Seed 173 curated tech documents |
+| `npm run db:seed:large` | Seed from `seeds/large-dataset.json` |
+| `npm run generate:dataset` | Generate ~2,000 template-based documents |
+| `npm run load:documents` | Bulk load from JSONL file |
+| `npm run clean:dataset` | Clean/normalize dataset files |
+
+---
+
+## Service Summary
+
+When everything is running, you should have 3 processes:
+
+| Terminal | Command | Port | Status |
+|:---------|:--------|:-----|:-------|
+| 1 | `uvicorn app.main:app` | 8000 | Embedding service (model loaded) |
+| 2 | `npm run dev:server` | 8080 | Express API (database connected) |
+| 3 | `npm run dev` | 5173 | Vite frontend (hot reload) |
+
+---
+
+## Next Steps
+
+- Read the [Architecture](ARCHITECTURE.md) document to understand the system design
+- Explore the [API Reference](API_REFERENCE.md) for all available endpoints
+- Try the **Benchmarks** page to compare search strategies
+- Add your own documents via the **Admin** page
