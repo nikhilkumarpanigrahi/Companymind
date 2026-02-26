@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 type ErrorToastProps = {
   message: string;
@@ -6,10 +6,13 @@ type ErrorToastProps = {
 };
 
 function ErrorToast({ message, onClose }: ErrorToastProps) {
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
+
   useEffect(() => {
-    const timer = window.setTimeout(onClose, 5000);
+    const timer = window.setTimeout(() => onCloseRef.current(), 5000);
     return () => window.clearTimeout(timer);
-  }, [onClose]);
+  }, []);
 
   return (
     <div className="fixed bottom-6 left-1/2 z-50 w-[92%] max-w-md -translate-x-1/2 rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-red-300 shadow-lg backdrop-blur-lg animate-fadeInUp">

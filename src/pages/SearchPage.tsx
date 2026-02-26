@@ -50,6 +50,11 @@ function SearchPage() {
   const abortRef = useRef<(() => void) | null>(null);
   const debouncedQuery = useDebounce(query, 450);
 
+  // Cleanup active stream on unmount
+  useEffect(() => {
+    return () => { abortRef.current?.(); };
+  }, []);
+
   useEffect(() => { setPage(1); }, [debouncedQuery]);
 
   // Semantic search effect

@@ -102,6 +102,7 @@ export const askQuestionStream = (
             if (parsed.type === 'token') callbacks.onToken(parsed.content);
             else if (parsed.type === 'sources') callbacks.onSources(parsed.sources);
             else if (parsed.type === 'done') callbacks.onDone(parsed.meta, parsed.fullAnswer);
+            else if (parsed.type === 'error') callbacks.onError(parsed.error || 'Unknown streaming error');
           } catch { /* skip */ }
         }
       }
