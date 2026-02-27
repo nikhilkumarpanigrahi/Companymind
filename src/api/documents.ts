@@ -120,11 +120,35 @@ export const addDocument = async (payload: AddDocumentPayload): Promise<void> =>
   await apiClient.post('/api/documents', payload);
 };
 
-export const fetchDocuments = async (limit = 500): Promise<DocumentItem[]> => {
-  const { data } = await apiClient.get<{ success: boolean; count: number; data: DocumentItem[] }>('/api/documents', {
-    params: { limit },
+export type FetchDocumentsParams = {
+  page?: number;
+  pageSize?: number;
+  search?: string;
+  category?: string;
+};
+
+export type FetchDocumentsResponse = {
+  data: DocumentItem[];
+  total: number;
+  page: number;
+  pageSize: number;
+  categories: string[];
+};
+
+export const fetchDocuments = async (params: FetchDocumentsParams = {}): Promise<FetchDocumentsResponse> => {
+  const { page = 1, pageSize = 30, search = '', category = '' } = params;
+  const { data } = await apiClient.get<{
+    success: boolean;
+    count: number;
+    total: number;
+    page: number;
+    pageSize: number;
+    categories: string[];
+    data: DocumentItem[];
+  }>('/api/documents', {
+    params: { page, pageSize, search, category },
   });
-  return data.data;
+  return { data: data.data, total: data.total, page: data.page, pageSize: data.pageSize, categories: data.categories || [] };
 };
 
 export const fetchStats = async (): Promise<StatsData> => {

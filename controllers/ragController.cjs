@@ -117,9 +117,14 @@ const getAnalyticsHandler = asyncHandler(async (_req, res) => {
     .slice(0, 10)
     .map(([query, count]) => ({ query, count }));
 
-  // Average response time
-  const times = queryLog.map(q => q.tookMs).filter(Boolean);
-  const avgResponseTime = times.length ? (times.reduce((a, b) => a + b, 0) / times.length) : 0;
+  // Average response time (search-only for accurate perf metric, excluding slow LLM calls)
+  const searchTimes = queryLog.filter(q => q.type === 'search').map(q => q.tookMs).filter(Boolean);
+  const allTimes = queryLog.map(q => q.tookMs).filter(Boolean);
+  const avgResponseTime = searchTimes.length
+    ? (searchTimes.reduce((a, b) => a + b, 0) / searchTimes.length)
+    : allTimes.length
+      ? (allTimes.reduce((a, b) => a + b, 0) / allTimes.length)
+      : 0;
 
   // Recent queries (last 20)
   const recentQueries = queryLog.slice(-20).reverse().map(q => ({

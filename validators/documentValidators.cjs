@@ -88,14 +88,11 @@ const askQuestionStreamSchema = z.object({
 });
 
 const listDocumentsQuerySchema = z.object({
-  limit: z
-    .string()
-    .optional()
-    .transform((value) => (value ? Number(value) : 100))
-    .refine(
-      (value) => Number.isFinite(value) && value >= 1 && value <= 500,
-      'limit must be a number between 1 and 500'
-    )
+  page: z.string().optional().transform((v) => (v ? Number(v) : 1)),
+  pageSize: z.string().optional().transform((v) => (v ? Number(v) : 30))
+    .refine((v) => Number.isFinite(v) && v >= 1 && v <= 100, 'pageSize must be 1-100'),
+  search: z.string().optional().default(''),
+  category: z.string().optional().default(''),
 });
 
 module.exports = {

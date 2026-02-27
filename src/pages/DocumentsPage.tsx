@@ -1,29 +1,50 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { fetchDocuments } from '../api/documents';
+import type { FetchDocumentsResponse } from '../api/documents';
 import ErrorToast from '../components/ErrorToast';
+import Pagination from '../components/Pagination';
 import type { DocumentItem } from '../types';
+import { useDebounce } from '../hooks/useDebounce';
 
 function DocumentsPage() {
   const [documents, setDocuments] = useState<DocumentItem[]>([]);
+  const [total, setTotal] = useState(0);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(30);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
-  useEffect(() => {
-    fetchDocuments(500)
-      .then(setDocuments)
-      .catch(() => setError('Failed to load documents'))
-      .finally(() => setLoading(false));
-  }, []);
+  const debouncedSearch = useDebounce(search, 300);
 
-  const categories = ['all', ...Array.from(new Set(documents.map(d => d.category || 'uncategorized'))).sort()];
+  const loadDocuments = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res: FetchDocumentsResponse = await fetchDocuments({
+        page,
+        pageSize,
+        search: debouncedSearch,
+        category: selectedCategory === 'all' ? '' : selectedCategory,
+      });
+      setDocuments(res.data);
+      setTotal(res.total);
+      if (res.categories.length > 0) setCategories(res.categories);
+    } catch {
+      setError('Failed to load documents');
+    } finally {
+      setLoading(false);
+    }
+  }, [page, pageSize, debouncedSearch, selectedCategory]);
 
-  const filtered = documents.filter(doc => {
-    const matchesSearch = !search || doc.title.toLowerCase().includes(search.toLowerCase()) || doc.content.toLowerCase().includes(search.toLowerCase());
-    const matchesCategory = selectedCategory === 'all' || (doc.category || 'uncategorized') === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
+  useEffect(() => { loadDocuments(); }, [loadDocuments]);
+
+  // Reset to page 1 when filters change
+  useEffect(() => { setPage(1); }, [debouncedSearch, selectedCategory]);
+
+  const allCategories = ['all', ...categories];
+  const filtered = documents; // Already filtered server-side
 
   const formatDate = (dateStr: string) => {
     return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -55,7 +76,7 @@ function DocumentsPage() {
 
         {/* Category filter */}
         <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 w-full sm:w-auto">
-          {categories.slice(0, 8).map(cat => (
+          {allCategories.slice(0, 8).map(cat => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
@@ -68,8 +89,8 @@ function DocumentsPage() {
               {cat}
             </button>
           ))}
-          {categories.length > 8 && (
-            <span className="text-xs text-slate-600">+{categories.length - 8}</span>
+          {allCategories.length > 8 && (
+            <span className="text-xs text-slate-600">+{allCategories.length - 8}</span>
           )}
         </div>
       </div>
@@ -77,7 +98,7 @@ function DocumentsPage() {
       {/* Results count */}
       <div className="flex items-center justify-between">
         <p className="text-xs text-slate-500">
-          Showing <span className="text-slate-300 font-medium">{filtered.length}</span> of {documents.length} documents
+          Showing <span className="text-slate-300 font-medium">{(page - 1) * pageSize + 1}–{Math.min(page * pageSize, total)}</span> of {total} documents
           {selectedCategory !== 'all' && <span> in <span className="text-indigo-400 capitalize">{selectedCategory}</span></span>}
         </p>
       </div>
@@ -132,6 +153,11 @@ function DocumentsPage() {
             </article>
           ))}
         </div>
+      )}
+
+      {/* Pagination */}
+      {!loading && total > 0 && (
+        <Pagination page={page} pageSize={pageSize} total={total} onPageChange={setPage} />
       )}
 
       {!loading && filtered.length === 0 && (

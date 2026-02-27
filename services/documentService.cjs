@@ -38,12 +38,28 @@ const createDocument = async ({ title, content, embedding, category, tags }) => 
   return Document.create(docData);
 };
 
-const listDocuments = async (limit = 100) => {
-  return Document.find({})
-    .sort({ createdAt: -1 })
-    .limit(limit)
-    .select('-embedding')
-    .lean();
+const listDocuments = async ({ page = 1, pageSize = 30, search = '', category = '' } = {}) => {
+  const filter = {};
+  if (category && category !== 'all') {
+    filter.category = category;
+  }
+  if (search) {
+    const regex = new RegExp(search, 'i');
+    filter.$or = [{ title: regex }, { content: regex }];
+  }
+
+  const [docs, total, categories] = await Promise.all([
+    Document.find(filter)
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * pageSize)
+      .limit(pageSize)
+      .select('-embedding')
+      .lean(),
+    Document.countDocuments(filter),
+    Document.distinct('category'),
+  ]);
+
+  return { docs, total, categories: categories.filter(Boolean).sort() };
 };
 
 const getDocumentStats = async () => {
@@ -76,7 +92,7 @@ const getDocumentStats = async () => {
 };
 
 const vectorSearchDocuments = async ({ embedding, limit = 10 }) => {
-  const numCandidates = Math.max(limit * 20, 500);
+  const numCandidates = Math.max(limit * 10, 200);
 
   return Document.aggregate([
     {
@@ -176,10 +192,10 @@ const hybridSearchDocuments = async ({ embedding, query, limit = 10 }) => {
   const cached = searchCache.get(ck);
   if (cached) return cached;
 
-  const overFetchLimit = Math.max(limit * 5, 50);
+  const overFetchLimit = Math.max(limit * 3, 30);
 
-  // Tune numCandidates proportionally to overFetchLimit (10x) with ceiling
-  const numCandidates = Math.min(Math.max(overFetchLimit * 10, 200), 1000);
+  // Tune numCandidates: 5x overFetch with a reasonable ceiling
+  const numCandidates = Math.min(Math.max(overFetchLimit * 5, 100), 500);
 
   // Run vector search and text search in parallel
   const [vectorResults, textResults] = await Promise.all([

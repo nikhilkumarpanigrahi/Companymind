@@ -1,0 +1,14 @@
+# ── CompanyMind Cloudflare Pages Headers ─────────────────────
+# These are applied automatically by Cloudflare Pages.
+# See: https://developers.cloudflare.com/pages/configuration/headers/
+
+# Security headers for all pages
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+# Immutable caching for hashed Vite assets
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable

@@ -51,8 +51,8 @@ const searchDocumentsQueryHandler = asyncHandler(async (req, res) => {
   const pageSizeNum = Number(pageSize);
   const startedAt = process.hrtime.bigint();
 
-  // Fetch enough results for good relevance ranking
-  const maxResults = Math.max(pageSizeNum * 5, 100);
+  // Fetch just enough for the current page + a small buffer for quality
+  const maxResults = Math.min(pageSizeNum * 3, 50);
   const embedding = await generateEmbedding(q);
 
   // Use RRF hybrid search (vector + keyword) for best relevance
@@ -85,13 +85,21 @@ const searchDocumentsQueryHandler = asyncHandler(async (req, res) => {
 });
 
 const getDocumentsHandler = asyncHandler(async (req, res) => {
-  const limit = req.query.limit ? Number(req.query.limit) : 100;
-  const documents = await listDocuments(limit);
+  const page = req.query.page ? Number(req.query.page) : 1;
+  const pageSize = req.query.pageSize ? Number(req.query.pageSize) : 30;
+  const search = req.query.search || '';
+  const category = req.query.category || '';
+
+  const { docs, total, categories } = await listDocuments({ page, pageSize, search, category });
 
   return res.status(200).json({
     success: true,
-    count: documents.length,
-    data: documents
+    count: docs.length,
+    total,
+    page,
+    pageSize,
+    categories,
+    data: docs
   });
 });
 

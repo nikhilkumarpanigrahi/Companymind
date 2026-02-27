@@ -1,0 +1,21 @@
+# ═══════════════════════════════════════════════════════════════
+#  CompanyMind — Cloudflare Pages Configuration
+#  https://developers.cloudflare.com/pages/configuration/wrangler-configuration/
+#
+#  Deploys the Vite-built React frontend to Cloudflare Pages.
+#  API requests (/api/*) are proxied to your backend via _redirects.
+# ═══════════════════════════════════════════════════════════════
+
+name = "companymind"
+# pages_build_output_dir is relative to the project root
+pages_build_output_dir = "../dist"
+compatibility_date = "2025-01-01"
+
+# ── Environment Variables ────────────────────────────────────
+# Set these in the Cloudflare Dashboard → Pages → Settings → Environment Variables
+#
+#   VITE_API_BASE_URL  =  https://companymind-web.onrender.com
+#                         (or your backend URL on AWS / Railway / etc.)
+#
+# The _redirects file uses this to proxy /api/* requests to the backend.
+# ═══════════════════════════════════════════════════════════════

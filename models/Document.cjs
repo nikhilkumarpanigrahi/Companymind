@@ -41,6 +41,7 @@ const documentSchema = new mongoose.Schema(
 );
 
 documentSchema.index({ createdAt: -1 });
+documentSchema.index({ category: 1, createdAt: -1 });
 documentSchema.index({ title: 'text', content: 'text' });
 
 const Document = mongoose.model('Document', documentSchema);
