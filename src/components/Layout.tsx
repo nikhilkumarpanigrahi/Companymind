@@ -10,7 +10,7 @@ type NavItem = {
 
 const NAV_ITEMS: NavItem[] = [
   {
-    path: '/',
+    path: '/dashboard',
     label: 'Dashboard',
     exact: true,
     icon: (
@@ -48,6 +48,15 @@ const NAV_ITEMS: NavItem[] = [
     icon: (
       <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <path d="M18 20V10M12 20V4M6 20v-6" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  {
+    path: '/comparison',
+    label: 'Search Comparison',
+    icon: (
+      <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M16 3h5v5M8 3H3v5M16 21h5v-5M8 21H3v-5M21 3l-8.5 8.5M3 21l8.5-8.5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
   },
@@ -129,7 +138,7 @@ function Layout({ children }: PropsWithChildren) {
 
         {/* Mobile top bar */}
         <header className="fixed left-0 right-0 top-0 z-20 flex h-12 items-center justify-between border-b border-white/[0.06] bg-[#0c0c14]/95 backdrop-blur-sm px-4 lg:hidden">
-          <Link to="/" className="flex items-center gap-2">
+          <Link to="/dashboard" className="flex items-center gap-2">
             <div className="flex h-6 w-6 items-center justify-center rounded bg-white/[0.08]">
               <svg className="h-3 w-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" strokeLinecap="round" strokeLinejoin="round" />
