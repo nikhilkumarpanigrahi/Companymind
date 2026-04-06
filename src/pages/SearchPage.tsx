@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { askQuestionStream, fetchStats, searchDocuments } from '../api/documents';
+import { getFriendlyApiError } from '../api/errorHelpers';
 import AIAnswer from '../components/AIAnswer';
 import ErrorToast from '../components/ErrorToast';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -12,6 +13,7 @@ import { useDebounce } from '../hooks/useDebounce';
 import type { ConversationMessage, RAGResponse, RAGSource, SearchResultItem } from '../types';
 
 const DEFAULT_PAGE_SIZE = Number(import.meta.env.VITE_DEFAULT_PAGE_SIZE || 10);
+const MAX_SEARCH_QUERY_LENGTH = 1000;
 
 const EXAMPLE_QUERIES = [
   'How do vector databases work?',
@@ -62,12 +64,22 @@ function SearchPage() {
     if (mode !== 'search') return;
     const trimmedQuery = debouncedQuery.trim();
     if (!trimmedQuery) {
-      setResults([]); setTotal(0); setResponseTimeMs(null); setIsLoading(false);
+      setResults([]); setTotal(0); setResponseTimeMs(null); setIsLoading(false); setError(null);
+      return;
+    }
+
+    if (trimmedQuery.length > MAX_SEARCH_QUERY_LENGTH) {
+      setResults([]);
+      setTotal(0);
+      setResponseTimeMs(null);
+      setIsLoading(false);
+      setError(`Search query is too long (${trimmedQuery.length}/${MAX_SEARCH_QUERY_LENGTH}). Please shorten it and try again.`);
       return;
     }
     let isCancelled = false;
     const runSearch = async () => {
       setIsLoading(true);
+      setError(null);
       const start = performance.now();
       try {
         const response = await searchDocuments(trimmedQuery, page, DEFAULT_PAGE_SIZE);
@@ -75,9 +87,13 @@ function SearchPage() {
         setResults(response.results);
         setTotal(response.total);
         setResponseTimeMs(response.tookMs ?? performance.now() - start);
-      } catch {
+      } catch (err: unknown) {
         if (isCancelled) return;
-        setError('Search failed. Please check API connection and try again.');
+
+        setError(getFriendlyApiError(err, {
+          fallbackMessage: 'Search failed. Please check API connection and try again.',
+          queryTooLongMessage: `Search query is too long (max ${MAX_SEARCH_QUERY_LENGTH} characters). Please shorten it and try again.`,
+        }));
       } finally {
         if (!isCancelled) setIsLoading(false);
       }

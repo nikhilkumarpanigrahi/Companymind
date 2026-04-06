@@ -1,5 +1,8 @@
 import { useSpeechToText } from '../hooks/useSpeechToText';
 
+const MAX_SEARCH_QUERY_LENGTH = 1000;
+const MAX_ASK_QUESTION_LENGTH = 2000;
+
 type SearchBarProps = {
   value: string;
   onChange: (value: string) => void;
@@ -11,6 +14,9 @@ type SearchBarProps = {
 };
 
 function SearchBar({ value, onChange, onClear, mode, onModeChange, onAsk, isLoading }: SearchBarProps) {
+  const activeMaxLength = mode === 'search' ? MAX_SEARCH_QUERY_LENGTH : MAX_ASK_QUESTION_LENGTH;
+  const nearLimit = value.length >= Math.floor(activeMaxLength * 0.85);
+
   const speech = useSpeechToText({
     lang: 'en-US',
     continuous: false,
@@ -73,6 +79,7 @@ function SearchBar({ value, onChange, onClear, mode, onModeChange, onAsk, isLoad
             value={value}
             onChange={(e) => onChange(e.target.value)}
             onKeyDown={handleKeyDown}
+            maxLength={activeMaxLength}
             placeholder={
               speech.isListening
                 ? 'Listening...'
@@ -131,6 +138,17 @@ function SearchBar({ value, onChange, onClear, mode, onModeChange, onAsk, isLoad
           )}
         </div>
       </div>
+
+      {value.length > 0 && (
+        <div className="mx-auto mt-2 flex w-full max-w-2xl items-center justify-between px-1">
+          <p className="text-[11px] text-slate-600">
+            {mode === 'search' ? 'Tip: Search works best with concise phrases.' : 'Tip: Ask mode supports longer prompts.'}
+          </p>
+          <p className={`text-[11px] ${nearLimit ? 'text-amber-400' : 'text-slate-600'}`}>
+            {value.length}/{activeMaxLength}
+          </p>
+        </div>
+      )}
 
       {/* Voice listening indicator */}
       {speech.isListening && (

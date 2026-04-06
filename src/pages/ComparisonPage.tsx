@@ -1,8 +1,10 @@
 import { useCallback, useState } from 'react';
-import axios from 'axios';
+import { getFriendlyApiError } from '../api/errorHelpers';
 import { runBenchmark } from '../api/documents';
 import ErrorToast from '../components/ErrorToast';
 import type { BenchmarkResponse } from '../types';
+
+const MAX_COMPARISON_QUERY_LENGTH = 1000;
 
 /* ─── Preset demo queries ─────────────────────────────── */
 const DEMO_QUERIES = [
@@ -141,6 +143,10 @@ export default function ComparisonPage() {
   const handleRun = useCallback(async (q?: string) => {
     const trimmed = (q || query).trim();
     if (!trimmed || isRunning) return;
+    if (trimmed.length > MAX_COMPARISON_QUERY_LENGTH) {
+      setError(`Query is too long (${trimmed.length}/${MAX_COMPARISON_QUERY_LENGTH}). Please shorten it and try again.`);
+      return;
+    }
     setQuery(trimmed);
     setIsRunning(true);
     setError(null);
@@ -148,20 +154,10 @@ export default function ComparisonPage() {
       const result = await runBenchmark(trimmed, 10);
       setData(result);
     } catch (err: unknown) {
-      const fallbackMessage = 'Comparison failed. Make sure the backend & embedding service are running.';
-
-      if (axios.isAxiosError(err)) {
-        const status = err.response?.status;
-
-        // Friendly message for cold starts and transient infra wake-up time.
-        if (status === 502 || status === 503 || status === 504 || err.code === 'ECONNABORTED' || !status) {
-          setError('Services are warming up. Please retry in a few seconds.');
-        } else {
-          setError(fallbackMessage);
-        }
-      } else {
-        setError(fallbackMessage);
-      }
+      setError(getFriendlyApiError(err, {
+        fallbackMessage: 'Comparison failed. Make sure the backend & embedding service are running.',
+        queryTooLongMessage: `Query is too long (max ${MAX_COMPARISON_QUERY_LENGTH} characters). Please shorten it and try again.`,
+      }));
     } finally {
       setIsRunning(false);
     }
