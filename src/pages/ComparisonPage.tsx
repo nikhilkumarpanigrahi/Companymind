@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import axios from 'axios';
 import { runBenchmark } from '../api/documents';
 import ErrorToast from '../components/ErrorToast';
 import type { BenchmarkResponse } from '../types';
@@ -146,8 +147,21 @@ export default function ComparisonPage() {
     try {
       const result = await runBenchmark(trimmed, 10);
       setData(result);
-    } catch {
-      setError('Comparison failed. Make sure the backend & embedding service are running.');
+    } catch (err: unknown) {
+      const fallbackMessage = 'Comparison failed. Make sure the backend & embedding service are running.';
+
+      if (axios.isAxiosError(err)) {
+        const status = err.response?.status;
+
+        // Friendly message for cold starts and transient infra wake-up time.
+        if (status === 502 || status === 503 || status === 504 || err.code === 'ECONNABORTED' || !status) {
+          setError('Services are warming up. Please retry in a few seconds.');
+        } else {
+          setError(fallbackMessage);
+        }
+      } else {
+        setError(fallbackMessage);
+      }
     } finally {
       setIsRunning(false);
     }
