@@ -32,7 +32,7 @@ services:
           name: companymind-embedding
           type: web
           envVarKey: RENDER_EXTERNAL_URL
-        # After deploy, append /embed-query to this in the dashboard
+        # The backend will normalize this to /embed-query automatically.
       - key: EMBEDDING_API_KEY
         value: ""
       - key: VECTOR_INDEX_NAME

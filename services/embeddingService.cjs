@@ -40,6 +40,23 @@ class EmbeddingLRU {
 }
 const embeddingCache = new EmbeddingLRU(500, 10 * 60 * 1000);
 
+const resolveEmbeddingEndpoint = (rawUrl) => {
+  if (!rawUrl) return rawUrl;
+
+  try {
+    const url = new URL(rawUrl);
+    if (!url.pathname || url.pathname === '/' || url.pathname === '') {
+      url.pathname = '/embed-query';
+    } else if (!url.pathname.endsWith('/embed-query')) {
+      url.pathname = `${url.pathname.replace(/\/$/, '')}/embed-query`;
+    }
+    return url.toString();
+  } catch {
+    const normalized = rawUrl.replace(/\/$/, '');
+    return normalized.endsWith('/embed-query') ? normalized : `${normalized}/embed-query`;
+  }
+};
+
 const generateEmbedding = async (text) => {
   // Check Node-side cache first
   const cached = embeddingCache.get(text);
@@ -52,7 +69,7 @@ const generateEmbedding = async (text) => {
 
   try {
     const response = await axiosClient.post(
-      env.EMBEDDING_API_URL,
+      resolveEmbeddingEndpoint(env.EMBEDDING_API_URL),
       { text },
       { headers }
     );
