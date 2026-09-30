@@ -17,7 +17,7 @@ const toNumber = (value, fallback) => {
 
 const env = {
   NODE_ENV: process.env.NODE_ENV || 'development',
-  PORT: toNumber(process.env.PORT, 5000),
+  PORT: toNumber(process.env.PORT, 8080),
   MONGODB_URI: process.env.MONGODB_URI,
   MONGODB_DB_NAME: process.env.MONGODB_DB_NAME || undefined,
   EMBEDDING_API_URL: process.env.EMBEDDING_API_URL,

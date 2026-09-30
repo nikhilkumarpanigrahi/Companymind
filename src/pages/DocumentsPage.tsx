@@ -44,7 +44,6 @@ function DocumentsPage() {
   useEffect(() => { setPage(1); }, [debouncedSearch, selectedCategory]);
 
   const allCategories = ['all', ...categories];
-  const filtered = documents; // Already filtered server-side
 
   const formatDate = (dateStr: string) => {
     return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -55,7 +54,9 @@ function DocumentsPage() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-semibold tracking-tight text-white">Documents</h1>
-        <p className="mt-1 text-sm text-slate-500">Browse {documents.length} documents in your knowledge base</p>
+        <p className="mt-1 text-sm text-slate-500">
+          Browse {total > 0 ? `${total} documents` : `${documents.length} documents`} in your knowledge base
+        </p>
       </div>
 
       {/* Filters Bar */}
@@ -115,7 +116,7 @@ function DocumentsPage() {
       {/* Documents Grid */}
       {!loading && (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((doc, i) => (
+          {documents.map((doc, i) => (
             <article
               key={doc._id}
               className="group rounded-lg border border-white/[0.06] bg-white/[0.02] p-5 transition-colors duration-150 hover:bg-white/[0.04] hover:border-white/[0.12] animate-fadeInUp flex flex-col"
@@ -160,7 +161,7 @@ function DocumentsPage() {
         <Pagination page={page} pageSize={pageSize} total={total} onPageChange={setPage} />
       )}
 
-      {!loading && filtered.length === 0 && (
+      {!loading && documents.length === 0 && (
         <div className="mt-10 rounded-lg border border-white/[0.06] bg-white/[0.02] p-10 text-center">
           <p className="text-slate-500">No documents match your filters.</p>
         </div>

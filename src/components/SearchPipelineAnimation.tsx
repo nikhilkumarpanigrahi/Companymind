@@ -5,7 +5,6 @@ type PipelineStep = {
   icon: React.ReactNode;
   label: string;
   description: string;
-  accent: string; // tailwind text/border color token
 };
 
 const SEARCH_STEPS: PipelineStep[] = [
@@ -19,7 +18,6 @@ const SEARCH_STEPS: PipelineStep[] = [
     ),
     label: 'User Query',
     description: 'Parsing natural language input',
-    accent: 'blue',
   },
   {
     id: 'embed',
@@ -31,7 +29,6 @@ const SEARCH_STEPS: PipelineStep[] = [
     ),
     label: 'Embedding Service',
     description: 'Converting text → 384-dim vector',
-    accent: 'violet',
   },
   {
     id: 'vector',
@@ -44,7 +41,6 @@ const SEARCH_STEPS: PipelineStep[] = [
     ),
     label: 'Vector Search',
     description: 'MongoDB Atlas cosine similarity',
-    accent: 'emerald',
   },
   {
     id: 'results',
@@ -59,7 +55,6 @@ const SEARCH_STEPS: PipelineStep[] = [
     ),
     label: 'Ranked Results',
     description: 'Top documents by relevance score',
-    accent: 'indigo',
   },
 ];
 
@@ -76,7 +71,6 @@ const ASK_STEPS: PipelineStep[] = [
     ),
     label: 'LLM (Groq + Llama 3)',
     description: 'RAG: context + question → answer',
-    accent: 'amber',
   },
   {
     id: 'answer',
@@ -87,7 +81,6 @@ const ASK_STEPS: PipelineStep[] = [
     ),
     label: 'AI Answer',
     description: 'Synthesized response with sources',
-    accent: 'rose',
   },
 ];
 

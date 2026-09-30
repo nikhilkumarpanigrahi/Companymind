@@ -147,7 +147,7 @@ export function useSpeechToText(options: Options = {}): UseSpeechToTextReturn {
 
     try {
       recognition.start();
-    } catch (e) {
+    } catch {
       setError('Could not start speech recognition.');
       setIsListening(false);
     }

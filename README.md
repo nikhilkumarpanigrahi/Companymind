@@ -148,14 +148,27 @@ Open [http://localhost:5173](http://localhost:5173) and start searching!
 
 ---
 
+## Documentation
+
+Comprehensive guides and technical documentation:
+
+- [Setup Guide](docs/SETUP_GUIDE.md) — Step-by-step local setup, Docker deployment, and MongoDB configuration
+- [System Architecture](docs/ARCHITECTURE.md) — In-depth architectural blueprint, data flow, and technology choices
+- [API Reference](docs/API_REFERENCE.md) — Complete endpoint reference, request/response contracts, and error formats
+
+---
+
 ## API Endpoints
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| `GET` | `/search?q=...&page=1&limit=10` | Semantic vector search |
-| `POST` | `/ask` | Ask AI (RAG) — body: `{ "question": "..." }` |
-| `POST` | `/documents` | Add a new document |
-| `GET` | `/documents` | List all documents |
+| `GET` | `/api/search?q=...&page=1&pageSize=10` | Semantic vector search |
+| `POST` | `/api/ask` | Ask AI (RAG) — body: `{ "question": "..." }` |
+| `POST` | `/api/ask/stream` | Streamed Ask AI (SSE tokens + sources) |
+| `POST` | `/api/documents` | Add a new document |
+| `GET` | `/api/documents` | List paginated documents |
+| `POST` | `/api/benchmark` | Comparative search benchmark (Regex, Text, Vector, Hybrid) |
+| `GET` | `/health` | Service health status |
 
 ---
 

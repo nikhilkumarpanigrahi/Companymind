@@ -1,10 +1,28 @@
-node_modules
-dist
-.DS_Store
-.env
+# Dependencies
+node_modules/
+
+# Production & Build outputs
+dist/
 *.tsbuildinfo
 vite.config.js
 vite.config.d.ts
+
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+
+# Python artifacts
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+.venv/
+venv/
+
+# Datasets & Logs
 seeds/large-dataset.json
+*.log
+
+# OS & System
+.DS_Store
+Thumbs.db

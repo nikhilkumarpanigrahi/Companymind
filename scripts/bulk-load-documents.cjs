@@ -10,7 +10,7 @@ const rawDefaultFile = path.join(workspaceRoot, 'data', 'ag_news', 'documents.js
 const defaults = {
   file: fs.existsSync(cleanedDefaultFile) ? cleanedDefaultFile : rawDefaultFile,
   apiBaseUrl: process.env.API_BASE_URL || 'http://localhost:8080',
-  endpoint: '/documents',
+  endpoint: '/api/documents',
   batchSize: 25,
   maxRetries: 3,
   retryDelayMs: 500,
@@ -39,6 +39,11 @@ const parseArgs = () => {
 
     if (arg.startsWith('--api-base-url=')) {
       options.apiBaseUrl = arg.split('=').slice(1).join('=');
+      continue;
+    }
+
+    if (arg.startsWith('--endpoint=')) {
+      options.endpoint = arg.split('=').slice(1).join('=');
       continue;
     }
 

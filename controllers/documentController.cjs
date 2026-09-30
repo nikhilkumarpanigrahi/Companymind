@@ -6,7 +6,6 @@ const {
   vectorSearchDocuments,
   hybridSearchDocuments
 } = require('../services/documentService.cjs');
-const { Document } = require('../models/Document.cjs');
 const { asyncHandler } = require('../utils/asyncHandler.cjs');
 const { logQuery } = require('./ragController.cjs');
 

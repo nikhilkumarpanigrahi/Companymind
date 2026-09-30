@@ -1,14 +1,12 @@
 const express = require('express');
 const {
   createDocumentHandler,
-  searchDocumentsHandler,
   getDocumentsHandler,
   getStatsHandler
 } = require('../controllers/documentController.cjs');
 const { validateRequest } = require('../middleware/validateRequest.cjs');
 const {
   createDocumentSchema,
-  searchDocumentSchema,
   listDocumentsQuerySchema
 } = require('../validators/documentValidators.cjs');
 

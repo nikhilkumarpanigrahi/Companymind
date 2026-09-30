@@ -4,7 +4,7 @@ import type { PropsWithChildren } from 'react';
 type NavItem = {
   path: string;
   label: string;
-  icon: JSX.Element;
+  icon: React.ReactNode;
   exact?: boolean;
 };
 

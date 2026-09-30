@@ -145,8 +145,6 @@ const regexSearchDocuments = async ({ query, limit = 10 }) => {
     );
 };
 
-/** Minimum relevance score — results below this are discarded */
-const MIN_SCORE_THRESHOLD = 0.35;
 
 /**
  * Reciprocal Rank Fusion (RRF) — merges two ranked lists by position.

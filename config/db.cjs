@@ -81,20 +81,16 @@ const setupMongooseEventListeners = () => {
   mongoose.connection.on('reconnected', () => {
     console.log('🔄 Mongoose reconnected to MongoDB');
   });
+};
 
-  // Application termination
-  process.on('SIGINT', async () => {
+/**
+  * Gracefully close the database connection
+  */
+const closeDatabaseConnection = async () => {
+  if (mongoose.connection.readyState !== 0) {
     await mongoose.connection.close();
-    console.log('👋 Mongoose connection closed due to app termination');
-    process.exit(0);
-  });
-
-  // Graceful shutdown on SIGTERM (Docker/Kubernetes)
-  process.on('SIGTERM', async () => {
-    await mongoose.connection.close();
-    console.log('👋 Mongoose connection closed due to SIGTERM');
-    process.exit(0);
-  });
+    console.log('👋 Mongoose connection closed gracefully');
+  }
 };
 
 /**
@@ -147,6 +143,7 @@ setupMongooseEventListeners();
 
 module.exports = { 
   connectToDatabase,
+  closeDatabaseConnection,
   getConnectionStats,
   checkDatabaseHealth
 };
