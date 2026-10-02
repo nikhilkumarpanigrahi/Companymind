@@ -39,6 +39,41 @@ const buildContextPrompt = (question, documents, conversationHistory = []) => {
   return `CONTEXT DOCUMENTS:\n${contextParts.join('\n\n')}\n${historyText}\n---\n\nUSER QUESTION: ${question}\n\nProvide a comprehensive answer based on the context above. Cite sources using [Source: title].`;
 };
 
+const extractAxiosErrorMessage = async (error) => {
+  if (error instanceof AppError) return error.message;
+  if (!error.response) return error.message || 'Network error contacting AI service';
+
+  if (error.response.data && typeof error.response.data.on === 'function') {
+    try {
+      const raw = await new Promise((resolve) => {
+        let text = '';
+        error.response.data.on('data', (c) => { text += c; });
+        error.response.data.on('end', () => resolve(text));
+        error.response.data.on('error', () => resolve(text));
+      });
+      const parsed = JSON.parse(raw);
+      if (parsed.error?.message) return parsed.error.message;
+    } catch {
+      // ignore JSON parse errors
+    }
+  } else if (error.response.data?.error?.message) {
+    return error.response.data.error.message;
+  }
+
+  return error.message || `AI service returned error ${error.response.status}`;
+};
+
+const getCandidateModels = () => {
+  const configured = env.GROQ_MODEL;
+  const candidates = [
+    configured,
+    'openai/gpt-oss-120b',
+    'openai/gpt-oss-20b',
+    'llama-3.3-70b-versatile',
+  ].filter(Boolean);
+  return [...new Set(candidates)];
+};
+
 const generateRAGAnswer = async (question, documents) => {
   const apiKey = env.GROQ_API_KEY;
   if (!apiKey) {
@@ -46,12 +81,13 @@ const generateRAGAnswer = async (question, documents) => {
   }
 
   const userPrompt = buildContextPrompt(question, documents);
+  const models = getCandidateModels();
+  let lastError = null;
 
-  try {
-    const response = await groqClient.post(
-      '/chat/completions',
-      {
-        model: 'llama-3.3-70b-versatile',
+  for (const model of models) {
+    try {
+      const payload = {
+        model,
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
           { role: 'user', content: userPrompt },
@@ -60,35 +96,47 @@ const generateRAGAnswer = async (question, documents) => {
         max_tokens: 1024,
         top_p: 0.9,
         stream: false,
-      },
-      {
+      };
+
+      if (model.includes('gpt-oss') || model.includes('qwen')) {
+        payload.reasoning_format = 'hidden';
+      }
+
+      const response = await groqClient.post('/chat/completions', payload, {
         headers: {
           Authorization: `Bearer ${apiKey}`,
         },
+      });
+
+      const answer = response.data?.choices?.[0]?.message?.content;
+      if (!answer) {
+        throw new AppError('LLM returned an empty response', 502);
       }
-    );
 
-    const answer = response.data?.choices?.[0]?.message?.content;
-    if (!answer) {
-      throw new AppError('LLM returned an empty response', 502);
+      return {
+        answer,
+        model: response.data?.model || model,
+        tokensUsed: response.data?.usage?.total_tokens || 0,
+      };
+    } catch (error) {
+      const status = error.response?.status;
+      const message = await extractAxiosErrorMessage(error);
+      lastError = new AppError(message, status || 502);
+
+      // If the model does not exist or user lacks access (404), or model rejected (400), try fallback
+      if (status === 404 || (status === 400 && message.toLowerCase().includes('model'))) {
+        console.warn(`[RAG] Model "${model}" failed (${message}). Trying next fallback model...`);
+        continue;
+      }
+      throw lastError;
     }
-
-    return {
-      answer,
-      model: response.data?.model || 'llama-3.3-70b-versatile',
-      tokensUsed: response.data?.usage?.total_tokens || 0,
-    };
-  } catch (error) {
-    if (error instanceof AppError) throw error;
-
-    const status = error.response?.status || 502;
-    const message = error.response?.data?.error?.message || 'Failed to generate AI answer';
-    throw new AppError(message, status);
   }
+
+  throw lastError || new AppError('Failed to generate AI answer with any available model', 502);
 };
 
 /**
- * Stream RAG answer via SSE.  Calls Groq with stream: true
+ * Stream RAG answer via SSE. Calls Groq with stream: true
  * and pipes chunks to the Express response.
  */
 const streamRAGAnswer = async (question, documents, res, conversationHistory = []) => {
@@ -98,28 +146,53 @@ const streamRAGAnswer = async (question, documents, res, conversationHistory = [
   }
 
   const userPrompt = buildContextPrompt(question, documents, conversationHistory);
+  const models = getCandidateModels();
+  let response = null;
+  let activeModel = models[0];
 
-  const response = await groqClient.post(
-    '/chat/completions',
-    {
-      model: 'llama-3.3-70b-versatile',
-      messages: [
-        { role: 'system', content: SYSTEM_PROMPT },
-        { role: 'user', content: userPrompt },
-      ],
-      temperature: 0.3,
-      max_tokens: 1024,
-      top_p: 0.9,
-      stream: true,
-    },
-    {
-      headers: { Authorization: `Bearer ${apiKey}` },
-      responseType: 'stream',
+  for (const model of models) {
+    try {
+      const payload = {
+        model,
+        messages: [
+          { role: 'system', content: SYSTEM_PROMPT },
+          { role: 'user', content: userPrompt },
+        ],
+        temperature: 0.3,
+        max_tokens: 1024,
+        top_p: 0.9,
+        stream: true,
+      };
+
+      if (model.includes('gpt-oss') || model.includes('qwen')) {
+        payload.reasoning_format = 'hidden';
+      }
+
+      response = await groqClient.post('/chat/completions', payload, {
+        headers: { Authorization: `Bearer ${apiKey}` },
+        responseType: 'stream',
+      });
+
+      activeModel = model;
+      break;
+    } catch (error) {
+      const status = error.response?.status;
+      const message = await extractAxiosErrorMessage(error);
+
+      if (status === 404 || (status === 400 && message.toLowerCase().includes('model'))) {
+        console.warn(`[RAG Stream] Model "${model}" failed (${message}). Trying next fallback model...`);
+        continue;
+      }
+      throw new AppError(message, status || 502);
     }
-  );
+  }
+
+  if (!response) {
+    throw new AppError('Failed to initialize AI stream with any available model', 502);
+  }
 
   let fullAnswer = '';
-  let model = 'llama-3.3-70b-versatile';
+  let model = activeModel;
 
   return new Promise((resolve, reject) => {
     let buffer = '';

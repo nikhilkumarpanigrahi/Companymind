@@ -195,7 +195,7 @@ function HowItWorksPage() {
           {[
             { name: 'MongoDB Atlas', role: 'Database + Vector Search', detail: '$vectorSearch aggregation with HNSW index, cosine similarity, 384-dim embeddings' },
             { name: 'Sentence Transformers', role: 'Embedding Model', detail: 'all-MiniLM-L6-v2 — lightweight, fast, 384-dim output, ideal for semantic similarity' },
-            { name: 'Groq + Llama 3', role: 'LLM for RAG', detail: 'llama-3.3-70b-versatile via Groq\'s ultra-fast inference API (~1-3s response time)' },
+            { name: 'Groq Cloud LLM', role: 'LLM for RAG', detail: 'High-speed inference via Groq API (openai/gpt-oss-120b with fallback support)' },
             { name: 'FastAPI (Python)', role: 'Embedding Microservice', detail: 'Serves embedding generation as a REST API on port 8000 with health checks' },
             { name: 'Express.js', role: 'Backend API', detail: 'REST API with Zod validation, Helmet security, CORS, centralized error handling' },
             { name: 'React + Vite + TS', role: 'Frontend', detail: 'TypeScript SPA with Tailwind CSS, clean dark UI, real-time search with debounce' },

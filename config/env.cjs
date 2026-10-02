@@ -23,7 +23,8 @@ const env = {
   EMBEDDING_API_URL: process.env.EMBEDDING_API_URL,
   EMBEDDING_API_KEY: process.env.EMBEDDING_API_KEY || '',
   VECTOR_INDEX_NAME: process.env.VECTOR_INDEX_NAME || 'documents_embedding_index',
-  GROQ_API_KEY: process.env.GROQ_API_KEY || ''
+  GROQ_API_KEY: process.env.GROQ_API_KEY || '',
+  GROQ_MODEL: process.env.GROQ_MODEL || 'openai/gpt-oss-120b'
 };
 
 module.exports = { env };
