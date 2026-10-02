@@ -95,11 +95,15 @@ const generateEmbedding = async (text) => {
     }
 
     const status = error.response?.status || 502;
-    const message =
+    const detail =
+      error.response?.data?.detail ||
       error.response?.data?.message ||
+      (typeof error.response?.data === 'string' ? error.response.data.slice(0, 300) : null) ||
+      error.message ||
       'Failed to generate embedding from Python API';
 
-    throw new AppError(message, status);
+    console.error(`[EmbeddingService] Request to ${resolveEmbeddingEndpoint(env.EMBEDDING_API_URL)} failed [${status}]:`, detail);
+    throw new AppError(`Embedding service error (${status}): ${detail}`, status);
   }
 };
 
